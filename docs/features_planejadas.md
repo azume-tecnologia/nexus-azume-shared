@@ -35,17 +35,17 @@ O “nível” define em quais condições um conteúdo se aplica ao usuário. O
 
 - **[A] — Global (todos os usuários do Nexus):** aplicado a toda a plataforma.
 - **[B] — SystemSource específico (campo: `system_source`):** aplicado condicionalmente com base no `system_source` do usuário (multi-tenant).
-- **[C] — "Account" específica:** aplicado condicionalmente com base na conta do usuário.
+- **[C] — Account específica (campo: `account_id`):** aplicado condicionalmente com base na conta do usuário.
 - **[D] — "Scopes" (`user_scopes`, "UserScope[]") de uma "Account" específica:** aplicado condicionalmente com base nos scopes do usuário (basta estar no array).
   Exemplo: na conta "ID_ACCOUNT_1", existem os usuários "ID_USER_1" e "ID_USER_2", ambos com `user_scopes = ["sales", "marketing"]`. "ID_USER_1" tem `main_scope = "sales"` e "ID_USER_2" tem `main_scope = "marketing"`. Se for criada uma regra para incluir conteúdo para `user_scope = "marketing"`, o conteúdo será aplicado para ambos.
 - **[E] — "Main scope" ("UserScope") de uma "Account" específica:** aplicado condicionalmente com base no `main_scope` do usuário.
   Exemplo: usando o cenário acima, se for criada uma regra para incluir conteúdo para `main_scope = "marketing"`, o conteúdo será aplicado somente para "ID_USER_2".
-- **[F] — Usuário específico:** aplicado condicionalmente para um único usuário.
+- **[F] — Usuário específico (campo: `user_id`):** aplicado condicionalmente para um único usuário.
 
 **Como o multi-nível vira RAG (filtros por metadados / ABAC-like):**
 - Para **Knowledge**, os níveis [A]-[F] são materializados como **metadados persistidos por documento/chunk** e aplicados como **filtros obrigatórios** na recuperação.
 - A “cascata” de [A]→[F] não é feita “por prompt”; ela vira um conjunto de **condições de elegibilidade** (ex.: `system_source`, `account_id`, `user_scopes`, `main_scope`, `user_id`) para o retriever.
-- **ACL (V1):** a V1 **não implementa ACL por documento/chunk além do modelo multi-nível [A]-[F]** (ABAC-like por metadados). Na prática, todo conteúdo de nível [C] é potencialmente visível/recuperável por qualquer usuário da `account_id`, e níveis [D]/[E] por qualquer usuário elegível conforme seus scopes.
+- **ACL (V1):** a V1 **não implementa ACL por documento/chunk além do modelo multi-nível [A]-[F]** (ABAC-like por metadados). Na prática, todo conteúdo de nível [C] é potencialmente visível/recuperável por qualquer usuário da `account_id`, e níveis [D]/[E] por qualquer usuário elegível conforme seus scopes. Implicação prática: conteúdo sensível que não pode ser visto por todos os usuários elegíveis de um nível deve ser colocado em um nível mais específico (ex.: [F]).
 
 **Permissões por tipo de usuário:**
 
@@ -123,6 +123,7 @@ Procedimento mínimo (por requisição, dentro do escopo permitido pelos filtros
 2) Recuperar `topk_vector` chunks via **Atlas Vector Search**.
 3) Deduplicar por `chunk_id`.
 4) Normalizar `score_text` e `score_vector` para \([0, 1]\) (min-max no conjunto de candidatos da requisição).
+   - Edge case (V1): se `min == max` em um dos métodos (texto ou vetor), definir `score_*_norm = 1.0` para todos os candidatos daquele método (evita divisão por zero e mantém ranking determinístico).
 5) Combinar scores com média ponderada:
    - `score_final = 0.5 * score_text_norm + 0.5 * score_vector_norm`
 6) Ordenar por `score_final` e selecionar `topk_final` chunks para montagem do contexto.
@@ -147,6 +148,8 @@ Permissões de visualização/edição:
 
 O sistema deverá calcular tokens apenas para conteúdo que entra no prompt: **Policy** e **Pinned Summary**. **Knowledge via RAG não entra nesse cálculo**.
 
+Nota (multi-provedor, V1): tokens são estimativas baseadas no tokenizer/modelo do provedor selecionado; a V1 usa uma aproximação consistente para validação e exibição.
+
 Caps por categoria (substitui o modelo 15k/15k/15k; V1 defaults):
 - `system_policy_cap_tokens = 4000` (para \([A] + [B]\) in-prompt)
 - `account_policy_cap_tokens = 4000` (para \([C] + [D] + [E]\) in-prompt)
@@ -162,6 +165,7 @@ Pinned Summary:
   3) validar contra o cap da categoria (`system_policy_cap_tokens` / `account_policy_cap_tokens` / `user_policy_cap_tokens`).
 - Regras quando múltiplos pinned summaries forem aplicáveis (V1; simples e implementável):
   - a montagem do prompt inclui **no máximo 1 pinned summary por resposta**;
+  - justificativa: manter o prompt estável e evitar explosão de tokens;
   - critério de escolha: mais específico vence (prioridade \([F] > [C]/[D]/[E] > [A]/[B]\));
   - em empate (mesmo nível/especificidade), escolher o mais recentemente atualizado;
   - o texto incluído é truncado para `pinned_summary_cap_tokens` (quando necessário).
@@ -188,6 +192,8 @@ Visibilidade:
 - Definir parâmetros finais de chunking (tamanho/overlap) e critérios de corte (score mínimo, deduplicação por documento, etc.).
 - Definir modelo de embeddings (`embedding_model_version`) e política de reindexação em caso de troca de modelo.
 - Definir política de retenção e acesso aos logs de auditoria (quem pode consultar e por quanto tempo).
+- Decidir se haverá limite máximo de renovação do TTL de drafts (para evitar drafts “eternos” mesmo com renovação por edição).
+- Definir limites de tamanho de arquivo por upload e limites de volume total por nível/conta (V1), por custo e UX.
 
 ### 8. Decisões tomadas
 
