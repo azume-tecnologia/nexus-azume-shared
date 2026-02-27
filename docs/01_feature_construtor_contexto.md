@@ -7,7 +7,7 @@ Esta feature fornece contexto para os agentes do Nexus com controle multi-nível
 - **Policy**: regras/instruções comportamentais curtas, sempre injetadas no prompt.
 - **Knowledge**: documentos e fatos, sempre recuperados via RAG (não entram no prompt por padrão).
 
-Na V1, o RAG adotado será o padrão: **vector embeddings + hybrid search** em **MongoDB Atlas** (Atlas Vector Search + Atlas Search), com observabilidade/auditoria mínima viável.
+Na V1, o RAG adotado será o padrão: **vector embeddings + hybrid search** em **MongoDB Atlas** (Atlas Vector Search + Atlas Search), com observabilidade/auditoria mínima viável. Em produção, esse workload de busca será executado em **Search Nodes dedicados** no Atlas (isolamento de workload).
 
 ### 1. Funcionamento
 
@@ -45,6 +45,7 @@ O “nível” define em quais condições um conteúdo se aplica ao usuário. O
 **Como o multi-nível vira RAG (filtros por metadados / ABAC-like):**
 - Para **Knowledge**, os níveis [A]-[F] são materializados como **metadados persistidos por documento/chunk** e aplicados como **filtros obrigatórios** na recuperação.
 - A “cascata” de [A]→[F] não é feita “por prompt”; ela vira um conjunto de **condições de elegibilidade** (ex.: `system_source`, `account_id`, `user_scopes`, `main_scope`, `user_id`) para o retriever.
+- Guardrail (V1): o retriever deve operar em modo *fail-closed* — queries de Knowledge devem sempre aplicar filtros obrigatórios de tenant (ex.: `system_source`, `account_id`) quando aplicável.
 - **ACL (V1):** a V1 **não implementa ACL por documento/chunk além do modelo multi-nível [A]-[F]** (ABAC-like por metadados). Na prática, todo conteúdo de nível [C] é potencialmente visível/recuperável por qualquer usuário da `account_id`, e níveis [D]/[E] por qualquer usuário elegível conforme seus scopes. Implicação prática: conteúdo sensível que não pode ser visto por todos os usuários elegíveis de um nível deve ser colocado em um nível mais específico (ex.: [F]).
 
 **Permissões por tipo de usuário:**
@@ -136,6 +137,8 @@ Defaults iniciais (configuráveis):
 - `hybrid_weight_text = 0.5`
 - `hybrid_weight_vector = 0.5`
 
+Nota de infraestrutura (produção, V1): a carga de busca (Atlas Search + Atlas Vector Search) deve ser isolada em **Search Nodes dedicados** no MongoDB Atlas.
+
 Nota de estabilidade (V1): a normalização min-max é feita por requisição; isso é aceitável na V1 e pode ser refinado em V1.1 com normalização mais robusta e/ou rerank.
 
 Permissões de visualização/edição:
@@ -198,6 +201,7 @@ Visibilidade:
 ### 8. Decisões tomadas
 
 - V1 adotará RAG com **vector embeddings + busca híbrida** (MongoDB Atlas Vector Search + Atlas Search).
+- V1 em produção usará **Search Nodes dedicados no MongoDB Atlas** para Atlas Search + Atlas Vector Search (isolamento de workload).
 - Conteúdo será separado em duas classes:
   - **Policy**: sempre injetada no prompt (curta; capada).
   - **Knowledge**: sempre recuperada via RAG (não entra no prompt por padrão).
@@ -241,6 +245,7 @@ Para cada resposta gerada com RAG, registrar (log estruturado com correlação p
 - Padronização de nomenclatura de backend para `snake_case` e inclusão de mapeamentos mínimos (ex.: SystemSource → `system_source`, UserRole → `user_role`).
 - Fluxo consistente de persistência no upload/aprovação usando **draft com TTL** (default 72h), limpeza automática e renovação do TTL a cada edição salva.
 - Clarificação explícita de permissões/ACL: V1 **não tem ACL por documento/chunk** além do ABAC-like por metadados [A]-[F].
+- Decisão de infraestrutura: produção V1 executará Atlas Search + Atlas Vector Search em **Search Nodes dedicados** (isolamento de workload).
 - Pinned summary clarificado: **por documento na V1**, cap default e regra única de seleção; budget fechado com validação contra cap da categoria.
 - Edição de Knowledge pós-aprovação definida como **reindex assíncrono**, com versionamento mínimo por `document_version` e troca atômica da versão ativa.
 - Hybrid search V1 mantido simples, com nota de estabilidade sobre normalização min-max por requisição e evolução prevista para V1.1.
