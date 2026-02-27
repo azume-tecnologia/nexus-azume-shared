@@ -14,7 +14,7 @@ Na V1, o RAG adotado será o padrão: **vector embeddings + hybrid search** em *
 - Um novo menu de configurações será adicionado à plataforma.
 - Neste menu, uma das opções será o construtor de contexto (nome pendente; escolher nome objetivo para usuários).
 - No construtor, o usuário poderá fazer upload de documentos para compor o contexto dos agentes.
-- Na etapa de aprovação, o usuário deverá classificar o conteúdo em uma das classes abaixo:
+- Na etapa de aprovação, o usuário deverá classificar o conteúdo em uma das classes abaixo (V1):
   - **Policy (sempre no prompt)**.
   - **Knowledge (busca automática via RAG)**.
 - **Pinned Summary (opcional)**:
@@ -36,15 +36,16 @@ O “nível” define em quais condições um conteúdo se aplica ao usuário. O
 - **[A] — Global (todos os usuários do Nexus):** aplicado a toda a plataforma.
 - **[B] — "SystemSource" específico:** aplicado condicionalmente com base no "SystemSource" do usuário (multi-tenant).
 - **[C] — "Account" específica:** aplicado condicionalmente com base na conta do usuário.
-- **[D] — "Scopes" ("UserScope[]") de uma "Account" específica:** aplicado condicionalmente com base nos "scopes" do usuário (basta estar no array).
-  Exemplo: na conta "ID_ACCOUNT_1", existem os usuários "ID_USER_1" e "ID_USER_2", ambos com `scopes = ["sales", "marketing"]`. "ID_USER_1" tem `main_scope = "sales"` e "ID_USER_2" tem `main_scope = "marketing"`. Se for criada uma regra para incluir conteúdo para `scope = "marketing"`, o conteúdo será aplicado para ambos.
+- **[D] — "Scopes" (`user_scopes`, "UserScope[]") de uma "Account" específica:** aplicado condicionalmente com base nos scopes do usuário (basta estar no array).
+  Exemplo: na conta "ID_ACCOUNT_1", existem os usuários "ID_USER_1" e "ID_USER_2", ambos com `user_scopes = ["sales", "marketing"]`. "ID_USER_1" tem `main_scope = "sales"` e "ID_USER_2" tem `main_scope = "marketing"`. Se for criada uma regra para incluir conteúdo para `user_scope = "marketing"`, o conteúdo será aplicado para ambos.
 - **[E] — "Main scope" ("UserScope") de uma "Account" específica:** aplicado condicionalmente com base no `main_scope` do usuário.
   Exemplo: usando o cenário acima, se for criada uma regra para incluir conteúdo para `main_scope = "marketing"`, o conteúdo será aplicado somente para "ID_USER_2".
 - **[F] — Usuário específico:** aplicado condicionalmente para um único usuário.
 
 **Como o multi-nível vira RAG (filtros por metadados / ABAC-like):**
 - Para **Knowledge**, os níveis [A]-[F] são materializados como **metadados persistidos por documento/chunk** e aplicados como **filtros obrigatórios** na recuperação.
-- A “cascata” de [A]→[F] não é feita “por prompt”; ela vira um conjunto de **condições de elegibilidade** (ex.: `systemSource`, `accountId`, `scopes`, `mainScope`, `userId`) para o retriever.
+- A “cascata” de [A]→[F] não é feita “por prompt”; ela vira um conjunto de **condições de elegibilidade** (ex.: `system_source`, `account_id`, `user_scopes`, `main_scope`, `user_id`) para o retriever.
+- **ACL (V1):** a V1 **não implementa ACL por documento/chunk além do modelo multi-nível [A]-[F]** (ABAC-like por metadados). Na prática, todo conteúdo de nível [C] é potencialmente visível/recuperável por qualquer usuário da `account_id`, e níveis [D]/[E] por qualquer usuário elegível conforme seus scopes.
 
 **Permissões por tipo de usuário:**
 
@@ -80,13 +81,12 @@ Fora da V1:
 ### 4. Conversão de arquivos em texto (markdown) e CRUD do contexto
 
 - Ao fazer upload de um arquivo, ele deve ser processado e convertido em **markdown canônico** (texto-base do sistema).
-- O markdown gerado será salvo na base. O usuário poderá visualizá-lo no frontend para revisar o conteúdo.
-- Logo após o upload, haverá uma etapa de aprovação:
-  - o usuário revisa/edita o markdown gerado (inclusive com auxílio de um agente (LLM) via chat, se já existir esse fluxo);
-  - o usuário classifica o conteúdo como **Policy** ou **Knowledge**;
-  - se **Knowledge**, o usuário pode (opcionalmente) solicitar/ativar um **Pinned Summary** para inclusão no prompt.
-- O usuário poderá aprovar ou rejeitar o conteúdo. Em ambos os casos, o arquivo original será descartado após a decisão.
-- Se o conteúdo for rejeitado, nada será persistido na base.
+- **Fluxo de upload/aprovação (V1 — draft temporário com TTL):**
+  - o resultado do processamento (markdown + metadados do nível [A]-[F]) é persistido como **draft** com `status = "draft"` e **expiração (TTL)**;
+  - o usuário revisa/edita o draft no frontend e seleciona **Policy** ou **Knowledge** (e, se Knowledge, se quer pinned summary);
+  - ao **aprovar**, o draft é **promovido** para `status = "active"` e os artefatos definitivos são gerados (Policy ativa ou Knowledge indexada);
+  - ao **rejeitar**, o draft é **excluído** e nenhum artefato definitivo permanece;
+  - o arquivo original é descartado após a decisão (aprovar/rejeitar).
 - Após aprovado, o conteúdo ficará disponível para visualização, edição e exclusão no menu de construção de contexto.
 
 Indexação/persistência (V1):
@@ -97,7 +97,38 @@ Indexação/persistência (V1):
     - **Atlas Search** (texto / BM25);
     - **Atlas Vector Search** (similaridade vetorial);
     - estratégia “hybrid” na V1: recuperar candidatos por ambos e combinar em um ranking final auditável.
-- **Pinned Summary:** persistir como artefato separado, versionado (texto do resumo + referência ao(s) documento(s) origem + modelo/versão de geração).
+- **Pinned Summary:**
+  - V1: pinned summary é gerado **por documento** (por padrão) e persistido como artefato separado, versionado.
+  - O artefato deve manter `source_document_id` e `source_document_version`.
+  - Pinned summary composto (multi-doc) **não é suportado na V1**; se introduzido no futuro, deve ser um artefato separado com `source_document_ids` e versionamento próprio.
+
+Edição de Knowledge após aprovado (V1 — reindex assíncrono):
+- Atualizações de Knowledge após `status = "active"` disparam **reindexação assíncrona** com estados:
+  - `status = "active"`: versão atual indexada e elegível para retrieval;
+  - `status = "reindexing"`: uma nova versão está sendo processada/reindexada;
+  - `status = "failed"`: tentativa de reindex falhou (com erro registrável).
+- Durante `reindexing`, o retriever **pode usar a versão anterior ativa** (`active_document_version`) até a nova versão estar pronta; ao concluir, troca-se para a nova versão de forma atômica.
+- Durante `failed`, o retriever continua usando a última versão ativa, e o UI deve sinalizar o estado de falha para o usuário autorizado.
+
+#### 4.1 Algoritmo de hybrid search (V1 defaults; sem rerank)
+
+Procedimento mínimo (por requisição, dentro do escopo permitido pelos filtros [A]-[F]):
+
+1) Recuperar `topk_text` chunks via **Atlas Search (BM25)**.
+2) Recuperar `topk_vector` chunks via **Atlas Vector Search**.
+3) Deduplicar por `chunk_id`.
+4) Normalizar `score_text` e `score_vector` para \([0, 1]\) (min-max no conjunto de candidatos da requisição).
+5) Combinar scores com média ponderada:
+   - `score_final = 0.5 * score_text_norm + 0.5 * score_vector_norm`
+6) Ordenar por `score_final` e selecionar `topk_final` chunks para montagem do contexto.
+7) **Sem rerank na V1** (rerank fica para V1.1).
+
+Defaults iniciais (configuráveis):
+- `topk_text = 40`
+- `topk_vector = 40`
+- `topk_final = 16`
+- `hybrid_weight_text = 0.5`
+- `hybrid_weight_vector = 0.5`
 
 Permissões de visualização/edição:
 - Contextos dos níveis [A] e [B] só poderão ser visualizados por admins.
@@ -109,14 +140,20 @@ Permissões de visualização/edição:
 
 O sistema deverá calcular tokens apenas para conteúdo que entra no prompt: **Policy** e **Pinned Summary**. **Knowledge via RAG não entra nesse cálculo**.
 
-Caps por categoria (substitui o modelo 15k/15k/15k):
-- **System policy** \([A] + [B]\) in-prompt: **3k–6k tokens**.
-- **Account policy** \([C] + [D] + [E]\) in-prompt: **3k–6k tokens**.
-- **User policy** \([F]\) in-prompt: **1k–3k tokens**.
+Caps por categoria (substitui o modelo 15k/15k/15k; V1 defaults):
+- `system_policy_cap_tokens = 4000` (para \([A] + [B]\) in-prompt)
+- `account_policy_cap_tokens = 4000` (para \([C] + [D] + [E]\) in-prompt)
+- `user_policy_cap_tokens = 2000` (para \([F]\) in-prompt)
 
 Pinned Summary:
 - Conta como in-prompt e deve ter cap próprio (curto e estável).
 - Deve entrar no cálculo e na validação da categoria aplicável ao nível onde foi definido.
+- V1 default: `pinned_summary_cap_tokens = 800`.
+- Regras quando múltiplos pinned summaries forem aplicáveis (V1; simples e implementável):
+  - a montagem do prompt inclui **no máximo 1 pinned summary por resposta**;
+  - critério de escolha: mais específico vence (prioridade \([F] > [C]/[D]/[E] > [A]/[B]\));
+  - em empate (mesmo nível/especificidade), escolher o mais recentemente atualizado;
+  - o texto incluído é truncado para `pinned_summary_cap_tokens` (quando necessário).
 
 Visibilidade:
 - Admins e donos de contas devem poder visualizar os tokens in-prompt por usuário. Colaboradores devem ver os próprios.
@@ -136,13 +173,10 @@ Visibilidade:
 
 ### 7. Pontos pendentes
 
-- Definir valores default (dentro dos ranges) para os caps de tokens das três categorias de Policy.
-- Definir cap do pinned summary e regras quando múltiplos pinned summaries se aplicarem ao mesmo usuário.
-- Definir a estratégia exata de hybrid search (combinação/normalização de scores lexical + vetorial; re-ranking ou não na V1).
-- Definir parâmetros iniciais de chunking (tamanho/overlap) e seleção (top-k, score mínimo, deduplicação).
-- Definir modelo de embeddings (provedor/versão) e política de versionamento/reindexação.
-- Definir estratégia de consistência quando Knowledge for editado (invalidar/regenerar chunks/embeddings) e como versionar.
-- Validar modelagem de metadados/filtros [A]-[F] para isolamento multi-tenant e performance em Atlas.
+- Definir `rag_context_cap_tokens` (teto recomendável) e como dividir o budget com outros RAGs do sistema (ex.: memória recente).
+- Definir parâmetros finais de chunking (tamanho/overlap) e critérios de corte (score mínimo, deduplicação por documento, etc.).
+- Definir modelo de embeddings (`embedding_model_version`) e política de reindexação em caso de troca de modelo.
+- Definir política de retenção e acesso aos logs de auditoria (quem pode consultar e por quanto tempo).
 
 ### 8. Decisões tomadas
 
@@ -153,38 +187,50 @@ Visibilidade:
 - **Pinned Summary** será suportado como resumo curto gerado automaticamente e opcionalmente injetado no prompt como âncora.
 - **"Knowledge-hoarder agents"** ficam fora da V1 (ideia futura).
 - Hard-caps de tokens serão aplicados apenas a conteúdo in-prompt (Policy/pinned summary), substituindo o modelo 15k/15k/15k por caps menores e estáveis:
-  - System policy \([A]+[B]\): 3k–6k
-  - Account policy \([C]+[D]+[E]\): 3k–6k
-  - User policy \([F]\): 1k–3k
+  - `system_policy_cap_tokens = 4000` (\([A]+[B]\))
+  - `account_policy_cap_tokens = 4000` (\([C]+[D]+[E]\))
+  - `user_policy_cap_tokens = 2000` (\([F]\))
 - O conceito multi-nível [A]-[F] será mantido e, no RAG, vira filtros por metadados (ABAC-like).
+- Upload/aprovação usará draft temporário com TTL e promoção para `active` somente após aprovação.
+- Knowledge aprovado será reindexado de forma assíncrona em edições, com fallback para versão anterior durante `reindexing`.
 
 ### 9. Pendências remanescentes
 
-- Valores default exatos dentro dos ranges de tokens de Policy e se serão configuráveis.
-- Teto recomendável exato para tokens de Knowledge via RAG por resposta e divisão do budget com outros RAGs.
-- Estratégia final de hybrid search e necessidade de re-ranking.
-- Especificação final de chunking e limites (top-k, score mínimo, deduplicação).
-- Estratégia de versionamento/reindexação para mudanças de embeddings e edições de documentos.
+- Valor final de `rag_context_cap_tokens` e budget split com outros RAGs do sistema.
+- Parâmetros finais de chunking e critérios de corte por score/deduplicação.
+- Política de reindexação quando `embedding_model_version` mudar e como versionar índices.
 - Retenção e acesso aos logs de auditoria (quem pode consultar e por quanto tempo).
 
 ### 10. Observabilidade e Auditoria do RAG (mínimo viável)
 
 Para cada resposta gerada com RAG, registrar (log estruturado com correlação por request):
 
-- Identidade e escopo: `requestId`, `conversationId`, `userId`, `accountId`, `systemSource`, `userScopes`, `mainScope`.
+- Identidade e escopo: `request_id`, `conversation_id`, `user_id`, `account_id`, `system_source`, `user_scopes`, `main_scope`.
 - Versões do contexto in-prompt efetivamente aplicado:
   - IDs/versões das Policies aplicadas (por categoria) e tokens estimados por categoria;
-  - `pinnedSummaryId`/versão (se usado) e tokens estimados.
+  - `pinned_summary_id`/versão (se usado) e tokens estimados.
+- `prompt_assembly_hash`: hash do prompt final (ou, no mínimo, do bloco de contexto montado) para reprodutibilidade/auditoria.
 - Consulta e filtros do retriever:
   - representação do query usado para retrieval (ou hash se sensível),
   - filtros de metadados aplicados (níveis [A]-[F] materializados).
 - Resultados do retrieval (top-N usados):
-  - para cada chunk: `documentId`, `chunkId`, `documentVersion` (ou `chunkVersion`), `scoreVector`, `scoreText`, `scoreFinal`, posição no ranking,
-  - `embeddingModelVersion` e identificação da configuração/versão do índice.
+  - para cada chunk: `document_id`, `chunk_id`, `document_version` (ou `chunk_version`), `score_vector`, `score_text`, `score_final`, posição no ranking,
+  - por chunk, registrar “por que entrou”: `matched_levels` (ex.: `["A","C"]`) e/ou `eligibility_source` (ex.: `"account"`),
+  - `embedding_model_version` e identificação da configuração/versão do índice.
 - Métricas de execução:
   - latência total e por etapa (vector, lexical, merge/rank, montagem de contexto),
   - contagens: candidatos recuperados, chunks selecionados, tokens estimados do contexto recuperado.
 - Saída do modelo:
-  - `modelId`/versão, tokens de prompt/completion e um `responseId` para auditoria.
+  - `model_id`/versão, tokens de prompt/completion e um `response_id` para auditoria.
+
+### 11. Resumo das mudanças
+
+- Definido fluxo consistente de persistência no upload/aprovação usando **draft com TTL** + promoção para `active` somente após aprovação.
+- Explicitado que a V1 **não tem ACL por documento/chunk** além do ABAC-like por metadados [A]-[F].
+- Pinned summary clarificado: **por documento na V1**, com cap default e regra de seleção quando múltiplos forem aplicáveis; multi-doc explicitamente fora da V1.
+- Definida estratégia de edição de Knowledge pós-aprovação com **reindex assíncrono** e uso de versão anterior durante `reindexing`.
+- Tornados concretos os defaults V1 de tokens (`system_policy_cap_tokens`, `account_policy_cap_tokens`, `user_policy_cap_tokens`, `pinned_summary_cap_tokens`).
+- Especificado algoritmo simples de **hybrid search** para V1 (topk_text/topk_vector → normalização → combinação 0.5/0.5 → topk_final; sem rerank).
+- Observabilidade/auditoria ampliada com `prompt_assembly_hash` e, por chunk, `matched_levels`/`eligibility_source`; padronização de campos para `snake_case`.
 
 # AZUME
