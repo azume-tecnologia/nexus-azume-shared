@@ -34,7 +34,7 @@ O “nível” define em quais condições um conteúdo se aplica ao usuário. O
 **Níveis:**
 
 - **[A] — Global (todos os usuários do Nexus):** aplicado a toda a plataforma.
-- **[B] — "SystemSource" específico:** aplicado condicionalmente com base no "SystemSource" do usuário (multi-tenant).
+- **[B] — SystemSource específico (campo: `system_source`):** aplicado condicionalmente com base no `system_source` do usuário (multi-tenant).
 - **[C] — "Account" específica:** aplicado condicionalmente com base na conta do usuário.
 - **[D] — "Scopes" (`user_scopes`, "UserScope[]") de uma "Account" específica:** aplicado condicionalmente com base nos scopes do usuário (basta estar no array).
   Exemplo: na conta "ID_ACCOUNT_1", existem os usuários "ID_USER_1" e "ID_USER_2", ambos com `user_scopes = ["sales", "marketing"]`. "ID_USER_1" tem `main_scope = "sales"` e "ID_USER_2" tem `main_scope = "marketing"`. Se for criada uma regra para incluir conteúdo para `user_scope = "marketing"`, o conteúdo será aplicado para ambos.
@@ -50,18 +50,18 @@ O “nível” define em quais condições um conteúdo se aplica ao usuário. O
 **Permissões por tipo de usuário:**
 
 Admins do sistema:
-- Definição: usuários com "AccountType/UserType" = "internal", "SystemSource" = "nexus" e "UserRole" = "owner".
+- Definição: usuários com `account_type`/`user_type = "internal"`, `system_source = "nexus"` e `user_role = "owner"`.
 - Níveis disponíveis: todos ([A] a [F]).
 - Níveis exclusivos: [A] e [B].
 - Observação: será necessário implementar um sistema de busca por contas e usuários para que admins possam editar contas específicas (incluindo seus escopos) e usuários individuais.
 
 Donos de contas:
-- Definição: usuários com "UserRole" = "owner".
+- Definição: usuários com `user_role = "owner"`.
 - Níveis disponíveis: [C], [D], [E] e [F].
 - Observação: será necessário implementar um sistema de busca por usuários vinculados à conta para que donos possam editar usuários específicos.
 
 Colaboradores:
-- Definição: qualquer usuário que não seja admin do sistema nem dono de uma conta ("UserRole" = "employee").
+- Definição: qualquer usuário que não seja admin do sistema nem dono de uma conta (`user_role = "employee"`).
 - Níveis disponíveis: apenas [F].
 - Observação: colaboradores só podem personalizar o contexto de sua própria conta.
 
@@ -81,10 +81,13 @@ Fora da V1:
 ### 4. Conversão de arquivos em texto (markdown) e CRUD do contexto
 
 - Ao fazer upload de um arquivo, ele deve ser processado e convertido em **markdown canônico** (texto-base do sistema).
+- Diretriz de conversão (V1): preferir **extração estruturada** quando disponível (ex.: texto nativo de PDF/DOCX) e aplicar pós-processamento; evitar “completar lacunas” e reduzir risco de alucinação na conversão.
 - **Fluxo de upload/aprovação (V1 — draft temporário com TTL):**
-  - o resultado do processamento (markdown + metadados do nível [A]-[F]) é persistido como **draft** com `status = "draft"` e **expiração (TTL)**;
+  - o resultado do processamento (markdown + metadados do nível [A]-[F]) é persistido como **draft** com expiração (TTL);
+  - V1 default: `draft_ttl_hours = 72`; o draft expira por TTL e é limpo automaticamente;
+  - decisão V1: **o TTL é renovado a cada edição salva** do draft;
   - o usuário revisa/edita o draft no frontend e seleciona **Policy** ou **Knowledge** (e, se Knowledge, se quer pinned summary);
-  - ao **aprovar**, o draft é **promovido** para `status = "active"` e os artefatos definitivos são gerados (Policy ativa ou Knowledge indexada);
+  - ao **aprovar**, o draft é promovido para ativo e os artefatos definitivos são gerados (Policy ativa ou Knowledge indexada);
   - ao **rejeitar**, o draft é **excluído** e nenhum artefato definitivo permanece;
   - o arquivo original é descartado após a decisão (aprovar/rejeitar).
 - Após aprovado, o conteúdo ficará disponível para visualização, edição e exclusão no menu de construção de contexto.
@@ -103,12 +106,14 @@ Indexação/persistência (V1):
   - Pinned summary composto (multi-doc) **não é suportado na V1**; se introduzido no futuro, deve ser um artefato separado com `source_document_ids` e versionamento próprio.
 
 Edição de Knowledge após aprovado (V1 — reindex assíncrono):
-- Atualizações de Knowledge após `status = "active"` disparam **reindexação assíncrona** com estados:
-  - `status = "active"`: versão atual indexada e elegível para retrieval;
-  - `status = "reindexing"`: uma nova versão está sendo processada/reindexada;
-  - `status = "failed"`: tentativa de reindex falhou (com erro registrável).
-- Durante `reindexing`, o retriever **pode usar a versão anterior ativa** (`active_document_version`) até a nova versão estar pronta; ao concluir, troca-se para a nova versão de forma atômica.
-- Durante `failed`, o retriever continua usando a última versão ativa, e o UI deve sinalizar o estado de falha para o usuário autorizado.
+- Atualizações de Knowledge após aprovado disparam **reindexação assíncrona** com estados operacionais: `active`, `reindexing`, `failed`.
+- Durante `reindexing`, o retriever pode continuar usando a versão ativa anterior até a nova versão estar pronta; ao concluir, troca-se a versão ativa de forma atômica.
+- Durante `failed`, o retriever continua usando a última versão ativa; o UI deve sinalizar falha para o usuário autorizado.
+
+Versionamento mínimo (V1):
+- Knowledge é versionado por `document_version`.
+- Chunks e embeddings são vinculados à versão do documento (a unidade de consistência de retrieval é “documento + document_version”).
+- Reindex escreve uma nova versão e, ao final, troca-se o “ponteiro” de versão ativa para a nova versão.
 
 #### 4.1 Algoritmo de hybrid search (V1 defaults; sem rerank)
 
@@ -130,6 +135,8 @@ Defaults iniciais (configuráveis):
 - `hybrid_weight_text = 0.5`
 - `hybrid_weight_vector = 0.5`
 
+Nota de estabilidade (V1): a normalização min-max é feita por requisição; isso é aceitável na V1 e pode ser refinado em V1.1 com normalização mais robusta e/ou rerank.
+
 Permissões de visualização/edição:
 - Contextos dos níveis [A] e [B] só poderão ser visualizados por admins.
 - Admins e donos de contas devem poder visualizar, editar e excluir o markdown de todos os níveis aos quais têm acesso, incluindo o de cada usuário individualmente.
@@ -149,6 +156,10 @@ Pinned Summary:
 - Conta como in-prompt e deve ter cap próprio (curto e estável).
 - Deve entrar no cálculo e na validação da categoria aplicável ao nível onde foi definido.
 - V1 default: `pinned_summary_cap_tokens = 800`.
+- Regra de validação de budget (V1):
+  1) truncar o pinned summary para `pinned_summary_cap_tokens`;
+  2) somar tokens do pinned summary com a Policy aplicável da categoria;
+  3) validar contra o cap da categoria (`system_policy_cap_tokens` / `account_policy_cap_tokens` / `user_policy_cap_tokens`).
 - Regras quando múltiplos pinned summaries forem aplicáveis (V1; simples e implementável):
   - a montagem do prompt inclui **no máximo 1 pinned summary por resposta**;
   - critério de escolha: mais específico vence (prioridade \([F] > [C]/[D]/[E] > [A]/[B]\));
@@ -194,18 +205,14 @@ Visibilidade:
 - Upload/aprovação usará draft temporário com TTL e promoção para `active` somente após aprovação.
 - Knowledge aprovado será reindexado de forma assíncrona em edições, com fallback para versão anterior durante `reindexing`.
 
-### 9. Pendências remanescentes
-
-- Valor final de `rag_context_cap_tokens` e budget split com outros RAGs do sistema.
-- Parâmetros finais de chunking e critérios de corte por score/deduplicação.
-- Política de reindexação quando `embedding_model_version` mudar e como versionar índices.
-- Retenção e acesso aos logs de auditoria (quem pode consultar e por quanto tempo).
-
-### 10. Observabilidade e Auditoria do RAG (mínimo viável)
+### 9. Observabilidade e Auditoria do RAG (mínimo viável)
 
 Para cada resposta gerada com RAG, registrar (log estruturado com correlação por request):
 
 - Identidade e escopo: `request_id`, `conversation_id`, `user_id`, `account_id`, `system_source`, `user_scopes`, `main_scope`.
+- Controle de versão/configuração do retriever:
+  - `retriever_version` (versão do componente/estratégia de retrieval ativa),
+  - `hybrid_config_id` (identificação da configuração efetiva de `topk_*` e pesos aplicados).
 - Versões do contexto in-prompt efetivamente aplicado:
   - IDs/versões das Policies aplicadas (por categoria) e tokens estimados por categoria;
   - `pinned_summary_id`/versão (se usado) e tokens estimados.
@@ -223,14 +230,12 @@ Para cada resposta gerada com RAG, registrar (log estruturado com correlação p
 - Saída do modelo:
   - `model_id`/versão, tokens de prompt/completion e um `response_id` para auditoria.
 
-### 11. Resumo das mudanças
+### 10. Resumo das melhorias
 
-- Definido fluxo consistente de persistência no upload/aprovação usando **draft com TTL** + promoção para `active` somente após aprovação.
-- Explicitado que a V1 **não tem ACL por documento/chunk** além do ABAC-like por metadados [A]-[F].
-- Pinned summary clarificado: **por documento na V1**, com cap default e regra de seleção quando múltiplos forem aplicáveis; multi-doc explicitamente fora da V1.
-- Definida estratégia de edição de Knowledge pós-aprovação com **reindex assíncrono** e uso de versão anterior durante `reindexing`.
-- Tornados concretos os defaults V1 de tokens (`system_policy_cap_tokens`, `account_policy_cap_tokens`, `user_policy_cap_tokens`, `pinned_summary_cap_tokens`).
-- Especificado algoritmo simples de **hybrid search** para V1 (topk_text/topk_vector → normalização → combinação 0.5/0.5 → topk_final; sem rerank).
-- Observabilidade/auditoria ampliada com `prompt_assembly_hash` e, por chunk, `matched_levels`/`eligibility_source`; padronização de campos para `snake_case`.
-
-# AZUME
+- Padronização de nomenclatura de backend para `snake_case` e inclusão de mapeamentos mínimos (ex.: SystemSource → `system_source`, UserRole → `user_role`).
+- Fluxo consistente de persistência no upload/aprovação usando **draft com TTL** (default 72h), limpeza automática e renovação do TTL a cada edição salva.
+- Clarificação explícita de permissões/ACL: V1 **não tem ACL por documento/chunk** além do ABAC-like por metadados [A]-[F].
+- Pinned summary clarificado: **por documento na V1**, cap default e regra única de seleção; budget fechado com validação contra cap da categoria.
+- Edição de Knowledge pós-aprovação definida como **reindex assíncrono**, com versionamento mínimo por `document_version` e troca atômica da versão ativa.
+- Hybrid search V1 mantido simples, com nota de estabilidade sobre normalização min-max por requisição e evolução prevista para V1.1.
+- Observabilidade/auditoria ampliada com `retriever_version`, `hybrid_config_id`, `prompt_assembly_hash` e campos por chunk (`matched_levels`/`eligibility_source`).
