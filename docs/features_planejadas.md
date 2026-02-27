@@ -2,37 +2,49 @@
 
 ## Construtor de contexto multi-nível
 
-Esta feature fornecerá todo o conhecimento que os agentes no Nexus terão. O contexto será dividido em múltiplos níveis, desde o mais genérico — aplicado a todos os chats de todos os usuários da plataforma — até o mais granular — aplicado somente a um papel ("role") de uma conta de usuário específica.
+Esta feature fornece contexto para os agentes do Nexus com controle multi-nível [A]-[F] e separação operacional entre:
+
+- **Policy**: regras/instruções comportamentais curtas, sempre injetadas no prompt.
+- **Knowledge**: documentos e fatos, sempre recuperados via RAG (não entram no prompt por padrão).
+
+Na V1, o RAG adotado será o padrão: **vector embeddings + hybrid search** em **MongoDB Atlas** (Atlas Vector Search + Atlas Search), com observabilidade/auditoria mínima viável.
 
 ### 1. Funcionamento
 
 - Um novo menu de configurações será adicionado à plataforma.
-- Neste menu, uma das opções será o construtor de contexto (nome pendente; verificar melhor nome para apresentar aos usuários).
-- No construtor, o usuário poderá fazer upload de múltiplos tipos de documentos para compor o contexto dos agentes.
-- Formatos suportados para a v1.0.0: .jpg, .jpeg, .png, .gif, .webp, .pdf, .txt, .md, .csv, .docx, .docm, .xlsx, .xlsm.
-- Formatos suportados para versões futuras: .mp3, .m4a, .wav, .webm, .ogg, .mp4, .mov.
+- Neste menu, uma das opções será o construtor de contexto (nome pendente; escolher nome objetivo para usuários).
+- No construtor, o usuário poderá fazer upload de documentos para compor o contexto dos agentes.
+- Na etapa de aprovação, o usuário deverá classificar o conteúdo em uma das classes abaixo:
+  - **Policy (sempre no prompt)**.
+  - **Knowledge (busca automática via RAG)**.
+- **Pinned Summary (opcional)**:
+  - Para conteúdos grandes (principalmente Knowledge), o sistema pode gerar um **resumo curto** (“pinned summary”) e permitir que o usuário **opte por incluí-lo no prompt** como âncora.
+  - O pinned summary não substitui o RAG; ele só adiciona um contexto fixo mínimo quando ativado.
+- Formatos suportados para a v1.0.0: `.jpg`, `.jpeg`, `.png`, `.gif`, `.webp`, `.pdf`, `.txt`, `.md`, `.csv`, `.docx`, `.docm`, `.xlsx`, `.xlsm`.
+- Formatos suportados para versões futuras: `.mp3`, `.m4a`, `.wav`, `.webm`, `.ogg`, `.mp4`, `.mov`.
+
+Impacto mínimo no front-end (apenas onde necessário):
+- Substituir “crítico / não crítico” por **“Policy (sempre no prompt)”** e **“Knowledge (busca via RAG)”** na etapa de aprovação.
+- Para Knowledge, expor opção **“Incluir resumo fixo (Pinned Summary) no prompt”** quando houver pinned summary disponível.
 
 ### 2. Multi-nível
 
-O "nível" do contexto define em quais condições o conhecimento será incluso para um agente. O acesso a diferentes níveis de construção de contexto dependerá do tipo de usuário.
+O “nível” define em quais condições um conteúdo se aplica ao usuário. O acesso a diferentes níveis depende do tipo de usuário.
 
 **Níveis:**
 
-- **[A] — Global (todos os usuários do Nexus):** contexto mais amplo; aplicado a toda a plataforma.
+- **[A] — Global (todos os usuários do Nexus):** aplicado a toda a plataforma.
+- **[B] — "SystemSource" específico:** aplicado condicionalmente com base no "SystemSource" do usuário (multi-tenant).
+- **[C] — "Account" específica:** aplicado condicionalmente com base na conta do usuário.
+- **[D] — "Scopes" ("UserScope[]") de uma "Account" específica:** aplicado condicionalmente com base nos "scopes" do usuário (basta estar no array).
+  Exemplo: na conta "ID_ACCOUNT_1", existem os usuários "ID_USER_1" e "ID_USER_2", ambos com `scopes = ["sales", "marketing"]`. "ID_USER_1" tem `main_scope = "sales"` e "ID_USER_2" tem `main_scope = "marketing"`. Se for criada uma regra para incluir conteúdo para `scope = "marketing"`, o conteúdo será aplicado para ambos.
+- **[E] — "Main scope" ("UserScope") de uma "Account" específica:** aplicado condicionalmente com base no `main_scope` do usuário.
+  Exemplo: usando o cenário acima, se for criada uma regra para incluir conteúdo para `main_scope = "marketing"`, o conteúdo será aplicado somente para "ID_USER_2".
+- **[F] — Usuário específico:** aplicado condicionalmente para um único usuário.
 
-- **[B] — "SystemSource" específico:** contexto incluso condicionalmente com base no "SystemSource" do usuário. Permite que admins adaptem contextos distintos para diferentes "tenants".
-
-- **[C] — "Account" específica:** contexto incluso condicionalmente com base na conta do usuário. Permite que admins e donos de conta definam contextos para todos os usuários de uma mesma conta.
-
-- **[D] — "Scopes" ("UserScope[]") de uma "Account" específica:** contexto incluso condicionalmente com base nos "scopes" do usuário. O usuário não precisa ter o "scope" como "main_scope" para receber o contexto; basta que o "scope" esteja presente no seu array de "scopes".
-Exemplo: na conta "ID_ACCOUNT_1", existem os usuários "ID_USER_1" e "ID_USER_2", ambos com "scopes" = ["sales", "marketing"]. "ID_USER_1" tem "main_scope" = "sales" e "ID_USER_2" tem "main_scope" = "marketing". Se for criada uma regra para incluir contexto para o "scope" = "marketing", o contexto será incluso para ambos os usuários.
-Permite que admins e donos da conta definam contextos personalizados por setor da empresa.
-
-- **[E] — "Main scope" ("UserScope") de uma "Account" específica:** contexto incluso condicionalmente com base no "main_scope" do usuário. Diferente do nível [D], aqui o usuário precisa ter o "scope" como "main_scope" para receber o contexto.
-Exemplo: usando o mesmo cenário do nível [D], se for criada uma regra para incluir contexto para "main_scope" = "marketing", o contexto será incluso somente para "ID_USER_2".
-Permite que admins e donos da conta definam contextos personalizados por setor, restritos a usuários cujo setor principal corresponda ao especificado.
-
-- **[F] — Usuário específico:** contexto incluso condicionalmente para um único usuário. Permite que admins, donos da conta e o próprio colaborador definam contextos personalizados para uma conta de usuário individual.
+**Como o multi-nível vira RAG (filtros por metadados / ABAC-like):**
+- Para **Knowledge**, os níveis [A]-[F] são materializados como **metadados persistidos por documento/chunk** e aplicados como **filtros obrigatórios** na recuperação.
+- A “cascata” de [A]→[F] não é feita “por prompt”; ela vira um conjunto de **condições de elegibilidade** (ex.: `systemSource`, `accountId`, `scopes`, `mainScope`, `userId`) para o retriever.
 
 **Permissões por tipo de usuário:**
 
@@ -52,62 +64,127 @@ Colaboradores:
 - Níveis disponíveis: apenas [F].
 - Observação: colaboradores só podem personalizar o contexto de sua própria conta.
 
-### 3. Formas de inclusão de contexto no prompt
+### 3. Formas de inclusão de contexto no prompt (V1)
 
-A melhor estratégia de inclusão de contexto ainda é uma incógnita para esta feature. A partir de um brainstorming inicial, surgiram as seguintes abordagens:
+Na V1, a inclusão é determinística:
 
-- **Inclusão direta no prompt de sistema:** forma mais básica e mais assertiva, porém com menor eficiência de janela de contexto. Reservada para conhecimento e instruções que nunca podem deixar de fazer parte do contexto do agente.
-- **Inclusão via pipeline de RAG:** forma mais balanceada, porém requer vector embeddings e a construção de toda a infraestrutura de RAG.
-- **Inclusão via leitura de documentos:** uma espécie de "doc-read tool-based RAG". Requer fornecer aos agentes ferramentas de leitura de documentos e pesquisa por palavra-chave, além de acesso a documentos em markdown.
-- **Inclusão via "knowledge-hoarder agents":** ideia ainda em fase de validação. Um "knowledge-hoarder" seria um agente especializado no conhecimento de um documento ou conjunto de documentos (via prompt de sistema). O agente principal (orchestrator) teria acesso a esses "knowledge-hoarders" e instruções para consultá-los quando necessário. O ponto negativo é o consumo de tokens na inicialização do swarm (contexto injetado no prompt de sistema de múltiplos agentes). Avaliar se faz sentido um modelo híbrido combinando "knowledge-hoarders" com as demais abordagens listadas acima.
+- **Policy:** sempre injetada no prompt (curta; com hard-caps).
+- **Knowledge:** sempre recuperada via RAG (não entra no prompt por padrão).
+- **Pinned Summary:** opcionalmente injetado no prompt quando ativado (curto; com cap próprio).
 
-A forma como o conteúdo de cada arquivo será adicionado ao contexto da conversa — via prompt de sistema ou via RAG — será definida pelo usuário. Na etapa de aprovação, o usuário poderá classificar o contexto como "crítico" (sempre presente no prompt) ou "não crítico" (recuperável via RAG). A possibilidade de marcar o contexto como crítico dependerá do tamanho do arquivo e do espaço disponível de tokens de overhead. Se não houver espaço, a única opção será a inclusão via RAG.
+Conteúdo “longo” deve ser Knowledge (RAG). Conteúdo em prompt deve ser Policy/pinned summary (curto).
+
+Fora da V1:
+- **"Knowledge-hoarder agents"** serão tratados como ideia futura (não implementar na V1).
 
 ### 4. Conversão de arquivos em texto (markdown) e CRUD do contexto
 
-- Ao fazer upload de um arquivo, ele deve ser processado: seu conteúdo será lido por um agente (LLM) e convertido em texto (markdown).
-- O markdown gerado será salvo na base de dados. O usuário poderá visualizá-lo no frontend para revisar o conteúdo.
-- Logo após o upload, haverá uma etapa de aprovação. O usuário poderá revisar e editar o markdown gerado, inclusive com auxílio de um agente (LLM) via chat para melhorar, adicionar ou remover conteúdo.
+- Ao fazer upload de um arquivo, ele deve ser processado e convertido em **markdown canônico** (texto-base do sistema).
+- O markdown gerado será salvo na base. O usuário poderá visualizá-lo no frontend para revisar o conteúdo.
+- Logo após o upload, haverá uma etapa de aprovação:
+  - o usuário revisa/edita o markdown gerado (inclusive com auxílio de um agente (LLM) via chat, se já existir esse fluxo);
+  - o usuário classifica o conteúdo como **Policy** ou **Knowledge**;
+  - se **Knowledge**, o usuário pode (opcionalmente) solicitar/ativar um **Pinned Summary** para inclusão no prompt.
 - O usuário poderá aprovar ou rejeitar o conteúdo. Em ambos os casos, o arquivo original será descartado após a decisão.
 - Se o conteúdo for rejeitado, nada será persistido na base.
 - Após aprovado, o conteúdo ficará disponível para visualização, edição e exclusão no menu de construção de contexto.
-- Se o conteúdo for injetado via RAG, o sistema deverá gerar vector embeddings e persistir os vetores na base de dados juntamente com o conteúdo de texto (habilitando pesquisas híbridas de vetores + texto no MongoDB).
+
+Indexação/persistência (V1):
+- **Policy:** persistir texto final + metadados do nível [A]-[F]. Aplicar validação de tokens ao ativar (seção 5).
+- **Knowledge (RAG):**
+  - fazer chunking do markdown e persistir chunks + embeddings + metadados;
+  - habilitar busca híbrida (lexical + vetorial) no MongoDB Atlas:
+    - **Atlas Search** (texto / BM25);
+    - **Atlas Vector Search** (similaridade vetorial);
+    - estratégia “hybrid” na V1: recuperar candidatos por ambos e combinar em um ranking final auditável.
+- **Pinned Summary:** persistir como artefato separado, versionado (texto do resumo + referência ao(s) documento(s) origem + modelo/versão de geração).
+
+Permissões de visualização/edição:
 - Contextos dos níveis [A] e [B] só poderão ser visualizados por admins.
 - Admins e donos de contas devem poder visualizar, editar e excluir o markdown de todos os níveis aos quais têm acesso, incluindo o de cada usuário individualmente.
-- Colaboradores poderão visualizar o conteúdo de contexto adicionado por admins e donos de conta, porém não poderão editá-lo.
-- Colaboradores poderão visualizar, editar e excluir o contexto adicionado por eles próprios.
+- Colaboradores poderão visualizar o conteúdo adicionado por admins e donos de conta, porém não poderão editá-lo.
+- Colaboradores poderão visualizar, editar e excluir o conteúdo adicionado por eles próprios.
 
-### 5. Gerenciamento de tokens de prompt de sistema
+### 5. Gerenciamento de tokens (somente in-prompt: Policy + Pinned Summary)
 
-- O sistema deverá calcular o overhead (em tokens) do contexto que será injetado diretamente no prompt.
-- Admins e donos de contas devem poder visualizar o overhead de cada usuário individualmente. Colaboradores devem poder visualizar o overhead de suas próprias contas.
-- O overhead deverá ser calculado considerando todos os conteúdos de todos os níveis aplicáveis ao usuário, em cascata do mais geral ao mais específico, até compor o overhead total da conta.
-- O overhead proveniente dos níveis [A] e [B] será exibido como "overhead de sistema".
-- O overhead proveniente dos níveis [C], [D] e [E] será exibido como "overhead da conta".
-- O overhead proveniente do nível [F] será exibido como "overhead do usuário".
-- No frontend, não será usado o termo "overhead". Os rótulos serão: "memória ocupada por contexto de sistema", "memória ocupada por contexto da conta" e "memória ocupada por contexto individual".
-- Um limite máximo de 15k tokens será reservado para o "overhead de sistema" (soma dos níveis [A] + [B]).
-- Um limite máximo de 15k tokens será reservado para o "overhead da conta" (soma dos níveis [C], [D] e [E]).
-- Um limite máximo de 15k tokens será reservado para o "overhead do usuário" (nível [F]).
-- O limite de cada categoria funciona como um teto para a soma de todos os conteúdos dos níveis que a compõem, considerando o usuário com maior overhead dentro daquela categoria. Em outras palavras, ao adicionar contexto em um nível mais amplo (ex.: [A]), o espaço restante para os demais níveis da mesma categoria diminui proporcionalmente.
-Exemplo para overhead de sistema: se o nível [A] consome 10k tokens, restam apenas 5k tokens para o nível [B] de cada "SystemSource". Se um "SystemSource" já consome 5k tokens no nível [B], não é possível adicionar mais contexto em [A] nem em [B] para os usuários daquele "SystemSource" sem antes reduzir o conteúdo existente.
-- A mesma lógica se aplica ao "overhead da conta": os escopos com maior volume de overhead delimitam quanto ainda pode ser adicionado nos demais níveis. Nenhum grupo de usuários pode ficar com overhead da conta acima de 15k tokens.
+O sistema deverá calcular tokens apenas para conteúdo que entra no prompt: **Policy** e **Pinned Summary**. **Knowledge via RAG não entra nesse cálculo**.
 
-OBS: contextos injetados via pipeline de RAG, leitura de documentos ou "knowledge-hoarder agents" não serão contabilizados nesses overheads — somente contextos injetados diretamente nos prompts.
+Caps por categoria (substitui o modelo 15k/15k/15k):
+- **System policy** \([A] + [B]\) in-prompt: **3k–6k tokens**.
+- **Account policy** \([C] + [D] + [E]\) in-prompt: **3k–6k tokens**.
+- **User policy** \([F]\) in-prompt: **1k–3k tokens**.
 
-### 6. Gerenciamento de tokens reservados para RAG
+Pinned Summary:
+- Conta como in-prompt e deve ter cap próprio (curto e estável).
+- Deve entrar no cálculo e na validação da categoria aplicável ao nível onde foi definido.
 
-Como ainda há incerteza sobre qual método de RAG será adotado (vector embeddings, leitura de arquivos ou "knowledge-hoarders"), esta seção define "RAG" como qualquer um dos três métodos de recuperação de contexto.
+Visibilidade:
+- Admins e donos de contas devem poder visualizar os tokens in-prompt por usuário. Colaboradores devem ver os próprios.
+- No frontend, não usar o termo "overhead". Rótulos:
+  - "memória ocupada por contexto de sistema (Policy)"
+  - "memória ocupada por contexto da conta (Policy)"
+  - "memória ocupada por contexto individual (Policy)"
+  - e, quando aplicável, “resumos fixos (Pinned Summary)”.
 
-- Diferentemente do hard-cap fixo para tokens de prompt de sistema, a quantidade de tokens reservados para RAG será calculada dinamicamente com base na janela de contexto do modelo: um percentual da janela total disponível, descontando-se o overhead do prompt de sistema.
-- É importante considerar que o RAG de contexto do construtor não será o único RAG do sistema. Também estão planejados mecanismos de RAG para recuperação das conversas mais recentes do usuário com os agentes (memória recente).
+### 6. Gerenciamento de tokens reservados para Knowledge via RAG (budget dinâmico + teto recomendável)
+
+- A quantidade de tokens utilizada por Knowledge via RAG será calculada dinamicamente por requisição, com base no espaço remanescente após:
+  - prompt base do sistema (incluindo ferramentas), e
+  - **Policy + pinned summary**.
+- Para manter a V1 estável e previsível, definir um **teto recomendável** (limite global) de tokens de contexto recuperado por resposta (independente de modelos com janelas enormes).
+- Considerar que o RAG do construtor coexistirá com outros RAGs do sistema (ex.: memória recente); o budget total de recuperação deve ser dividido por regra simples.
 
 ### 7. Pontos pendentes
 
-- Definir a melhor abordagem de RAG: vector embeddings, leitura de arquivos ou "knowledge-hoarders".
-- Validar se o plano como um todo faz sentido ou se já existe alguma solução mais consolidada para essa "engenharia de contexto" que seja padrão de mercado.
-- Definir o percentual da janela de contexto reservado para RAG.
-- Avaliar se faz sentido manter a "inclusão direta no prompt de sistema" ou se tudo deveria ser feito via RAG. Motivo: a inclusão direta introduz bastante complexidade à feature — todo o "Gerenciamento de tokens de prompt de sistema" (um sistema consideravelmente complexo) precisaria ser implementado para permitir que usuários adicionem contexto diretamente no prompt.
-- Avaliar a ideia de um único "knowledge-hoarder" (agente extra) para armazenar todo o contexto crítico — ou seja, todo o contexto que seria incluso diretamente no prompt de sistema (overhead de sistema + overhead da conta + overhead do usuário). Isso possibilitaria aumentar significativamente os hard-caps de contexto armazenado, visto que modelos como o Gemini suportam até 1M de tokens de contexto. A contrapartida é um aumento considerável de custo.
+- Definir valores default (dentro dos ranges) para os caps de tokens das três categorias de Policy.
+- Definir cap do pinned summary e regras quando múltiplos pinned summaries se aplicarem ao mesmo usuário.
+- Definir a estratégia exata de hybrid search (combinação/normalização de scores lexical + vetorial; re-ranking ou não na V1).
+- Definir parâmetros iniciais de chunking (tamanho/overlap) e seleção (top-k, score mínimo, deduplicação).
+- Definir modelo de embeddings (provedor/versão) e política de versionamento/reindexação.
+- Definir estratégia de consistência quando Knowledge for editado (invalidar/regenerar chunks/embeddings) e como versionar.
+- Validar modelagem de metadados/filtros [A]-[F] para isolamento multi-tenant e performance em Atlas.
+
+### 8. Decisões tomadas
+
+- V1 adotará RAG com **vector embeddings + busca híbrida** (MongoDB Atlas Vector Search + Atlas Search).
+- Conteúdo será separado em duas classes:
+  - **Policy**: sempre injetada no prompt (curta; capada).
+  - **Knowledge**: sempre recuperada via RAG (não entra no prompt por padrão).
+- **Pinned Summary** será suportado como resumo curto gerado automaticamente e opcionalmente injetado no prompt como âncora.
+- **"Knowledge-hoarder agents"** ficam fora da V1 (ideia futura).
+- Hard-caps de tokens serão aplicados apenas a conteúdo in-prompt (Policy/pinned summary), substituindo o modelo 15k/15k/15k por caps menores e estáveis:
+  - System policy \([A]+[B]\): 3k–6k
+  - Account policy \([C]+[D]+[E]\): 3k–6k
+  - User policy \([F]\): 1k–3k
+- O conceito multi-nível [A]-[F] será mantido e, no RAG, vira filtros por metadados (ABAC-like).
+
+### 9. Pendências remanescentes
+
+- Valores default exatos dentro dos ranges de tokens de Policy e se serão configuráveis.
+- Teto recomendável exato para tokens de Knowledge via RAG por resposta e divisão do budget com outros RAGs.
+- Estratégia final de hybrid search e necessidade de re-ranking.
+- Especificação final de chunking e limites (top-k, score mínimo, deduplicação).
+- Estratégia de versionamento/reindexação para mudanças de embeddings e edições de documentos.
+- Retenção e acesso aos logs de auditoria (quem pode consultar e por quanto tempo).
+
+### 10. Observabilidade e Auditoria do RAG (mínimo viável)
+
+Para cada resposta gerada com RAG, registrar (log estruturado com correlação por request):
+
+- Identidade e escopo: `requestId`, `conversationId`, `userId`, `accountId`, `systemSource`, `userScopes`, `mainScope`.
+- Versões do contexto in-prompt efetivamente aplicado:
+  - IDs/versões das Policies aplicadas (por categoria) e tokens estimados por categoria;
+  - `pinnedSummaryId`/versão (se usado) e tokens estimados.
+- Consulta e filtros do retriever:
+  - representação do query usado para retrieval (ou hash se sensível),
+  - filtros de metadados aplicados (níveis [A]-[F] materializados).
+- Resultados do retrieval (top-N usados):
+  - para cada chunk: `documentId`, `chunkId`, `documentVersion` (ou `chunkVersion`), `scoreVector`, `scoreText`, `scoreFinal`, posição no ranking,
+  - `embeddingModelVersion` e identificação da configuração/versão do índice.
+- Métricas de execução:
+  - latência total e por etapa (vector, lexical, merge/rank, montagem de contexto),
+  - contagens: candidatos recuperados, chunks selecionados, tokens estimados do contexto recuperado.
+- Saída do modelo:
+  - `modelId`/versão, tokens de prompt/completion e um `responseId` para auditoria.
 
 # AZUME
