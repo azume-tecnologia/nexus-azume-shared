@@ -61,7 +61,7 @@ A melhor estratégia de inclusão de contexto ainda é uma incógnita para esta 
 - **Inclusão via leitura de documentos:** uma espécie de "doc-read tool-based RAG". Requer fornecer aos agentes ferramentas de leitura de documentos e pesquisa por palavra-chave, além de acesso a documentos em markdown.
 - **Inclusão via "knowledge-hoarder agents":** ideia ainda em fase de validação. Um "knowledge-hoarder" seria um agente especializado no conhecimento de um documento ou conjunto de documentos (via prompt de sistema). O agente principal (orchestrator) teria acesso a esses "knowledge-hoarders" e instruções para consultá-los quando necessário. O ponto negativo é o consumo de tokens na inicialização do swarm (contexto injetado no prompt de sistema de múltiplos agentes). Avaliar se faz sentido um modelo híbrido combinando "knowledge-hoarders" com as demais abordagens listadas acima.
 
-Importante: a forma como o conteúdo de um arquivo será adicionado ao contexto da conversa (via RAG ou via prompt de sistema) será definido pelo usuário. O usuário definirá se o contexto do arquivo é crítico (sempre deve estar no prompt) ou se não é crítico (pode ser recuperado via RAG). Na etapa de aprovação o usuário poderá escolher se o contexto é crítico ou não. A possibilidade de incluir o contexto como crítico dependerá do tamanho do arquivo e do espaço dispónível para o tokens de overhead. Se não houver espaço, a única forma de adicionar o contexto será via RAG.
+A forma como o conteúdo de cada arquivo será adicionado ao contexto da conversa — via prompt de sistema ou via RAG — será definida pelo usuário. Na etapa de aprovação, o usuário poderá classificar o contexto como "crítico" (sempre presente no prompt) ou "não crítico" (recuperável via RAG). A possibilidade de marcar o contexto como crítico dependerá do tamanho do arquivo e do espaço disponível de tokens de overhead. Se não houver espaço, a única opção será a inclusão via RAG.
 
 ### 4. Conversão de arquivos em texto (markdown) e CRUD do contexto
 
@@ -75,36 +75,39 @@ Importante: a forma como o conteúdo de um arquivo será adicionado ao contexto 
 - Contextos dos níveis [A] e [B] só poderão ser visualizados por admins.
 - Admins e donos de contas devem poder visualizar, editar e excluir o markdown de todos os níveis aos quais têm acesso, incluindo o de cada usuário individualmente.
 - Colaboradores poderão visualizar o conteúdo de contexto adicionado por admins e donos de conta, porém não poderão editá-lo.
-- Colaboradores poderão visualizar e editar/excluir o contexto adicionado por eles próprios.
+- Colaboradores poderão visualizar, editar e excluir o contexto adicionado por eles próprios.
 
 ### 5. Gerenciamento de tokens de prompt de sistema
 
 - O sistema deverá calcular o overhead (em tokens) do contexto que será injetado diretamente no prompt.
 - Admins e donos de contas devem poder visualizar o overhead de cada usuário individualmente. Colaboradores devem poder visualizar o overhead de suas próprias contas.
 - O overhead deverá ser calculado considerando todos os conteúdos de todos os níveis aplicáveis ao usuário, em cascata do mais geral ao mais específico, até compor o overhead total da conta.
-- O overhead proveniente dos níveis [A] e [B] será exibido como "overhead de sistema" para os usuários.
-- O overhead proveniente dos níveis ([C], [D] e [E]) será exibido como "overhead da conta".
-- O overhead proveniente do nívelç [F] será exibido como "overhead do usuário".
-- Para os usuários (frontend) não será usado o termo "overhead", mas sim "memória ocupada por contexto de sistema", "memória ocupada por contexto da conta" e "memória ocupada por contexto individual".
-- Um limite máximo de 15k tokens será reservado para o "overhead da conta".
-- Finalmente, um limite máximo de 15k tokens será reservado para o "overhead do usuário".
-- Para admins, um limite máximo de 15k tokens será aplicado ao overhead de sistema (soma dos níveis [A] + [B]). Ou seja, haverá um limite de 15k tokens reservados para que admins adicionem contexto para todas as contas + contexto de cada system source.
-Ex: 10k tokens para todas as contas. System source "nexus" com 5k tokens. System souce "azume" 7k tokens. Admins podem adicionar no máximo mais 5k tokens de overhead para usuários "nexus" a no máximo mais 3k tokens de overhead para usuários "azume", seja adicionando os tokens para todos usuários, para um system souce específico ou para ambos. A soma total de overhead de sistema para cada usuário de cada system source diferente não poderá ultrapassar 15k tokens. No caso, o system source "azume" é o delimitador de quantos tokens ainda podem ser adicionados para todos os usuários sem ultrapassar os 15k tokens.
-- A mesma lógica aplicadada para os 15k tokens que admins podem adicionar, os escopos com a maior quantidade de overhead delimitam a quantidade de overhead que ainda pode ser adicionada para todos usuários da conta. E, no final das contas, nenhum grupo de usuários podem ficar com overhead da conta acima de 15k tokens.
+- O overhead proveniente dos níveis [A] e [B] será exibido como "overhead de sistema".
+- O overhead proveniente dos níveis [C], [D] e [E] será exibido como "overhead da conta".
+- O overhead proveniente do nível [F] será exibido como "overhead do usuário".
+- No frontend, não será usado o termo "overhead". Os rótulos serão: "memória ocupada por contexto de sistema", "memória ocupada por contexto da conta" e "memória ocupada por contexto individual".
+- Um limite máximo de 15k tokens será reservado para o "overhead de sistema" (soma dos níveis [A] + [B]).
+- Um limite máximo de 15k tokens será reservado para o "overhead da conta" (soma dos níveis [C], [D] e [E]).
+- Um limite máximo de 15k tokens será reservado para o "overhead do usuário" (nível [F]).
+- O limite de cada categoria funciona como um teto para a soma de todos os conteúdos dos níveis que a compõem, considerando o usuário com maior overhead dentro daquela categoria. Em outras palavras, ao adicionar contexto em um nível mais amplo (ex.: [A]), o espaço restante para os demais níveis da mesma categoria diminui proporcionalmente.
+Exemplo para overhead de sistema: se o nível [A] consome 10k tokens, restam apenas 5k tokens para o nível [B] de cada "SystemSource". Se um "SystemSource" já consome 5k tokens no nível [B], não é possível adicionar mais contexto em [A] nem em [B] para os usuários daquele "SystemSource" sem antes reduzir o conteúdo existente.
+- A mesma lógica se aplica ao "overhead da conta": os escopos com maior volume de overhead delimitam quanto ainda pode ser adicionado nos demais níveis. Nenhum grupo de usuários pode ficar com overhead da conta acima de 15k tokens.
 
 OBS: contextos injetados via pipeline de RAG, leitura de documentos ou "knowledge-hoarder agents" não serão contabilizados nesses overheads — somente contextos injetados diretamente nos prompts.
 
 ### 6. Gerenciamento de tokens reservados para RAG
 
-Primeiro, como ainda há incerteza de como será feito o RAG (vector embeddings / leitura de arquivos / "knowledge hoarders"), definiremos RAG nesta seção como qualquer um dos 3 métodos de "context retrieval".
+Como ainda há incerteza sobre qual método de RAG será adotado (vector embeddings, leitura de arquivos ou "knowledge-hoarders"), esta seção define "RAG" como qualquer um dos três métodos de recuperação de contexto.
 
-- Diferentemente do hard-cap que haverá para tokens de prompt de sistema, a quantidade de tokens reservados para RAG será calculada dinamicamente de acordo com a janela de contexto do modelo (um % referente à janela total disponível descontando-se o overhead do system prompt)
-- No caso temos que considerar que o RAG desse contexto não é o único RAG planejado para todo o sistema, também existem planos para RAG das conversar mais recentes do usuário com os agentes (memória recente)
+- Diferentemente do hard-cap fixo para tokens de prompt de sistema, a quantidade de tokens reservados para RAG será calculada dinamicamente com base na janela de contexto do modelo: um percentual da janela total disponível, descontando-se o overhead do prompt de sistema.
+- É importante considerar que o RAG de contexto do construtor não será o único RAG do sistema. Também estão planejados mecanismos de RAG para recuperação das conversas mais recentes do usuário com os agentes (memória recente).
 
 ### 7. Pontos pendentes
 
-- Definir a melhor "forma" de fazer o RAG: vector embeddings / leitura de arquivos / "knowledge hoarders"
-- Validar se o plano como um todo faz sentido ou se existe algo já mais validado para toda essa "engenharia de contexto" que é um industry standard
-- Validar o valor do percentual de janela de contexto reservado para o RAG
+- Definir a melhor abordagem de RAG: vector embeddings, leitura de arquivos ou "knowledge-hoarders".
+- Validar se o plano como um todo faz sentido ou se já existe alguma solução mais consolidada para essa "engenharia de contexto" que seja padrão de mercado.
+- Definir o percentual da janela de contexto reservado para RAG.
+- Avaliar se faz sentido manter a "inclusão direta no prompt de sistema" ou se tudo deveria ser feito via RAG. Motivo: a inclusão direta introduz bastante complexidade à feature — todo o "Gerenciamento de tokens de prompt de sistema" (um sistema consideravelmente complexo) precisaria ser implementado para permitir que usuários adicionem contexto diretamente no prompt.
+- Avaliar a ideia de um único "knowledge-hoarder" (agente extra) para armazenar todo o contexto crítico — ou seja, todo o contexto que seria incluso diretamente no prompt de sistema (overhead de sistema + overhead da conta + overhead do usuário). Isso possibilitaria aumentar significativamente os hard-caps de contexto armazenado, visto que modelos como o Gemini suportam até 1M de tokens de contexto. A contrapartida é um aumento considerável de custo.
 
 # AZUME
