@@ -43,24 +43,24 @@ Valores:
 
 Para contas do grupo B, devem ser extraídos os valores abaixo:
 
-| Nome               | Tipo           | Valores                                 | Campo Azume CRM        | Opcional |
-| ------------------ | -------------- | --------------------------------------- | ---------------------- | -------- |
-| Concessionária     | Enum de string | -                                       | tariffModality         | Não      |
-| Valor kWh          | number         | > 0 && < 10                             | kwhPrice               | Não      |
-| Taxa Ilum. Pública | number         | > 0                                     | publicLightBill        | Sim      |
-| Rede               | Enum de string | "Trifásica", "Bifásica" ou "Monofásica" | publicLightBill        | Não      |
-| Consumo Jan        | number         | >= 0                                    | monthlyConsumption[0]  | Sim      |
-| Consumo Fev        | number         | >= 0                                    | monthlyConsumption[1]  | Sim      |
-| Consumo Mar        | number         | >= 0                                    | monthlyConsumption[2]  | Sim      |
-| Consumo Abr        | number         | >= 0                                    | monthlyConsumption[3]  | Sim      |
-| Consumo Mai        | number         | >= 0                                    | monthlyConsumption[4]  | Sim      |
-| Consumo Jun        | number         | >= 0                                    | monthlyConsumption[5]  | Sim      |
-| Consumo Jul        | number         | >= 0                                    | monthlyConsumption[6]  | Sim      |
-| Consumo Ago        | number         | >= 0                                    | monthlyConsumption[7]  | Sim      |
-| Consumo Set        | number         | >= 0                                    | monthlyConsumption[8]  | Sim      |
-| Consumo Out        | number         | >= 0                                    | monthlyConsumption[9]  | Sim      |
-| Consumo Nov        | number         | >= 0                                    | monthlyConsumption[10] | Sim      |
-| Consumo Dez        | number         | >= 0                                    | monthlyConsumption[11] | Sim      |
+| Nome               | Tipo           | Valores                                 | Campo Backend Azume CRM | Campo Frontend Azume CRM (input id) | Opcional |
+| ------------------ | -------------- | --------------------------------------- | ----------------------- | ----------------------------------- | -------- |
+| Concessionária     | Enum de string | -                                       | tariffModality          | tariffModality                      | Sim      |
+| Valor kWh          | number         | > 0 && < 10                             | kwhPrice                | kwhPrice                            | Não      |
+| Taxa Ilum. Pública | number         | > 0                                     | publicLightBill         | publicLightBill                     | Sim      |
+| Rede               | Enum de string | "Trifásica", "Bifásica" ou "Monofásica" | networkClass            | networkClass                        | Não      |
+| Consumo Jan        | number         | >= 0                                    | monthlyConsumption[0]   | jan                                 | Sim      |
+| Consumo Fev        | number         | >= 0                                    | monthlyConsumption[1]   | feb                                 | Sim      |
+| Consumo Mar        | number         | >= 0                                    | monthlyConsumption[2]   | mar                                 | Sim      |
+| Consumo Abr        | number         | >= 0                                    | monthlyConsumption[3]   | apr                                 | Sim      |
+| Consumo Mai        | number         | >= 0                                    | monthlyConsumption[4]   | may                                 | Sim      |
+| Consumo Jun        | number         | >= 0                                    | monthlyConsumption[5]   | jun                                 | Sim      |
+| Consumo Jul        | number         | >= 0                                    | monthlyConsumption[6]   | jul                                 | Sim      |
+| Consumo Ago        | number         | >= 0                                    | monthlyConsumption[7]   | aug                                 | Sim      |
+| Consumo Set        | number         | >= 0                                    | monthlyConsumption[8]   | sep                                 | Sim      |
+| Consumo Out        | number         | >= 0                                    | monthlyConsumption[9]   | oct                                 | Sim      |
+| Consumo Nov        | number         | >= 0                                    | monthlyConsumption[10]  | nov                                 | Sim      |
+| Consumo Dez        | number         | >= 0                                    | monthlyConsumption[11]  | dec                                 | Sim      |
 
 Obs: nem todas as contas possuem o consumo dod últimos 12 meses, algumas só exivem 8 meses ou somente 6 meses... Neste caso, os meses que estão faltando devem ser preenchidos com a média de consumo dos meses que estão presentes na fatura de energia
 
