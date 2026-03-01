@@ -35,32 +35,32 @@ Primeiramente, deve se entender qual a modalidade tafifária da conta de energia
 
 Valores:
 
-| Nome | Tipo | Valores | Campo Azume CRM | Opcional |
-|------|------|---------|-----------------|----------|
-| Modalidade Tarifária | Enum de string | "A" ou "B" | tariffModality | Não |
+| Nome                 | Tipo           | Valores    | Campo Azume CRM | Opcional |
+| -------------------- | -------------- | ---------- | --------------- | -------- |
+| Modalidade Tarifária | Enum de string | "A" ou "B" | tariffModality  | Não      |
 
 **Grupo B:**
 
 Para contas do grupo B, devem ser extraídos os valores abaixo:
 
-| Nome | Tipo | Valores | Campo Azume CRM | Opcional |
-|------|------|---------|-----------------|----------|
-| Concessionária | Enum de string | - | tariffModality | Não |
-| Valor kWh | number | > 0 && < 10 | kwhPrice | Não |
-| Taxa Ilum. Pública | number | > 0 | publicLightBill | Sim |
-| Rede | Enum de string | "Trifásica", "Bifásica" ou "Monofásica" | publicLightBill | Não |
-| Consumo Jan | number | >= 0 | monthlyConsumption[0] | Sim |
-| Consumo Fev | number | >= 0 | monthlyConsumption[1] | Sim |
-| Consumo Mar | number | >= 0 | monthlyConsumption[2] | Sim |
-| Consumo Abr | number | >= 0 | monthlyConsumption[3] | Sim |
-| Consumo Mai | number | >= 0 | monthlyConsumption[4] | Sim |
-| Consumo Jun | number | >= 0 | monthlyConsumption[5] | Sim |
-| Consumo Jul | number | >= 0 | monthlyConsumption[6] | Sim |
-| Consumo Ago | number | >= 0 | monthlyConsumption[7] | Sim |
-| Consumo Set | number | >= 0 | monthlyConsumption[8] | Sim |
-| Consumo Out | number | >= 0 | monthlyConsumption[9] | Sim |
-| Consumo Nov | number | >= 0 | monthlyConsumption[10] | Sim |
-| Consumo Dez | number | >= 0 | monthlyConsumption[11] | Sim |
+| Nome               | Tipo           | Valores                                 | Campo Azume CRM        | Opcional |
+| ------------------ | -------------- | --------------------------------------- | ---------------------- | -------- |
+| Concessionária     | Enum de string | -                                       | tariffModality         | Não      |
+| Valor kWh          | number         | > 0 && < 10                             | kwhPrice               | Não      |
+| Taxa Ilum. Pública | number         | > 0                                     | publicLightBill        | Sim      |
+| Rede               | Enum de string | "Trifásica", "Bifásica" ou "Monofásica" | publicLightBill        | Não      |
+| Consumo Jan        | number         | >= 0                                    | monthlyConsumption[0]  | Sim      |
+| Consumo Fev        | number         | >= 0                                    | monthlyConsumption[1]  | Sim      |
+| Consumo Mar        | number         | >= 0                                    | monthlyConsumption[2]  | Sim      |
+| Consumo Abr        | number         | >= 0                                    | monthlyConsumption[3]  | Sim      |
+| Consumo Mai        | number         | >= 0                                    | monthlyConsumption[4]  | Sim      |
+| Consumo Jun        | number         | >= 0                                    | monthlyConsumption[5]  | Sim      |
+| Consumo Jul        | number         | >= 0                                    | monthlyConsumption[6]  | Sim      |
+| Consumo Ago        | number         | >= 0                                    | monthlyConsumption[7]  | Sim      |
+| Consumo Set        | number         | >= 0                                    | monthlyConsumption[8]  | Sim      |
+| Consumo Out        | number         | >= 0                                    | monthlyConsumption[9]  | Sim      |
+| Consumo Nov        | number         | >= 0                                    | monthlyConsumption[10] | Sim      |
+| Consumo Dez        | number         | >= 0                                    | monthlyConsumption[11] | Sim      |
 
 Obs: nem todas as contas possuem o consumo dod últimos 12 meses, algumas só exivem 8 meses ou somente 6 meses... Neste caso, os meses que estão faltando devem ser preenchidos com a média de consumo dos meses que estão presentes na fatura de energia
 
