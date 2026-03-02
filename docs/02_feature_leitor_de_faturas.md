@@ -4,11 +4,11 @@
 
 ### IDEIA
 
-O leitor de faturas de faturas de energia será uma feature powered by LLMs que possibilitará aos usuaŕios do Azume CRM + Nexus enviar um arquivo de fatura de energia e receber todos os dados da fatura extraídos, a fim de de facilitar e tornar mais eficiente a geração de um orçamento de energia solar.
+O leitor de faturas de energia será uma feature powered by LLMs que possibilitará aos usuários do Azume CRM + Nexus enviar um arquivo de fatura de energia e receber todos os dados da fatura extraídos, a fim de facilitar e tornar mais eficiente a geração de um orçamento de energia solar.
 
 ### AMOSTRAS DE FATURAS DE ENERGIA
 
-Abaixo algumas amostras de faturas de energia
+Abaixo, algumas amostras de faturas de energia:
 
 **Grupo B:**
 
@@ -23,15 +23,15 @@ Abaixo algumas amostras de faturas de energia
 2 - samples/faturas-de-energia/fatura-enel-grupo-a.pdf
 3 - samples/faturas-de-energia/fatura-equatorial-grupo-a.pdf
 
-### REQUISITOS TÈCNICOS
+### REQUISITOS TÉCNICOS
 
 - Formatos suportados para a v1.0.0: `.jpg`, `.jpeg`, `.png`, `.gif`, `.webp`, `.pdf`.
 
-### EXTRAÇÂO DE VALORES
+### EXTRAÇÃO DE VALORES
 
-**Modalidade Tafifária:**
+**Modalidade Tarifária:**
 
-Primeiramente, deve se entender qual a modalidade tafifária da conta de energia (Grupo B ou Grupo A). Isso irá determinar quais valores devem ser extraídos da conta de energia.
+Primeiramente, deve-se entender qual a modalidade tarifária da conta de energia (Grupo B ou Grupo A). Isso irá determinar quais valores devem ser extraídos da conta de energia.
 
 Valores:
 
@@ -64,22 +64,23 @@ Para contas do grupo B, devem ser extraídos os valores abaixo:
 | tusd               | number              | >= 0                                    | tusd                    | tusd                     | Não         | R$      |
 | icms               | number (percentual) | > 0 && < 100 %                          | icms                    | icms                     | Não         | %       |
 
-Obs1: nem todas as contas possuem o consumo dos últimos 12 meses, algumas só exivem 8 meses ou somente 6 meses... Neste caso, os meses que estão faltando devem ser preenchidos com a média de consumo dos meses que estão presentes na fatura de energia
-Obs2: o valor de kwhPrice já deve incluir todos tributos/impostos
-Obs3: no grupo B, os valores de tusd e icms não são essenciais para que o usuário prossiga com a geração do orçamento de energia solar, porém, são importantes para que o usuário possa gerar uma proposta mais assertiva. Portanto, deve-se aplicar uma política "maior esforço" para extração de tusd e icms, porém sem bloquear o critério de sucesso da leitura da fatura de energia.Obs4: Mesma coisa que "Obs3" para taxa de iluminação pública (melhor esforço para extração da taxa de iluminação pública, sem bloqueio de sucesso).
+Obs1: Nem todas as contas possuem o consumo dos últimos 12 meses, algumas só exibem 8 meses ou somente 6 meses. Neste caso, os meses que estão faltando devem ser preenchidos com a média de consumo dos meses que estão presentes na fatura de energia.
+Obs2: O valor de kwhPrice já deve incluir todos os tributos/impostos.
+Obs3: No grupo B, os valores de tusd e icms não são essenciais para que o usuário prossiga com a geração do orçamento de energia solar, porém são importantes para que o usuário possa gerar uma proposta mais assertiva. Portanto, deve-se aplicar uma política de "melhor esforço" para extração de tusd e icms, porém sem bloquear o critério de sucesso da leitura da fatura de energia.
+Obs4: Mesma coisa que "Obs3" para taxa de iluminação pública (melhor esforço para extração da taxa de iluminação pública, sem bloqueio de sucesso).
 Obs5: Mesma coisa que "Obs3" para a concessionária (melhor esforço para extração da concessionária, sem bloqueio de sucesso).
 
 **Critérios de sucesso da leitura Grupo B**:
 
-- Extrair todos os campos obrigátórios
+- Extrair todos os campos obrigatórios
 - (OPCIONAL) Definir o consumo médio para os meses que estão faltando na fatura de energia
-- Todos os meses possuem valor de consumo (provindo da leitura direta ou do cálcula da média)
+- Todos os meses possuem valor de consumo (provindo da leitura direta ou do cálculo da média)
 
-Caso os critérios de sucesso não sejam alcançado, deve ser considerado que houve uma falha na leitura.
+Caso os critérios de sucesso não sejam alcançados, deve ser considerado que houve uma falha na leitura.
 
 **Grupo A (alta tensão) - Classificação Horo-Sazonal:**
 
-Uma vez que for identificado que a fatura é do grupo A (alta tensão), deve-se identificar a Classificação Horo-Sazonal da fatura. O Azume CRM fornece suporte para dimensionamento das classificações "Azul" e "Verde"
+Uma vez identificado que a fatura é do grupo A (alta tensão), deve-se identificar a Classificação Horo-Sazonal da fatura. O Azume CRM fornece suporte para dimensionamento das classificações "Azul" e "Verde".
 
 Valores:
 
@@ -97,14 +98,14 @@ Valores:
 | TUSD Fora Ponta                                           | number              | > 0 && < 10    | tusd                         | tusd                     | Sim         | R$      |
 | TUSD Ponta                                                | number              | > 0 && < 10    | tusdPeak                     | tusdPeak                 | Sim         | R$      |
 | Demanda Contratada (Fora Ponta para classificação "Azul") | number              | >= 30          | demand                       | demand                   | Sim         | kW      |
-| Tarifa da Demanda (Fora pPonta para classificação "Azul") | number              | > 0            | demandTariff                 | demandTariff             | Sim         | R$      |
+| Tarifa da Demanda (Fora Ponta para classificação "Azul")  | number              | > 0            | demandTariff                 | demandTariff             | Sim         | R$      |
 | Taxa Ilum. Pública                                        | number              | > 0            | publicLightBill              | publicLightBill          | Não         | R$      |
 | Consumo Médio Mensal Fora Ponta                           | number              | > 0            | monthlyConsumption[1-12]     | averageValue             | Sim         | kWh     |
 | Consumo Médio Mensal Ponta                                | number              | > 0            | monthlyConsumptionPeak[1-12] | averageValuePeak         | Sim         | kWh     |
 | icms                                                      | number (percentual) | > 0 && < 100 % | icms                         | icms                     | Não         | %       |
 
 Obs1: Para a classificação "Verde", a demanda contratada não é diferenciada entre ponta e fora ponta, há apenas um valor para demanda contratada.
-Obs2: no grupo B, o valor de icms não é essencial para que o usuário prossiga com a geração do orçamento de energia solar, porém, é importante para que o usuário possa gerar uma proposta mais assertiva. Portanto, deve-se aplicar uma política "maior esforço" para extração de icms, porém sem bloquear o critério de sucesso da leitura da fatura de energia.
+Obs2: No grupo A Verde, o valor de icms não é essencial para que o usuário prossiga com a geração do orçamento de energia solar, porém é importante para que o usuário possa gerar uma proposta mais assertiva. Portanto, deve-se aplicar uma política de "melhor esforço" para extração de icms, porém sem bloquear o critério de sucesso da leitura da fatura de energia.
 Obs3: Mesma coisa que "Obs2" para taxa de iluminação pública (melhor esforço para extração da taxa de iluminação pública, sem bloqueio de sucesso).
 Obs4: Mesma coisa que "Obs3" para a concessionária (melhor esforço para extração da concessionária, sem bloqueio de sucesso).
 
@@ -121,20 +122,20 @@ Obs: Para a classificação "Azul", a demanda contratada é diferenciada entre p
 
 **Critérios de sucesso da leitura Grupo A**:
 
-- Extrair todos os campos obrigátórios
+- Extrair todos os campos obrigatórios
 
 **Definições:**
 
 1. Campo Backend Azume CRM: nome do campo na coleção de dados "proposal" que armazena o valor.
 2. Campo Frontend Azume CRM: ID do input do formulário no frontend do Azume que armazena o valor.
-3. Obrigatório: Se o campo for obrigatorio e a LLM não conseguir extrair o valor da conta de energia, significa que a leitura da fatura de energia falhou.
+3. Obrigatório: Se o campo for obrigatório e a LLM não conseguir extrair o valor da conta de energia, significa que a leitura da fatura de energia falhou.
 
-### Suport tools para agentes
+### SUPPORT TOOLS PARA AGENTES
 
-- Para que o agent (LLM) consiga fornecer valores de maneira mais assertiva, seria interessante fornecer ao agente ferramentas de operações artiméticas (nível de calculadora científica simples)
-- Dessa forma, quando necessário, o agente será capaz de executar operações aritméticas para extrair valores da conta. Um exemplo simples é o cálculo
-- Deve ser pesquisado a melhor forma de fornecer ao agente essa capacidade (pacote python + @function_tool? MCP server?)
-- Deve ser avaliado se é melhor fornecer diretamente ao agente a capacidade de executar python. Ou fornecer ambas capacidades (python e calculadora científica simples).
+- Para que o agente (LLM) consiga fornecer valores de maneira mais assertiva, seria interessante fornecer ao agente ferramentas de operações aritméticas (nível de calculadora científica simples).
+- Dessa forma, quando necessário, o agente será capaz de executar operações aritméticas para extrair valores da conta.
+- Deve ser pesquisada a melhor forma de fornecer ao agente essa capacidade (pacote Python + @function_tool? MCP server?).
+- Deve ser avaliado se é melhor fornecer diretamente ao agente a capacidade de executar Python, ou fornecer ambas as capacidades (Python e calculadora científica simples).
 
 ### CONCESSIONÁRIAS
 
@@ -261,7 +262,7 @@ Como usuário, quero poder gerar um orçamento de energia solar. Quero que o sis
 3. O sistema deve se esforçar para extrair os valores dos campos opcionais, mas não deve bloquear o sucesso da leitura da fatura de energia.
 4. Se o sistema não conseguir extrair os valores dos campos obrigatórios, deve ser considerado que houve uma falha na leitura da fatura de energia.
 5. Se o sistema conseguir extrair os valores dos campos obrigatórios, deve ser considerado que houve sucesso na leitura da fatura de energia.
-6. Em caso de sucesso, o sistema deve mostrar os valores extraídos de forma clara e organizada para o usuário visualizar e editar caso necessário (validação), antes de popular o formulário os campos extraídos no formulário de geração de orçamento de energia solar.
+6. Em caso de sucesso, o sistema deve mostrar os valores extraídos de forma clara e organizada para o usuário visualizar e editar caso necessário (validação), antes de popular os campos extraídos no formulário de geração de orçamento de energia solar.
 7. Se algum campo não obrigatório não for extraído, deve ser exibido um feedback mostrando quais campos o agente não encontrou na fatura de energia.
 8. Uma vez que o usuário tenha validado os valores extraídos, o sistema deve popular o formulário de geração de orçamento de energia solar com os valores extraídos.
 9. O usuário poderá prosseguir com a geração do orçamento de energia solar OU adição de novas unidades consumidoras.
@@ -274,10 +275,10 @@ Para satisfazer o user story, deve-se criar uma interface de usuário que permit
 
 1. Um botão com a logo do Nexus + texto "Leitura Smart" será adicionado no form da etapa 1 do wizard de geração de proposta de energia solar, antes da seção "Modalidade Tarifária"
 2. Ao clicar no botão, uma modal de upload de fatura de energia será exibida (botão de upload + zona de drop de arquivo)
-3. A validação será feito por meio de um Popu-up, que mostrará os campos extraídos e permitirá ao usuário validar os valores. O popup também mostrará os campos que não foram extraídos (não encontrados na fatura de energia).
+3. A validação será feita por meio de um pop-up, que mostrará os campos extraídos e permitirá ao usuário validar os valores. O pop-up também mostrará os campos que não foram extraídos (não encontrados na fatura de energia).
 4. No backend, os valores extraídos ser validados de acordo com as regras de negócio definidas ("Valores" das tabelas mostram regras de validação).
 5. No backend do Azume CRM, a URL da conta de energia deverá ser armazenada na coleção de dados "archive" e na coleção de dados "proposal".
-6. Para persistir a URL da conta de energia na colação "archive", o sistema deverá localizar um folder denominado de "Faturas de Energia". Se não for localizado, deverá ser criado um novo folder com o nome "Faturas de Energia".
+6. Para persistir a URL da conta de energia na coleção "archive", o sistema deverá localizar um folder denominado "Faturas de Energia". Se não for localizado, deverá ser criado um novo folder com o nome "Faturas de Energia".
 
 ### REPOSITÓRIOS
 
@@ -295,7 +296,7 @@ Os repositórios abaixo serão utilizados para o desenvolvimento da feature:
 4. [CAIXA PRETA] Nexus usa LLM para extrair os valores da fatura de energia (como exatamente ainda precisa ser definido)
 5. Nexus valida os valores extraídos e retorna os valores extraídos para o backend do Azume CRM.
 6. O backend do Azume CRM valida os valores extraídos e retorna para o frontend do Azume CRM. Após validados os dados, o backend do Azume CRM faz o upload do arquivo da fatura de energia para o S3 do Azume CRM e persiste a URL do arquivo no banco de dados do Azume CRM (coleções "archive" e "proposal"). Para "proposal" deverá ser definido um novo campo para armazenar a URL do arquivo da fatura de energia.
-7. O frontend do Azume CRM exibe os valores extraídos para o usuário visualizar e editar caso necessário (validação), antes de popular o formulário os campos extraídos no formulário de geração de orçamento de energia solar.
+7. O frontend do Azume CRM exibe os valores extraídos para o usuário visualizar e editar caso necessário (validação), antes de popular os campos extraídos no formulário de geração de orçamento de energia solar.
 8. O usuário poderá prosseguir com a geração do orçamento de energia solar OU adição de novas unidades consumidoras.
 
 Workflow completo: [FRONTEND_AZUME_CRM] -> [BACKEND_AZUME_CRM] -> [BACKEND_NEXUS] -> [CLOUD_STORAGE] -> [LLM] -> [BACKEND_NEXUS] -> [BACKEND_AZUME_CRM] -> [FRONTEND_AZUME_CRM]
@@ -310,6 +311,6 @@ Ponto importante: não temos samples de todos os modelos de fatura de energia, t
 
 Qual a melhor solução para isso?
 
-O que penso até o momento é: usar o vision de um modelo de LLM com instruções de como extrair os valores de diferentes modelos de faturas de energia. Essas instrulões iniciariam mais básicas e iram sendo lapidadas a medida que o agente vai aprendendo com os erros e sucessos.
+O que penso até o momento é: usar o vision de um modelo de LLM com instruções de como extrair os valores de diferentes modelos de faturas de energia. Essas instruções iniciariam mais básicas e iriam sendo lapidadas à medida que o agente vai aprendendo com os erros e sucessos.
 
-Entretanto, é estou aberto a outras soluções. Vamos explorar possibilidades da melhor forma de executar a tarefa.
+Entretanto, estou aberto a outras soluções. Vamos explorar possibilidades da melhor forma de executar a tarefa.
