@@ -132,10 +132,9 @@ Obs: Para a classificação "Azul", a demanda contratada é diferenciada entre p
 
 ### SUPPORT TOOLS PARA AGENTES
 
-- Para que o agente (LLM) consiga fornecer valores de maneira mais assertiva, seria interessante fornecer ao agente ferramentas de operações aritméticas (nível de calculadora científica simples).
-- Dessa forma, quando necessário, o agente será capaz de executar operações aritméticas para extrair valores da conta.
-- Deve ser pesquisada a melhor forma de fornecer ao agente essa capacidade (pacote Python + @function_tool? MCP server?).
-- Deve ser avaliado se é melhor fornecer diretamente ao agente a capacidade de executar Python, ou fornecer ambas as capacidades (Python e calculadora científica simples).
+- O agente de extração não utilizará tools auxiliares (calculadora, Python, MCP, etc.)
+- O agente será focado exclusivamente na extração visual dos valores da fatura de energia
+- Operações de cálculo (ex: média de meses faltantes no Grupo B) serão executadas por código de regra de negócio no backend (`nexus-services`), após a extração
 
 ### CONCESSIONÁRIAS
 
@@ -293,7 +292,7 @@ Os repositórios abaixo serão utilizados para o desenvolvimento da feature:
 1. Usuário no frontend do Azume CRM faz o upload da fatura de energia.
 2. O backend do Azume CRM recebe a requisição, valida os dados e faz uma requisição para o backend do Nexus, onde os valores serão extraídos da fatura de energia.
 3. Nexus faz o upload da fatura para o Cloud Storage.
-4. [CAIXA PRETA] Nexus usa LLM para extrair os valores da fatura de energia (como exatamente ainda precisa ser definido)
+4. Nexus renderiza as páginas do PDF como imagens (PyMuPdf) → cria um agente de tarefa com Structured Output (OpenAI Agents SDK) → executa `agent.run()` com as imagens como input → valida os valores extraídos contra as regras de negócio → aplica pós-processamento (preencher meses faltantes com média, Grupo B) → retorna o resultado estruturado
 5. Nexus valida os valores extraídos e retorna os valores extraídos para o backend do Azume CRM.
 6. O backend do Azume CRM valida os valores extraídos e retorna para o frontend do Azume CRM. Após validados os dados, o backend do Azume CRM faz o upload do arquivo da fatura de energia para o S3 do Azume CRM e persiste a URL do arquivo no banco de dados do Azume CRM (coleções "archive" e "proposal"). Para "proposal" deverá ser definido um novo campo para armazenar a URL do arquivo da fatura de energia.
 7. O frontend do Azume CRM exibe os valores extraídos para o usuário visualizar e editar caso necessário (validação), antes de popular os campos extraídos no formulário de geração de orçamento de energia solar.
@@ -301,16 +300,50 @@ Os repositórios abaixo serão utilizados para o desenvolvimento da feature:
 
 Workflow completo: [FRONTEND_AZUME_CRM] -> [BACKEND_AZUME_CRM] -> [BACKEND_NEXUS] -> [CLOUD_STORAGE] -> [LLM] -> [BACKEND_NEXUS] -> [BACKEND_AZUME_CRM] -> [FRONTEND_AZUME_CRM]
 
-### PONTOS PENDENTES
+### DECISÕES TÉCNICAS
 
-A usabilidade da feature está bem definida, mas ainda é necessário definir o como criar um agente otimizado para extrair os valores de diferentes modelos de faturas de energia.
+#### Abordagem: LLM Vision + Structured Output
 
-Essa inteligência vai morar no Nexus (Nexus Core - /home/paulo/projects/nexus/nexus-core).
+- Usar modelos de LLM com visão para ler a fatura (PDF renderizado como imagem)
+- Usar Structured Output (`output_type` do OpenAI Agents SDK) com Pydantic models para forçar o LLM a retornar os campos exatos da spec
+- Agente de **tarefa** (não chat) — execução síncrona via `agent.run()`, sem streaming
+- Single-step: o LLM classifica (Grupo A/B, Verde/Azul) e extrai valores na mesma chamada
+- O PDF será renderizado em imagens (PyMuPdf, já existe no Nexus) e enviado como input visual ao agent
 
-Ponto importante: não temos samples de todos os modelos de fatura de energia, temos apenas um punhado de exemplos.
+#### Onde no Nexus
 
-Qual a melhor solução para isso?
+- Toda a inteligência mora no **nexus packages layer** (`packages/nexus/`), não no domain layer
+- Pacotes envolvidos:
+  - `nexus-models`: Pydantic models de extração (schemas de output)
+  - `nexus-services`: Serviço de extração + validação + pós-processamento
+  - `nexus-ai`: Agent factory e configuração do agente especializado
+  - `nexus-contexts`: System prompt do agente de extração
 
-O que penso até o momento é: usar o vision de um modelo de LLM com instruções de como extrair os valores de diferentes modelos de faturas de energia. Essas instruções iniciariam mais básicas e iriam sendo lapidadas à medida que o agente vai aprendendo com os erros e sucessos.
+#### Sem tools de cálculo para o agente
 
-Entretanto, estou aberto a outras soluções. Vamos explorar possibilidades da melhor forma de executar a tarefa.
+- O agente NÃO terá tools de calculadora
+- O agente fica 100% focado na extração de valores
+- O preenchimento de meses faltantes (Grupo B) será feito por código de regra de negócio no `nexus-services`, após a extração:
+  - Validar quais meses foram retornados
+  - Calcular a média dos meses presentes
+  - Preencher os meses faltantes com a média
+
+#### Requisito de custo: Mid Tier
+
+- Usar exclusivamente modelos de **Mid Tier** (modelos de High Tier adicionam custo excessivo)
+- Modelos Mid Tier com suporte a visão disponíveis no Nexus:
+  - GPT-5 Mini (`gpt-5-mini`)
+  - Gemini 3 Flash (`gemini-3-flash-preview`)
+  - Claude Sonnet 4.5 (`claude-sonnet-4-5`)
+  - Grok 4.1 Fast (`grok-4-1-fast`)
+- O modelo deve ser configurável (Nexus já suporta multi-provider)
+- Testar com as amostras existentes para validar acurácia por modelo
+
+#### Generalização sem samples de todas as concessionárias
+
+- LLM Vision generaliza por design — não precisa de um template por concessionária
+- System prompt robusto com instruções detalhadas de onde localizar cada valor
+- A tabela de concessionárias com aliases já serve como referência para o agente
+- Validação de negócio (ranges das tabelas) funciona como rede de segurança
+- Se valores obrigatórios não passarem na validação, a extração falha graciosamente
+- Refinamento iterativo do prompt com base em erros reais de produção
