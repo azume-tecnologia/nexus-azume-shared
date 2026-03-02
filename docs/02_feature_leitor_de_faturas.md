@@ -278,3 +278,38 @@ Para satisfazer o user story, deve-se criar uma interface de usuário que permit
 4. No backend, os valores extraídos ser validados de acordo com as regras de negócio definidas ("Valores" das tabelas mostram regras de validação).
 5. No backend do Azume CRM, a URL da conta de energia deverá ser armazenada na coleção de dados "archive" e na coleção de dados "proposal".
 6. Para persistir a URL da conta de energia na colação "archive", o sistema deverá localizar um folder denominado de "Faturas de Energia". Se não for localizado, deverá ser criado um novo folder com o nome "Faturas de Energia".
+
+### REPOSITÓRIOS
+
+Os repositórios abaixo serão utilizados para o desenvolvimento da feature:
+
+- [backend-azume-crm](/home/paulo/projects/azume/azume-backend)
+- [frontend-azume-crm](/home/paulo/projects/azume/azume-frontend-crm)
+- [backend-nexus](/home/paulo/projects/nexus/nexus-core)
+
+### NETWORK WORKFLOW
+
+1. Usuário no frontend do Azume CRM faz o upload da fatura de energia.
+2. O backend do Azume CRM recebe a requisição, valida os dados e faz uma requisição para o backend do Nexus, onde os valores serão extraídos da fatura de energia.
+3. Nexus faz o upload da fatura para o Cloud Storage.
+4. [CAIXA PRETA] Nexus usa LLM para extrair os valores da fatura de energia (como exatamente ainda precisa ser definido)
+5. Nexus valida os valores extraídos e retorna os valores extraídos para o backend do Azume CRM.
+6. O backend do Azume CRM valida os valores extraídos e retorna para o frontend do Azume CRM. Após validados os dados, o backend do Azume CRM faz o upload do arquivo da fatura de energia para o S3 do Azume CRM e persiste a URL do arquivo no banco de dados do Azume CRM (coleções "archive" e "proposal"). Para "proposal" deverá ser definido um novo campo para armazenar a URL do arquivo da fatura de energia.
+7. O frontend do Azume CRM exibe os valores extraídos para o usuário visualizar e editar caso necessário (validação), antes de popular o formulário os campos extraídos no formulário de geração de orçamento de energia solar.
+8. O usuário poderá prosseguir com a geração do orçamento de energia solar OU adição de novas unidades consumidoras.
+
+Workflow completo: [FRONTEND_AZUME_CRM] -> [BACKEND_AZUME_CRM] -> [BACKEND_NEXUS] -> [CLOUD_STORAGE] -> [LLM] -> [BACKEND_NEXUS] -> [BACKEND_AZUME_CRM] -> [FRONTEND_AZUME_CRM]
+
+### PONTOS PENDENTES
+
+A usabilidade da feature está bem definida, mas ainda é necessário definir o como criar um agente otimizado para extrair os valores de diferentes modelos de faturas de energia.
+
+Essa inteligência vai morar no Nexus (Nexus Core - /home/paulo/projects/nexus/nexus-core).
+
+Ponto importante: não temos samples de todos os modelos de fatura de energia, temos apenas um punhado de exemplos.
+
+Qual a melhor solução para isso?
+
+O que penso até o momento é: usar o vision de um modelo de LLM com instruções de como extrair os valores de diferentes modelos de faturas de energia. Essas instrulões iniciariam mais básicas e iram sendo lapidadas a medida que o agente vai aprendendo com os erros e sucessos.
+
+Entretanto, é estou aberto a outras soluções. Vamos explorar possibilidades da melhor forma de executar a tarefa.
