@@ -59,7 +59,7 @@
 16. [Nexus]    Return structured result to Azume Backend
 17. [Backend]  Validate extraction result
 18. [Backend]  Persist file URL in "archive" collection ("Faturas de Energia" folder)
-19. [Backend]  Persist file URL in "proposal" collection (new invoiceFileUrl field)
+19. [Backend]  Persist file URL in "proposal" collection (new invoiceFileUrls array, indexed by ucid)
 20. [Backend]  Return extraction result to Frontend
 21. [Frontend] Show validation popup with extracted fields (editable) + missing fields
 22. [Frontend] User confirms → populate form fields via inputHandler
@@ -136,7 +136,7 @@
 }
 ```
 
-**Error Response:** `400 | 403 | 422 | 500`
+**Error Response:** `400 | 403 | 404 | 422 | 500 | 502`
 
 ```typescript
 {
@@ -322,7 +322,7 @@
   "group_b": null,
   "group_a_verde": null,
   "group_a_azul": null,
-  "missing_fields": ["kwhPrice", "networkClass", "monthlyConsumption"],
+  "missing_fields": ["kwh_price", "network_class", "monthly_consumption"],
   "model_used": "gpt-5-mini",
   "error_message": "Não foi possível extrair os campos obrigatórios da fatura de energia."
 }
@@ -450,6 +450,14 @@ class GroupAVerdeExtraction(BaseModel):
         default=None, gt=0, lt=100,
         description="ICMS tax percentage"
     )
+    monthly_consumption: Optional[list[float]] = Field(
+        default=None, min_length=12, max_length=12,
+        description="Monthly off-peak consumption in kWh (replicated from average_consumption)"
+    )
+    monthly_consumption_peak: Optional[list[float]] = Field(
+        default=None, min_length=12, max_length=12,
+        description="Monthly peak consumption in kWh (replicated from average_consumption_peak)"
+    )
 
 
 class GroupAAzulExtraction(BaseModel):
@@ -507,6 +515,14 @@ class GroupAAzulExtraction(BaseModel):
     icms: Optional[float] = Field(
         default=None, gt=0, lt=100,
         description="ICMS tax percentage"
+    )
+    monthly_consumption: Optional[list[float]] = Field(
+        default=None, min_length=12, max_length=12,
+        description="Monthly off-peak consumption in kWh (replicated from average_consumption)"
+    )
+    monthly_consumption_peak: Optional[list[float]] = Field(
+        default=None, min_length=12, max_length=12,
+        description="Monthly peak consumption in kWh (replicated from average_consumption_peak)"
     )
 
 
@@ -568,6 +584,32 @@ class AgentGroupBOutput(BaseModel):
     icms: Optional[float] = Field(
         default=None,
         description="Percentual de ICMS (%)"
+    )
+
+    # Raw component fields for deterministic derivation
+    total_energy_value: Optional[float] = Field(
+        default=None,
+        description="Valor total de energia elétrica na fatura em R$ (inclui TE, TUSD, encargos)"
+    )
+    current_month_consumption: Optional[float] = Field(
+        default=None,
+        description="Consumo do mês atual em kWh (usado para derivar kWh price se ausente)"
+    )
+    te_unit_price: Optional[float] = Field(
+        default=None,
+        description="Tarifa de Energia (TE) unitária em R$/kWh, se listada separadamente"
+    )
+    tusd_unit_price: Optional[float] = Field(
+        default=None,
+        description="TUSD unitária em R$/kWh, se listada separadamente"
+    )
+    icms_value: Optional[float] = Field(
+        default=None,
+        description="Valor absoluto do ICMS em R$ (para derivar percentual)"
+    )
+    icms_base: Optional[float] = Field(
+        default=None,
+        description="Base de cálculo do ICMS em R$ (para derivar percentual)"
     )
 
 
@@ -632,6 +674,16 @@ class AgentGroupAOutput(BaseModel):
         description="Percentual de ICMS (%)"
     )
 
+    # Raw component fields for deterministic derivation
+    icms_value: Optional[float] = Field(
+        default=None,
+        description="Valor absoluto do ICMS em R$ (para derivar percentual)"
+    )
+    icms_base: Optional[float] = Field(
+        default=None,
+        description="Base de cálculo do ICMS em R$ (para derivar percentual)"
+    )
+
 
 class AgentExtractionOutput(BaseModel):
     """Top-level structured output from the LLM agent."""
@@ -674,6 +726,12 @@ class AgentExtractionOutput(BaseModel):
 | Consumo Dez | `group_b.dec` | `group_b.monthly_consumption[11]` | `monthlyConsumption[11]` | `dec` |
 | TUSD | `group_b.tusd` | `group_b.tusd` | `tusd` | `tusd` |
 | ICMS | `group_b.icms` | `group_b.icms` | `icms` | `icms` |
+| Valor Total Energia | `group_b.total_energy_value` | — | — | — | (raw, used for derivation only — not passed to frontend) |
+| Consumo Mês Atual | `group_b.current_month_consumption` | — | — | — | (raw, used for derivation only — not passed to frontend) |
+| TE Unitária | `group_b.te_unit_price` | — | — | — | (raw, used for derivation only — not passed to frontend) |
+| TUSD Unitária | `group_b.tusd_unit_price` | — | — | — | (raw, used for derivation only — not passed to frontend) |
+| ICMS Valor (B) | `group_b.icms_value` | — | — | — | (raw, used for derivation only — not passed to frontend) |
+| ICMS Base (B) | `group_b.icms_base` | — | — | — | (raw, used for derivation only — not passed to frontend) |
 | **Group A** | | | | |
 | Classificação | `group_a.classification` | `classification` | `classification` | `classification` |
 | TE Fora Ponta | `group_a.kwh_price` | `group_a_verde.kwh_price` or `group_a_azul.kwh_price` | `kwhPrice` | `kwhPrice` |
@@ -688,6 +746,12 @@ class AgentExtractionOutput(BaseModel):
 | Consumo Médio FP | `group_a.average_consumption` | `*.average_consumption` | `monthlyConsumption[0-11]` | `averageValue` |
 | Consumo Médio Ponta | `group_a.average_consumption_peak` | `*.average_consumption_peak` | `monthlyConsumptionPeak[0-11]` | `averageValuePeak` |
 | ICMS | `group_a.icms` | `*.icms` | `icms` | `icms` |
+| Consumo Mensal FP | — | `*.monthly_consumption` | `monthlyConsumption` | `jan`-`dec` | (replicated from average_consumption in post-processing) |
+| Consumo Mensal Ponta | — | `*.monthly_consumption_peak` | `monthlyConsumptionPeak` | — | (replicated from average_consumption_peak in post-processing) |
+| ICMS Valor (A) | `group_a.icms_value` | — | — | — | (raw, used for derivation only — not passed to frontend) |
+| ICMS Base (A) | `group_a.icms_base` | — | — | — | (raw, used for derivation only — not passed to frontend) |
+
+> **Note on `kwh_price`:** For Group B this is the all-inclusive price (TE + TUSD + taxes). For Group A this is the TE component only (TUSD is a separate field). Same field name, different semantics — this matches domain conventions where Group A tariffs are always disaggregated.
 
 ---
 
@@ -750,9 +814,10 @@ Implementation responsibilities:
 6. Call agent factory to create extraction agent
 7. Run agent with images → get `AgentExtractionOutput`
 8. Validate extracted values against business rules
-9. Post-process (fill missing months for Group B)
-10. Map `AgentExtractionOutput` → `InvoiceExtractionResult`
-11. Determine success/failure based on mandatory field presence
+9. Apply deterministic derivation rules (derive missing fields from raw components)
+10. Post-process (fill missing months for Group B, replicate averages for Group A)
+11. Map `AgentExtractionOutput` → `InvoiceExtractionResult`
+12. Determine success/failure based on mandatory field presence
 
 **Validation Rules:**
 
@@ -771,8 +836,57 @@ Implementation responsibilities:
 | `public_light_bill` | `> 0` | Set to None (best-effort) |
 | `tusd` (Group B) | `>= 0` | Set to None (best-effort) |
 | `icms` | `> 0 AND < 100` | Set to None (best-effort) |
-| `power_dist_company` | Must match concessionária enum | Set to None (best-effort) |
+| `power_dist_company` | Must match concessionária enum (case-insensitive, normalized to uppercase before comparison) | Set to None (best-effort) |
+| PDF page count | <= 5 pages | Return 422 with "PDF com muitas páginas. Máximo: 5 páginas." |
 | `classification` | Must be "Azul" or "Verde" | Mark as missing |
+
+**Deterministic Derivation Rules (applied AFTER validation, BEFORE post-processing):**
+
+```python
+def derive_missing_fields_group_b(extraction: AgentGroupBOutput) -> AgentGroupBOutput:
+    """Derive missing Group B fields from raw components.
+    Applied after validation, before post-processing.
+    """
+    # 1. kwh_price: derive from total / consumption, or te + tusd
+    if extraction.kwh_price is None:
+        if extraction.te_unit_price is not None and extraction.tusd_unit_price is not None:
+            extraction.kwh_price = round(extraction.te_unit_price + extraction.tusd_unit_price, 6)
+        elif (extraction.total_energy_value is not None
+              and extraction.current_month_consumption is not None
+              and extraction.current_month_consumption > 0):
+            extraction.kwh_price = round(
+                extraction.total_energy_value / extraction.current_month_consumption, 6
+            )
+
+    # 2. icms: derive percentage from absolute values
+    if extraction.icms is None:
+        if (extraction.icms_value is not None
+            and extraction.icms_base is not None
+            and extraction.icms_base > 0):
+            extraction.icms = round(
+                (extraction.icms_value / extraction.icms_base) * 100, 2
+            )
+
+    # 3. tusd: derive from tusd_unit_price if present
+    if extraction.tusd is None and extraction.tusd_unit_price is not None:
+        extraction.tusd = extraction.tusd_unit_price
+
+    return extraction
+
+
+def derive_missing_fields_group_a(extraction: AgentGroupAOutput) -> AgentGroupAOutput:
+    """Derive missing Group A fields from raw components."""
+    # 1. icms: derive percentage from absolute values
+    if extraction.icms is None:
+        if (extraction.icms_value is not None
+            and extraction.icms_base is not None
+            and extraction.icms_base > 0):
+            extraction.icms = round(
+                (extraction.icms_value / extraction.icms_base) * 100, 2
+            )
+
+    return extraction
+```
 
 **Post-Processing Rules (Group B only):**
 
@@ -795,7 +909,21 @@ def fill_missing_months_with_average(monthly: list[Optional[float]]) -> list[flo
 def replicate_average_to_months(average: float) -> list[float]:
     """Replicate the average value to all 12 months."""
     return [round(average, 2)] * 12
+
+
+def post_process_group_a(extraction) -> None:
+    """Post-process Group A extraction: replicate averages to monthly arrays."""
+    if extraction.average_consumption is not None:
+        extraction.monthly_consumption = replicate_average_to_months(
+            extraction.average_consumption
+        )
+    if extraction.average_consumption_peak is not None:
+        extraction.monthly_consumption_peak = replicate_average_to_months(
+            extraction.average_consumption_peak
+        )
 ```
+
+> **Missing months reporting:** Individual missing months are NOT reported individually in `missing_fields`. The entire `monthly_consumption` field is reported as missing only if ALL 12 months are null/zero after the fill-with-average post-processing. Partial months are silently filled.
 
 **Success Criteria:**
 
@@ -929,9 +1057,8 @@ Extraia os seguintes campos:
 2. **kwh_price**: Valor do kWh em R$. Este é o valor final cobrado por kWh **incluindo todos os tributos e encargos**. Procure por:
    - "Tarifa de Energia" ou "TE" na seção de composição tarifária
    - "Valor unitário" na tabela de itens faturados
-   - Divida o valor total de energia pelo consumo se necessário para verificar
-   - **IMPORTANTE**: O valor deve incluir TODOS os componentes (TE + TUSD + tributos). Se a fatura apresentar componentes separados, some-os.
    - Faixa esperada: R$ 0,30 a R$ 2,50 por kWh (valores fora desta faixa podem indicar erro de leitura)
+   - **IMPORTANTE**: Procure pelo valor final do kWh (Valor Unitário) já incluindo todos os componentes. Se não encontrar um valor único final, retorne null (os componentes separados serão capturados em campos auxiliares abaixo).
 
 3. **public_light_bill**: Taxa de iluminação pública (CIP ou COSIP) em R$. Procure por:
    - "Contrib Ilum Publica Municipal" ou "CIP" ou "COSIP"
@@ -956,8 +1083,34 @@ Extraia os seguintes campos:
 
 7. **icms**: Percentual de ICMS. Procure por:
    - "ICMS" com valor percentual (%)
-   - "Base de Cálculo ICMS" e "Valor ICMS" (calcule o percentual se necessário)
    - Geralmente entre 12% e 33%
+   - Se encontrar apenas valores absolutos (R$), retorne null aqui — preencha icms_value e icms_base abaixo.
+
+### Campos Auxiliares (Grupo B)
+
+Estes campos auxiliares são usados para derivar valores quando os campos principais não estão disponíveis. Extraia-os SEMPRE que visíveis na fatura, mesmo se o campo principal correspondente já foi preenchido.
+
+8. **total_energy_value**: Valor total da conta de energia em R$. Procure por:
+   - "Valor Total" ou "Total a Pagar" na fatura
+   - Apenas o valor de energia elétrica (excluir iluminação pública se listada separadamente)
+
+9. **current_month_consumption**: Consumo do mês atual em kWh. Procure por:
+   - "Consumo" ou "kWh" no período de faturamento atual
+   - Diferente do histórico — este é o consumo do mês da fatura
+
+10. **te_unit_price**: Tarifa de Energia (TE) unitária em R$/kWh. Procure por:
+    - "TE" ou "Tarifa de Energia" na composição tarifária
+    - Apenas o componente TE, sem TUSD ou tributos
+
+11. **tusd_unit_price**: TUSD unitária em R$/kWh. Procure por:
+    - "TUSD" na composição tarifária com valor unitário (R$/kWh)
+    - Diferente do tusd total em R$
+
+12. **icms_value**: Valor absoluto do ICMS em R$. Procure por:
+    - "Valor ICMS" ou valor em R$ associado ao ICMS
+
+13. **icms_base**: Base de cálculo do ICMS em R$. Procure por:
+    - "Base de Cálculo ICMS" ou "Base Cálc. ICMS"
 
 ### Se Grupo A:
 
@@ -1002,13 +1155,19 @@ Extraia os seguintes campos:
 10. **public_light_bill**: Mesmo procedimento do Grupo B.
 
 11. **average_consumption**: Consumo médio mensal fora ponta em kWh.
-    - Procure por "Consumo Médio" ou calcule a partir do histórico se disponível
-    - Se houver histórico de consumo, use o consumo fora ponta
+    - Procure por "Consumo Médio" ou "Consumo Médio Fora Ponta"
+    - Se não encontrar explicitamente, retorne null
 
 12. **average_consumption_peak**: Consumo médio mensal ponta em kWh.
     - Procure por "Consumo Médio Ponta" ou consumo ponta no histórico
 
 13. **icms**: Mesmo procedimento do Grupo B.
+
+### Campos Auxiliares (Grupo A)
+
+14. **icms_value**: Valor absoluto do ICMS em R$. Mesmo procedimento do Grupo B.
+
+15. **icms_base**: Base de cálculo do ICMS em R$. Mesmo procedimento do Grupo B.
 
 ## Regras Importantes
 
@@ -1178,8 +1337,9 @@ class ExtractionResponse(BaseModel):
    ↓
 5. If PDF:
    │  a. Open with PyMuPDF (fitz)
-   │  b. For each page: render as PNG at 300 DPI
-   │  c. Collect page images as bytes[]
+   │  b. Check page count: if > 5 pages, return 422 error
+   │  c. For each page: render as PNG at 300 DPI
+   │  d. Collect page images as bytes[]
    ↓
    If Image (.jpg/.png/.gif/.webp):
    │  a. Use image bytes directly
@@ -1191,6 +1351,8 @@ class ExtractionResponse(BaseModel):
    ↓
 8. Validate against business rules (ranges from feature doc tables)
    ↓
+8b. Apply deterministic derivation rules (derive missing kwh_price, icms, tusd from raw components)
+   ↓
 9. Post-process:
    │  - Group B: fill missing months with average
    │  - Group A: replicate average to 12-month arrays
@@ -1199,7 +1361,9 @@ class ExtractionResponse(BaseModel):
    ↓
 11. Determine success/failure based on mandatory fields
    ↓
-12. Schedule GCS temp file cleanup (async, non-blocking)
+12. GCS temp file cleanup: Use GCS object lifecycle policy configured on the
+    `energy-invoices/temp/` prefix to auto-delete objects older than 1 hour.
+    No application-level cleanup needed — configure lifecycle rule at infra level.
    ↓
 13. Return result
 ```
@@ -1258,6 +1422,8 @@ invoiceReadingRoutes
 export default invoiceReadingRoutes;
 ```
 
+> **Note:** `singleFilesUpload` middleware expects the file field name `"file"` in the multipart form data, matching the frontend's `formData.append("file", file)`.
+
 **Mount in `app.ts`:**
 
 ```typescript
@@ -1300,6 +1466,24 @@ Add to the Request augmentation:
 isSystemAdmin?: boolean;
 ```
 
+**Modified file:** `src/controllers/user/logUser.ts`
+
+Add `isSystemAdmin` to the JWT payload in `jwt.sign()`:
+
+```typescript
+// In the jwt.sign() payload object, add:
+isSystemAdmin: existingUser.isSystemAdmin || false,
+```
+
+**Modified file:** `src/controllers/user/logClientWithToken.ts`
+
+Add `isSystemAdmin` to the token-refresh JWT payload as well:
+
+```typescript
+// In the jwt.sign() payload object, add:
+isSystemAdmin: existingUser.isSystemAdmin || false,
+```
+
 ### 4.3 Main Extraction Controller
 
 **New file:** `src/controllers/invoiceReading/extractInvoice.ts`
@@ -1332,6 +1516,7 @@ export const extractInvoice = async (
   try {
     const { pid } = req.params;
     const { ucid, customerId, model } = req.body;
+    const ucIndex = parseInt(ucid, 10) || 0; // Consumer unit index for multi-UC proposals
     const file = req.file;
 
     // 1. Validate file
@@ -1351,7 +1536,7 @@ export const extractInvoice = async (
     // 2. Validate proposal exists
     const proposal = await Proposal.findById(pid);
     if (!proposal) {
-      return next(new HttpError("Proposta não encontrada.", 404));
+      return next(new HttpError("Proposta não encontrada.", 404, null, "INVALID_PROPOSAL"));
     }
 
     // 3. File is already uploaded to S3 by singleFilesUpload middleware
@@ -1394,7 +1579,9 @@ export const extractInvoice = async (
       );
       return next(new HttpError(
         "Não foi possível conectar ao serviço de leitura. Tente novamente.",
-        502
+        502,
+        nexusErr,
+        "NEXUS_UNAVAILABLE"
       ));
     }
 
@@ -1414,7 +1601,7 @@ export const extractInvoice = async (
 
     // 7. Persist file URL in proposal
     await Proposal.findByIdAndUpdate(pid, {
-      $set: { invoiceFileUrl: fileUrl },
+      $set: { [`invoiceFileUrls.${ucIndex}`]: fileUrl },
     });
 
     // 8. Transform and return result
@@ -1506,10 +1693,10 @@ Add new field to store the invoice file URL:
 
 ```typescript
 // In ProposalDocument interface:
-invoiceFileUrl?: string;
+invoiceFileUrls?: string[];
 
 // In ProposalSchema:
-invoiceFileUrl: { type: String, default: null },
+invoiceFileUrls: { type: [String], default: [] },
 ```
 
 ### 4.6 Nexus Result Transformation
@@ -1546,6 +1733,8 @@ function transformNexusResult(nexusResult: any) {
       fields.publicLightBill = groupA.public_light_bill;
       fields.averageConsumption = groupA.average_consumption;
       fields.averageConsumptionPeak = groupA.average_consumption_peak;
+      fields.monthlyConsumption = groupA.monthly_consumption;       // Replicated 12-month array
+      fields.monthlyConsumptionPeak = groupA.monthly_consumption_peak; // Replicated peak array
       fields.icms = groupA.icms;
 
       // Azul-specific fields
@@ -1824,6 +2013,16 @@ const applyExtractionToForm = (
     if (fields.icms != null)
       inputHandler("icms", String(fields.icms), true, "ICMS");
 
+    // Replicated monthly consumption (from average)
+    const months = ["jan","feb","mar","apr","may","jun","jul","aug","sep","oct","nov","dec"];
+    if (fields.monthlyConsumption) {
+      fields.monthlyConsumption.forEach((val: number, i: number) => {
+        if (val != null) {
+          inputHandler(months[i], String(val), true, `Consumo ${months[i]}`);
+        }
+      });
+    }
+
     // Azul-specific
     if (fields.demandPeak != null)
       inputHandler("demandPeak", String(fields.demandPeak), true, "Demanda Contratada Ponta");
@@ -1954,7 +2153,7 @@ The `SmartReadingButton` is always visible regardless of current ucid. The uploa
 ProposalStepOne (state owner)
 │
 ├── State: showUploadModal, showValidationPopup, extractionResult, isExtracting
-│   State: availableModels (fetched on mount if isSystemAdmin)
+│   State: availableModels (fetched lazily when modal opens, if isSystemAdmin)
 │
 ├── SmartReadingButton
 │   └── onClick → setShowUploadModal(true)
@@ -2239,7 +2438,7 @@ Full flow with sample invoices:
 - Route: `src/routes/invoiceReadingRoutes.ts`
 - Controller: `src/controllers/invoiceReading/extractInvoice.ts`
 - Models controller: `src/controllers/invoiceReading/getAvailableModels.ts`
-- Proposal model: `src/models/proposal.ts` (add `invoiceFileUrl`)
+- Proposal model: `src/models/proposal.ts` (add `invoiceFileUrls`)
 - User model: `src/models/user.ts` (add `isSystemAdmin`)
 - Archive model: `src/models/archive.ts` (no schema changes, types only)
 - Types: `src/data/types.ts` (extend `FolderSemantics`)
