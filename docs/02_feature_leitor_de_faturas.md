@@ -16,12 +16,17 @@ Abaixo, algumas amostras de faturas de energia:
 2 - samples/faturas-de-energia/fatura-CERRP-grupo-b.pdf
 3 - samples/faturas-de-energia/fatura-CPFL-grupo-b.pdf
 4 - samples/faturas-de-energia/fatura-enel-grupo-b.pdf
+5 - samples/faturas-de-energia/fatura-enel-grupo-b-2.pdf
 
 **Grupo A:**
 
 1 - samples/faturas-de-energia/fatura-copel-grupo-a.pdf
 2 - samples/faturas-de-energia/fatura-enel-grupo-a.pdf
 3 - samples/faturas-de-energia/fatura-equatorial-grupo-a.pdf
+
+**Referência:**
+
+1 - samples/faturas-de-energia/guia-calculo-fatura-grupo-a-azume.pdf
 
 ### REQUISITOS TÉCNICOS
 
@@ -35,9 +40,9 @@ Primeiramente, deve-se entender qual a modalidade tarifária da conta de energia
 
 Valores:
 
-| Nome                 | Tipo           | Valores    | Campo Backend Azume CRM | Campo Frontend Azume CRM | Opcional | Unidade |
-| -------------------- | -------------- | ---------- | ----------------------- | ------------------------ | -------- | ------- |
-| Modalidade Tarifária | Enum de string | "A" ou "B" | tariffModality          | tariffModality           | Não      | -       |
+| Nome                 | Tipo           | Valores    | Campo Backend Azume CRM | Campo Frontend Azume CRM | Obrigatório | Unidade |
+| -------------------- | -------------- | ---------- | ----------------------- | ------------------------ | ----------- | ------- |
+| Modalidade Tarifária | Enum de string | "A" ou "B" | tariffModality          | tariffModality           | Sim         | -       |
 
 **Grupo B (baixa tensão):**
 
@@ -64,7 +69,7 @@ Para contas do grupo B, devem ser extraídos os valores abaixo:
 | tusd               | number              | >= 0                                    | tusd                    | tusd                     | Não         | R$      |
 | icms               | number (percentual) | > 0 && < 100 %                          | icms                    | icms                     | Não         | %       |
 
-Obs1: Nem todas as contas possuem o consumo dos últimos 12 meses, algumas só exibem 8 meses ou somente 6 meses. Neste caso, os meses que estão faltando devem ser preenchidos com a média de consumo dos meses que estão presentes na fatura de energia.
+Obs1: Nem todas as contas possuem o consumo dos últimos 12 meses, algumas só exibem 8 meses ou somente 6 meses. Neste caso, os meses que estão faltando devem ser preenchidos com a média de consumo dos meses que estão presentes na fatura de energia. **Importante:** esse preenchimento é pós-processamento executado pelo backend (`nexus-services`), não é responsabilidade do agente de extração (ver seção "Decisões Técnicas > Sem tools de cálculo").
 Obs2: O valor de kwhPrice já deve incluir todos os tributos/impostos.
 Obs3: No grupo B, os valores de tusd e icms não são essenciais para que o usuário prossiga com a geração do orçamento de energia solar, porém são importantes para que o usuário possa gerar uma proposta mais assertiva. Portanto, deve-se aplicar uma política de "melhor esforço" para extração de tusd e icms, porém sem bloquear o critério de sucesso da leitura da fatura de energia.
 Obs4: Mesma coisa que "Obs3" para taxa de iluminação pública (melhor esforço para extração da taxa de iluminação pública, sem bloqueio de sucesso).
@@ -84,9 +89,9 @@ Uma vez identificado que a fatura é do grupo A (alta tensão), deve-se identifi
 
 Valores:
 
-| Nome                       | Tipo           | Valores           | Campo Backend Azume CRM | Campo Frontend Azume CRM | Opcional | Unidade |
-| -------------------------- | -------------- | ----------------- | ----------------------- | ------------------------ | -------- | ------- |
-| Classificação Horo-Sazonal | Enum de string | "Azul" ou "Verde" | classification          | classification           | Não      | -       |
+| Nome                       | Tipo           | Valores           | Campo Backend Azume CRM | Campo Frontend Azume CRM | Obrigatório | Unidade |
+| -------------------------- | -------------- | ----------------- | ----------------------- | ------------------------ | ----------- | ------- |
+| Classificação Horo-Sazonal | Enum de string | "Azul" ou "Verde" | classification          | classification           | Sim         | -       |
 
 **Grupo A (alta tensão) - Verde:**
 
@@ -97,14 +102,16 @@ Valores:
 | TE Ponta                                                  | number              | > 0 && < 10    | kwhPricePeak                 | kwhPricePeak             | Sim         | R$      |
 | TUSD Fora Ponta                                           | number              | > 0 && < 10    | tusd                         | tusd                     | Sim         | R$      |
 | TUSD Ponta                                                | number              | > 0 && < 10    | tusdPeak                     | tusdPeak                 | Sim         | R$      |
-| Demanda Contratada (Fora Ponta para classificação "Azul") | number              | >= 30          | demand                       | demand                   | Sim         | kW      |
-| Tarifa da Demanda (Fora Ponta para classificação "Azul")  | number              | > 0            | demandTariff                 | demandTariff             | Sim         | R$      |
+| Demanda Contratada                                        | number              | >= 30          | demand                       | demand                   | Sim         | kW      |
+| Tarifa da Demanda                                         | number              | > 0            | demandTariff                 | demandTariff             | Sim         | R$      |
 | Taxa Ilum. Pública                                        | number              | > 0            | publicLightBill              | publicLightBill          | Não         | R$      |
-| Consumo Médio Mensal Fora Ponta                           | number              | > 0            | monthlyConsumption[1-12]     | averageValue             | Sim         | kWh     |
-| Consumo Médio Mensal Ponta                                | number              | > 0            | monthlyConsumptionPeak[1-12] | averageValuePeak         | Sim         | kWh     |
+| Consumo Médio Mensal Fora Ponta                           | number              | > 0            | monthlyConsumption[0-11]     | averageValue             | Sim         | kWh     |
+| Consumo Médio Mensal Ponta                                | number              | > 0            | monthlyConsumptionPeak[0-11] | averageValuePeak         | Sim         | kWh     |
 | icms                                                      | number (percentual) | > 0 && < 100 % | icms                         | icms                     | Não         | %       |
 
-Obs1: Para a classificação "Verde", a demanda contratada não é diferenciada entre ponta e fora ponta, há apenas um valor para demanda contratada.
+Obs sobre consumo mensal (Grupo A): O agente deve extrair **um único valor médio** para cada tipo de consumo (fora ponta e ponta). O backend (`nexus-services`) será responsável por replicar esse valor médio nos 12 meses dos arrays `monthlyConsumption[0-11]` e `monthlyConsumptionPeak[0-11]`. Diferentemente do Grupo B, onde o agente extrai os 12 meses individuais, no Grupo A a extração é de um valor médio por tipo.
+
+Obs1: Para a classificação "Verde", a demanda contratada não é diferenciada entre ponta e fora ponta, há apenas um valor para demanda contratada. Na classificação "Azul", os campos "Demanda Contratada" e "Tarifa da Demanda" da tabela Verde correspondem aos valores de fora ponta, e os campos adicionais "Demanda Contratada Ponta" e "Tarifa da Demanda Ponta" da tabela Azul representam os valores de ponta.
 Obs2: No grupo A Verde, o valor de icms não é essencial para que o usuário prossiga com a geração do orçamento de energia solar, porém é importante para que o usuário possa gerar uma proposta mais assertiva. Portanto, deve-se aplicar uma política de "melhor esforço" para extração de icms, porém sem bloquear o critério de sucesso da leitura da fatura de energia.
 Obs3: Mesma coisa que "Obs2" para taxa de iluminação pública (melhor esforço para extração da taxa de iluminação pública, sem bloqueio de sucesso).
 Obs4: Mesma coisa que "Obs3" para a concessionária (melhor esforço para extração da concessionária, sem bloqueio de sucesso).
@@ -122,7 +129,11 @@ Obs: Para a classificação "Azul", a demanda contratada é diferenciada entre p
 
 **Critérios de sucesso da leitura Grupo A**:
 
-- Extrair todos os campos obrigatórios
+- Extrair todos os campos obrigatórios (incluindo classificação horo-sazonal e campos específicos da classificação Verde ou Azul)
+- Extrair o valor de consumo médio mensal fora ponta e ponta
+- O consumo médio mensal será replicado para os 12 meses pelo backend (`nexus-services`) — não há extração de meses individuais no Grupo A
+
+Caso os critérios de sucesso não sejam alcançados, deve ser considerado que houve uma falha na leitura.
 
 **Definições:**
 
@@ -218,7 +229,7 @@ Os valores de "aliases" são para ajudar o agente a localizar o valor da concess
 | ELETROCAR              | Centrais Eletricas de Carazinho                                                      |
 | ELFSM                  | Empresa Luz e Forca Santa Maria                                                      |
 | ENEL CE                | COELCE; Companhia Energetica do Ceara; Enel Distribuicao Ceara                       |
-| ENEL GO                | CELG; CELG-D; Companhia Energetica de Goias; Enel Distribuicao Goias                 |
+| ENEL GO                | Enel Distribuicao Goias                                                              |
 | ENEL RJ                | AMPLA; CERJ; Ampla Energia e Servicos; Enel Distribuicao Rio                         |
 | ENEL SP                | ELETROPAULO; AES ELETROPAULO; Eletropaulo Metropolitana; Enel Distribuicao Sao Paulo |
 | ENERGISA AC            | EAC; ELETROACRE; Empresa de Eletricidade do Acre                                     |
@@ -237,7 +248,6 @@ Os valores de "aliases" são para ajudar o agente a localizar o valor da concess
 | EQUATORIAL MA          | EMA; CEMAR; Companhia Energetica do Maranhao                                         |
 | EQUATORIAL PA          | EPA; CELPA; Centrais Eletricas do Para                                               |
 | EQUATORIAL PI          | EPI; CEPISA; Companhia Energetica do Piaui                                           |
-| ESS                    | ENERGISA SUL-SUDESTE; ENERGISA SUL SUDESTE                                           |
 | FORCEL                 | Forca e Luz Coronel Vivida                                                           |
 | HIDROPAN               | Hidroeletrica Panambi                                                                |
 | LIGHT                  | LIGHT S.A.; Light Servicos de Eletricidade                                           |
@@ -278,6 +288,7 @@ Para satisfazer o user story, deve-se criar uma interface de usuário que permit
 4. No backend, os valores extraídos ser validados de acordo com as regras de negócio definidas ("Valores" das tabelas mostram regras de validação).
 5. No backend do Azume CRM, a URL da conta de energia deverá ser armazenada na coleção de dados "archive" e na coleção de dados "proposal".
 6. Para persistir a URL da conta de energia na coleção "archive", o sistema deverá localizar um folder denominado "Faturas de Energia". Se não for localizado, deverá ser criado um novo folder com o nome "Faturas de Energia".
+7. Fluxo de múltiplas unidades consumidoras: Após a validação e preenchimento dos campos da primeira fatura, o usuário pode clicar em "Adicionar unidade consumidora" para abrir novamente a modal de upload. Os dados da unidade consumidora anterior são preservados no formulário. Cada nova fatura corresponde a uma nova unidade consumidora (1 fatura = 1 unidade consumidora).
 
 ### REPOSITÓRIOS
 
@@ -291,10 +302,12 @@ Os repositórios abaixo serão utilizados para o desenvolvimento da feature:
 
 1. Usuário no frontend do Azume CRM faz o upload da fatura de energia.
 2. O backend do Azume CRM recebe a requisição, valida os dados e faz uma requisição para o backend do Nexus, onde os valores serão extraídos da fatura de energia.
-3. Nexus faz o upload da fatura para o Cloud Storage.
-4. Nexus renderiza as páginas do PDF como imagens (PyMuPdf) → cria um agente de tarefa com Structured Output (OpenAI Agents SDK) → executa `agent.run()` com as imagens como input → valida os valores extraídos contra as regras de negócio → aplica pós-processamento (preencher meses faltantes com média, Grupo B) → retorna o resultado estruturado
+3. Nexus faz o upload da fatura para o Cloud Storage (armazenamento temporário para processamento pelo agente de extração).
+4. Se o arquivo for PDF, Nexus renderiza as páginas como imagens (PyMuPdf). Se o arquivo for uma imagem (`.jpg`, `.jpeg`, `.png`, `.gif`, `.webp`), é enviado diretamente ao agente sem etapa de renderização. Em seguida, cria um agente de tarefa com Structured Output (OpenAI Agents SDK) → executa `agent.run()` com as imagens como input → valida os valores extraídos contra as regras de negócio → aplica pós-processamento (preencher meses faltantes com média, Grupo B) → retorna o resultado estruturado.
 5. Nexus valida os valores extraídos e retorna os valores extraídos para o backend do Azume CRM.
-6. O backend do Azume CRM valida os valores extraídos e retorna para o frontend do Azume CRM. Após validados os dados, o backend do Azume CRM faz o upload do arquivo da fatura de energia para o S3 do Azume CRM e persiste a URL do arquivo no banco de dados do Azume CRM (coleções "archive" e "proposal"). Para "proposal" deverá ser definido um novo campo para armazenar a URL do arquivo da fatura de energia.
+6. O backend do Azume CRM valida os valores extraídos e retorna para o frontend do Azume CRM. Após validados os dados, o backend do Azume CRM faz o upload do arquivo da fatura de energia para o S3 do Azume CRM (armazenamento permanente vinculado ao arquivo do cliente) e persiste a URL do arquivo no banco de dados do Azume CRM (coleções "archive" e "proposal"). Para "proposal" deverá ser definido um novo campo para armazenar a URL do arquivo da fatura de energia.
+
+Obs sobre duplo armazenamento: O arquivo é armazenado em dois locais distintos com propósitos diferentes. O Cloud Storage do Nexus (passo 3) é armazenamento temporário usado durante o processamento de extração. O S3 do Azume CRM (passo 6) é armazenamento permanente vinculado ao arquivo do cliente. O arquivo no Cloud Storage do Nexus pode ser limpo após o processamento.
 7. O frontend do Azume CRM exibe os valores extraídos para o usuário visualizar e editar caso necessário (validação), antes de popular os campos extraídos no formulário de geração de orçamento de energia solar.
 8. O usuário poderá prosseguir com a geração do orçamento de energia solar OU adição de novas unidades consumidoras.
 
