@@ -1,0 +1,5034 @@
+{
+  "fees": [
+    {
+      "taxes": {
+        "imcs": 0.2503,
+        "pis": 0.0177,
+        "cofins": 0.0501
+      },
+      "b1Tariffs": {
+        "tarif": 0.99,
+        "bWireNoTax": 0.239327455332364
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.23,
+            "te": 0.36
+          },
+          "peak": {
+            "tusd": 1.76,
+            "te": 0.61
+          },
+          "demand": 33.93
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.23,
+            "te": 0.36,
+            "demand": 33.93
+          },
+          "peak": {
+            "tusd": 0.23,
+            "te": 0.61,
+            "demand": 62.88
+          }
+        },
+        "tusdG": 35
+      },
+      "_id": "64aff90a1ace3b26102fd8a9",
+      "powerDistCompany": "AMAZONAS ENERGIA",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254154925,
+      "lastUpdated": "21/09/2023 | 09:55",
+      "lastUpdatedTimestamp": 1695300924044,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90a1ace3b26102fd8a9"
+    },
+    {
+      "taxes": {
+        "imcs": 0.25,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.6848970773354639,
+        "bWireNoTax": 0.0817500345504382
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.0856525074870277,
+            "te": 0.26530193210307196
+          },
+          "peak": {
+            "tusd": 2.54249664307306,
+            "te": 0.26530193210307196
+          },
+          "demand": 22.2592669432026
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.0856525074870277,
+            "te": 0.26530193210307196,
+            "demand": 89.952194381355
+          },
+          "peak": {
+            "tusd": 0.0856525074870277,
+            "te": 0.26530193210307196,
+            "demand": 135.414308012809
+          }
+        },
+        "tusdG": 5.96310596310596
+      },
+      "_id": "64aff90a1ace3b26102fd8aa",
+      "powerDistCompany": "CASTRO-DIS",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254154929,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254154929,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90a1ace3b26102fd8aa"
+    },
+    {
+      "taxes": {
+        "imcs": 0.29,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.814156542099272,
+        "bWireNoTax": 0.280914239947169
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.220180398402966,
+            "te": 0.263025902446369
+          },
+          "peak": {
+            "tusd": 1.54056459033706,
+            "te": 0.403186420384864
+          },
+          "demand": 21.1893908145298
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.220180398402966,
+            "te": 0.263025902446369,
+            "demand": 21.1893908145298
+          },
+          "peak": {
+            "tusd": 0.220180398402966,
+            "te": 0.403186420384864,
+            "demand": 54.2484215400397
+          }
+        },
+        "tusdG": 15.7551918115298
+      },
+      "_id": "64aff90a1ace3b26102fd8ab",
+      "powerDistCompany": "CEA EQUATORIAL",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254154931,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254154931,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90a1ace3b26102fd8ab"
+    },
+    {
+      "taxes": {
+        "imcs": 0.18,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 1.083806938761564,
+        "bWireNoTax": 0.467057976581394
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.10012757733684301,
+            "te": 0.35061935002080297
+          },
+          "peak": {
+            "tusd": 2.5115391330048302,
+            "te": 0.35061935002080297
+          },
+          "demand": 28.9386619244973
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.10012757733684301,
+            "te": 0.35061935002080297,
+            "demand": 28.9386619244973
+          },
+          "peak": {
+            "tusd": 0.10012757733684301,
+            "te": 0.35061935002080297,
+            "demand": 100.266445756451
+          }
+        },
+        "tusdG": 10.4634250975714
+      },
+      "_id": "64aff90a1ace3b26102fd8ac",
+      "powerDistCompany": "CEDRAP",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254154933,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254154933,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90a1ace3b26102fd8ac"
+    },
+    {
+      "taxes": {
+        "imcs": 0.18,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.858412756530244,
+        "bWireNoTax": 0.1970079501284
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.137693520081697,
+            "te": 0.354222887155295
+          },
+          "peak": {
+            "tusd": 2.54738362269141,
+            "te": 0.354222887155295
+          },
+          "demand": 32.2095741642808
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.137693520081697,
+            "te": 0.354222887155295,
+            "demand": 32.2095741642808
+          },
+          "peak": {
+            "tusd": 0.137693520081697,
+            "te": 0.354222887155295,
+            "demand": 100.196204743264
+          }
+        },
+        "tusdG": 13.5239769386111
+      },
+      "_id": "64aff90a1ace3b26102fd8ad",
+      "powerDistCompany": "CEDRI",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254154934,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254154934,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90a1ace3b26102fd8ad"
+    },
+    {
+      "taxes": {
+        "imcs": 0.25,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.7462052159705921,
+        "bWireNoTax": 0.148800172335664
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.147784579162753,
+            "te": 0.336557660900039
+          },
+          "peak": {
+            "tusd": 1.40968737209845,
+            "te": 0.5316387551004671
+          },
+          "demand": 26.1247918587624
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.147784579162753,
+            "te": 0.336557660900039,
+            "demand": 26.1247918587624
+          },
+          "peak": {
+            "tusd": 0.147784579162753,
+            "te": 0.5316387551004671,
+            "demand": 51.8129538916898
+          }
+        },
+        "tusdG": 13.3848133848134
+      },
+      "_id": "64aff90a1ace3b26102fd8ae",
+      "powerDistCompany": "CEEE EQUATORIAL",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254154935,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254154935,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90a1ace3b26102fd8ae"
+    },
+    {
+      "taxes": {
+        "imcs": 0.25,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.547970734829433,
+        "bWireNoTax": 0.104409507865383
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.110533559000456,
+            "te": 0.250101736473752
+          },
+          "peak": {
+            "tusd": 1.02194223836275,
+            "te": 0.250101736473752
+          },
+          "demand": 15.3929890569645
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.110533559000456,
+            "te": 0.250101736473752,
+            "demand": 15.3929890569645
+          },
+          "peak": {
+            "tusd": 0.110533559000456,
+            "te": 0.250101736473752,
+            "demand": 37.8873338833201
+          }
+        },
+        "tusdG": 4.66180466180466
+      },
+      "_id": "64aff90a1ace3b26102fd8af",
+      "powerDistCompany": "CEGERO",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254154935,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254154935,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90a1ace3b26102fd8af"
+    },
+    {
+      "taxes": {
+        "imcs": 0.25,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.69400740601974,
+        "bWireNoTax": 0.22453232118612
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.0889267050261662,
+            "te": 0.245386193935138
+          },
+          "peak": {
+            "tusd": 2.2642264005397,
+            "te": 0.245386193935138
+          },
+          "demand": 29.8218693268233
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.0889267050261662,
+            "te": 0.245386193935138,
+            "demand": 29.8218693268233
+          },
+          "peak": {
+            "tusd": 0.0889267050261662,
+            "te": 0.245386193935138,
+            "demand": 90.4344736591459
+          }
+        },
+        "tusdG": 9.76690976690977
+      },
+      "_id": "64aff90a1ace3b26102fd8b0",
+      "powerDistCompany": "CEJAMA",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254154936,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254154936,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90a1ace3b26102fd8b0"
+    },
+    {
+      "taxes": {
+        "imcs": 0.25,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.661882925356948,
+        "bWireNoTax": 0.11807685350204601
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.13525154009960802,
+            "te": 0.320441852978902
+          },
+          "peak": {
+            "tusd": 0.923399264916545,
+            "te": 0.517549451746812
+          },
+          "demand": 15.6375309114395
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.13525154009960802,
+            "te": 0.320441852978902,
+            "demand": 15.6375309114395
+          },
+          "peak": {
+            "tusd": 0.13525154009960802,
+            "te": 0.517549451746812,
+            "demand": 32.3512623968905
+          }
+        },
+        "tusdG": 4.94780494780495
+      },
+      "_id": "64aff90a1ace3b26102fd8b1",
+      "powerDistCompany": "CELESC-DIS",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254154937,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254154937,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90a1ace3b26102fd8b1"
+    },
+    {
+      "taxes": {
+        "imcs": 0.25,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.8287669181722139,
+        "bWireNoTax": 0.209219449511573
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.10689646044328001,
+            "te": 0.331479599430101
+          },
+          "peak": {
+            "tusd": 1.65680593824303,
+            "te": 0.331479599430101
+          },
+          "demand": 51.5415152797591
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.10689646044328001,
+            "te": 0.331479599430101,
+            "demand": 51.5415152797591
+          },
+          "peak": {
+            "tusd": 0.10689646044328001,
+            "te": 0.331479599430101,
+            "demand": 64.4150903382984
+          }
+        },
+        "tusdG": 10.953810953811
+      },
+      "_id": "64aff90a1ace3b26102fd8b2",
+      "powerDistCompany": "CELETRO",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254154938,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254154938,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90a1ace3b26102fd8b2"
+    },
+    {
+      "taxes": {
+        "imcs": 0.18,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.7477557847960279,
+        "bWireNoTax": 0.232757202320318
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.129177748671887,
+            "te": 0.300380566939288
+          },
+          "peak": {
+            "tusd": 1.34016329063177,
+            "te": 0.494611258008876
+          },
+          "demand": 16.5369646415844
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.129177748671887,
+            "te": 0.300380566939288,
+            "demand": 16.5369646415844
+          },
+          "peak": {
+            "tusd": 0.129177748671887,
+            "te": 0.494611258008876,
+            "demand": 49.9173111579763
+          }
+        },
+        "tusdG": 14.9888564522711
+      },
+      "_id": "64aff90a1ace3b26102fd8b3",
+      "powerDistCompany": "CEMIG-D",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254154939,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254154939,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90a1ace3b26102fd8b3"
+    },
+    {
+      "taxes": {
+        "imcs": 0.18,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.598486972926376,
+        "bWireNoTax": 0.147723124461272
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.102798691763324,
+            "te": 0.272829956812033
+          },
+          "peak": {
+            "tusd": 0.9788752809429929,
+            "te": 0.272829956812033
+          },
+          "demand": 16.6800419291697
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.102798691763324,
+            "te": 0.272829956812033,
+            "demand": 16.6800419291697
+          },
+          "peak": {
+            "tusd": 0.102798691763324,
+            "te": 0.272829956812033,
+            "demand": 36.4272869991256
+          }
+        },
+        "tusdG": 9.02470414665537
+      },
+      "_id": "64aff90a1ace3b26102fd8b4",
+      "powerDistCompany": "CEMIRIM",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254154940,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254154940,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90a1ace3b26102fd8b4"
+    },
+    {
+      "taxes": {
+        "imcs": 0.25,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.798489547586557,
+        "bWireNoTax": 0.278466465533884
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.109205594596726,
+            "te": 0.26561884555322096
+          },
+          "peak": {
+            "tusd": 2.2479809521311,
+            "te": 0.26561884555322096
+          },
+          "demand": 34.0984003457148
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.109205594596726,
+            "te": 0.26561884555322096,
+            "demand": 34.0984003457148
+          },
+          "peak": {
+            "tusd": 0.109205594596726,
+            "te": 0.26561884555322096,
+            "demand": 88.8997587407325
+          }
+        },
+        "tusdG": 12.3981123981124
+      },
+      "_id": "64aff90a1ace3b26102fd8b5",
+      "powerDistCompany": "CEPRAG",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254154941,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254154941,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90a1ace3b26102fd8b5"
+    },
+    {
+      "taxes": {
+        "imcs": 0.25,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.600387248608221,
+        "bWireNoTax": 0.186541857014222
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.102172158739807,
+            "te": 0.178692449355137
+          },
+          "peak": {
+            "tusd": 1.9340277894936,
+            "te": 0.178692449355137
+          },
+          "demand": 25.1896084657644
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.102172158739807,
+            "te": 0.178692449355137,
+            "demand": 25.1896084657644
+          },
+          "peak": {
+            "tusd": 0.102172158739807,
+            "te": 0.178692449355137,
+            "demand": 76.156132598985
+          }
+        },
+        "tusdG": 4.87630487630488
+      },
+      "_id": "64aff90a1ace3b26102fd8b6",
+      "powerDistCompany": "CERACA",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254154942,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254154942,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90a1ace3b26102fd8b6"
+    },
+    {
+      "taxes": {
+        "imcs": 0.25,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.752596621219709,
+        "bWireNoTax": 0.180571129005492
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.133803384383874,
+            "te": 0.252764073177837
+          },
+          "peak": {
+            "tusd": 2.33440049925679,
+            "te": 0.252764073177837
+          },
+          "demand": 31.5629740869197
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.133803384383874,
+            "te": 0.252764073177837,
+            "demand": 31.5629740869197
+          },
+          "peak": {
+            "tusd": 0.133803384383874,
+            "te": 0.252764073177837,
+            "demand": 91.4816791051759
+          }
+        },
+        "tusdG": 7.86500786500786
+      },
+      "_id": "64aff90a1ace3b26102fd8b7",
+      "powerDistCompany": "CERAL ANITAPOLIS",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254154945,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254154945,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90a1ace3b26102fd8b7"
+    },
+    {
+      "taxes": {
+        "imcs": 0.3,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 1.436358379039221,
+        "bWireNoTax": 0.5466700631224689
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.145282087033684,
+            "te": 0.435172188363401
+          },
+          "peak": {
+            "tusd": 5.05956150646847,
+            "te": 0.435172188363401
+          },
+          "demand": 81.0409763395107
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.145282087033684,
+            "te": 0.435172188363401,
+            "demand": 81.0409763395107
+          },
+          "peak": {
+            "tusd": 0.145282087033684,
+            "te": 0.435172188363401,
+            "demand": 204.334998907362
+          }
+        },
+        "tusdG": 28.2833854262426
+      },
+      "_id": "64aff90a1ace3b26102fd8b8",
+      "powerDistCompany": "CERAL ARARUAMA",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254154946,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254154946,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90a1ace3b26102fd8b8"
+    },
+    {
+      "taxes": {
+        "imcs": 0.25,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.729839573805156,
+        "bWireNoTax": 0.18134569886093702
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.0986867113419968,
+            "te": 0.30679526865939905
+          },
+          "peak": {
+            "tusd": 1.5286676744132601,
+            "te": 0.30679526865939905
+          },
+          "demand": 31.7595902586884
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.0986867113419968,
+            "te": 0.30679526865939905,
+            "demand": 31.7595902586884
+          },
+          "peak": {
+            "tusd": 0.0986867113419968,
+            "te": 0.30679526865939905,
+            "demand": 59.4581232578056
+          }
+        },
+        "tusdG": 8.65150865150865
+      },
+      "_id": "64aff90a1ace3b26102fd8b9",
+      "powerDistCompany": "CERAL DIS",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254154948,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254154948,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90a1ace3b26102fd8b9"
+    },
+    {
+      "taxes": {
+        "imcs": 0.25,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.6560546772630731,
+        "bWireNoTax": 0.183007263490925
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.105704821401085,
+            "te": 0.261017485484941
+          },
+          "peak": {
+            "tusd": 1.69844135880543,
+            "te": 0.261017485484941
+          },
+          "demand": 21.2783338415543
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.105704821401085,
+            "te": 0.261017485484941,
+            "demand": 21.2783338415543
+          },
+          "peak": {
+            "tusd": 0.105704821401085,
+            "te": 0.261017485484941,
+            "demand": 66.2171817197199
+          }
+        },
+        "tusdG": 5.07650507650508
+      },
+      "_id": "64aff90a1ace3b26102fd8ba",
+      "powerDistCompany": "CERBRANORTE",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254154949,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254154949,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90a1ace3b26102fd8ba"
+    },
+    {
+      "taxes": {
+        "imcs": 0.3,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 1.335847755317527,
+        "bWireNoTax": 0.44936
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.15011965744587802,
+            "te": 0.343162028914767
+          },
+          "peak": {
+            "tusd": 4.90352358160094,
+            "te": 0.343162028914767
+          },
+          "demand": 77.9700567468608
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.15011965744587802,
+            "te": 0.343162028914767,
+            "demand": 77.9700567468608
+          },
+          "peak": {
+            "tusd": 0.15011965744587802,
+            "te": 0.343162028914767,
+            "demand": 197.645832603996
+          }
+        },
+        "tusdG": 27.7624563338849
+      },
+      "_id": "64aff90a1ace3b26102fd8bb",
+      "powerDistCompany": "CERCI",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254154950,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254154950,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90a1ace3b26102fd8bb"
+    },
+    {
+      "taxes": {
+        "imcs": 0.2,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 1.007531189045527,
+        "bWireNoTax": 0.42097637755261597
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.07251492577415859,
+            "te": 0.33775284848468
+          },
+          "peak": {
+            "tusd": 3.00427341447952,
+            "te": 0.33775284848468
+          },
+          "demand": 56.0833128840339
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.07251492577415859,
+            "te": 0.33775284848468,
+            "demand": 56.0833128840339
+          },
+          "peak": {
+            "tusd": 0.07251492577415859,
+            "te": 0.33775284848468,
+            "demand": 177.806292643525
+          }
+        },
+        "tusdG": 13.9559202059202
+      },
+      "_id": "64aff90a1ace3b26102fd8bc",
+      "powerDistCompany": "CERCOS",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254154951,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254154951,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90a1ace3b26102fd8bc"
+    },
+    {
+      "taxes": {
+        "imcs": 0.25,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.748162531196073,
+        "bWireNoTax": 0.25319905098097
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.107991827600623,
+            "te": 0.219425655471967
+          },
+          "peak": {
+            "tusd": 2.5093216091213097,
+            "te": 0.219425655471967
+          },
+          "demand": 32.7608673234152
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.107991827600623,
+            "te": 0.219425655471967,
+            "demand": 32.7608673234152
+          },
+          "peak": {
+            "tusd": 0.107991827600623,
+            "te": 0.219425655471967,
+            "demand": 99.8318110843447
+          }
+        },
+        "tusdG": 6.62090662090662
+      },
+      "_id": "64aff90a1ace3b26102fd8bd",
+      "powerDistCompany": "CEREJ",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254154952,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254154952,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90a1ace3b26102fd8bd"
+    },
+    {
+      "taxes": {
+        "imcs": 0.3,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 1.3670571604064912,
+        "bWireNoTax": 0.491102307236979
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.15254998641763298,
+            "te": 0.297098407683971
+          },
+          "peak": {
+            "tusd": 4.86964545238569,
+            "te": 0.297098407683971
+          },
+          "demand": 68.8563041750149
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.15254998641763298,
+            "te": 0.297098407683971,
+            "demand": 68.8563041750149
+          },
+          "peak": {
+            "tusd": 0.15254998641763298,
+            "te": 0.297098407683971,
+            "demand": 196.138641985396
+          }
+        },
+        "tusdG": 19.0751976466262
+      },
+      "_id": "64aff90a1ace3b26102fd8be",
+      "powerDistCompany": "CERES",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254154953,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254154953,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90a1ace3b26102fd8be"
+    },
+    {
+      "taxes": {
+        "imcs": 0.25,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.8102257033353499,
+        "bWireNoTax": 0.20536096754286
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.0973894422898767,
+            "te": 0.319136396367255
+          },
+          "peak": {
+            "tusd": 2.4177922063515296,
+            "te": 0.319136396367255
+          },
+          "demand": 30.8929277038464
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.0973894422898767,
+            "te": 0.319136396367255,
+            "demand": 30.8929277038464
+          },
+          "peak": {
+            "tusd": 0.0973894422898767,
+            "te": 0.319136396367255,
+            "demand": 96.4823329079689
+          }
+        },
+        "tusdG": 10.2388102388102
+      },
+      "_id": "64aff90a1ace3b26102fd8bf",
+      "powerDistCompany": "CERFOX",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254154957,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254154957,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90a1ace3b26102fd8bf"
+    },
+    {
+      "taxes": {
+        "imcs": 0.25,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.856306683771729,
+        "bWireNoTax": 0.35326167059523
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.125515594336957,
+            "te": 0.255045629127966
+          },
+          "peak": {
+            "tusd": 2.8225460374405,
+            "te": 0.255045629127966
+          },
+          "demand": 34.7624417833943
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.125515594336957,
+            "te": 0.255045629127966,
+            "demand": 34.7624417833943
+          },
+          "peak": {
+            "tusd": 0.125515594336957,
+            "te": 0.255045629127966,
+            "demand": 112.131630644036
+          }
+        },
+        "tusdG": 15.3153153153153
+      },
+      "_id": "64aff90a1ace3b26102fd8c0",
+      "powerDistCompany": "CERGAL",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254154957,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254154957,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90a1ace3b26102fd8c0"
+    },
+    {
+      "taxes": {
+        "imcs": 0.17,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.658691584628581,
+        "bWireNoTax": 0.164840064318863
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.11258529188735901,
+            "te": 0.228669982366562
+          },
+          "peak": {
+            "tusd": 1.7502983259274398,
+            "te": 0.228669982366562
+          },
+          "demand": 29.0892974573882
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.11258529188735901,
+            "te": 0.228669982366562,
+            "demand": 29.0892974573882
+          },
+          "peak": {
+            "tusd": 0.11258529188735901,
+            "te": 0.228669982366562,
+            "demand": 68.0634082868407
+          }
+        },
+        "tusdG": 6.64175362970544
+      },
+      "_id": "64aff90a1ace3b26102fd8c1",
+      "powerDistCompany": "CERGAPA",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254154959,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254154959,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90a1ace3b26102fd8c1"
+    },
+    {
+      "taxes": {
+        "imcs": 0.25,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.7362453444159011,
+        "bWireNoTax": 0.286485240283032
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.0989739264507348,
+            "te": 0.20257554467267
+          },
+          "peak": {
+            "tusd": 2.65748127331524,
+            "te": 0.20257554467267
+          },
+          "demand": 34.4048378096778
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.0989739264507348,
+            "te": 0.20257554467267,
+            "demand": 34.4048378096778
+          },
+          "peak": {
+            "tusd": 0.0989739264507348,
+            "te": 0.20257554467267,
+            "demand": 106.367886621908
+          }
+        },
+        "tusdG": 17.4174174174174
+      },
+      "_id": "64aff90a1ace3b26102fd8c2",
+      "powerDistCompany": "CERGRAL",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254154960,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254154960,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90a1ace3b26102fd8c2"
+    },
+    {
+      "taxes": {
+        "imcs": 0.25,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.6629510100177649,
+        "bWireNoTax": 0.17540855259869598
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.108769813500589,
+            "te": 0.265163466000872
+          },
+          "peak": {
+            "tusd": 1.2519699383674399,
+            "te": 0.265163466000872
+          },
+          "demand": 36.3893752085432
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.108769813500589,
+            "te": 0.265163466000872,
+            "demand": 36.3893752085432
+          },
+          "peak": {
+            "tusd": 0.108769813500589,
+            "te": 0.265163466000872,
+            "demand": 47.5229211397192
+          }
+        },
+        "tusdG": 8.68010868010868
+      },
+      "_id": "64aff90a1ace3b26102fd8c3",
+      "powerDistCompany": "CERILUZ",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254154961,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254154961,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90a1ace3b26102fd8c3"
+    },
+    {
+      "taxes": {
+        "imcs": 0.18,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.776725447486549,
+        "bWireNoTax": 0.266352617010554
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.0968598296883969,
+            "te": 0.24103458363187802
+          },
+          "peak": {
+            "tusd": 1.9977901382355898,
+            "te": 0.24103458363187802
+          },
+          "demand": 28.5889536334055
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.0968598296883969,
+            "te": 0.24103458363187802,
+            "demand": 28.5889536334055
+          },
+          "peak": {
+            "tusd": 0.0968598296883969,
+            "te": 0.24103458363187802,
+            "demand": 79.0459028004241
+          }
+        },
+        "tusdG": 5.42790176936518
+      },
+      "_id": "64aff90a1ace3b26102fd8c4",
+      "powerDistCompany": "CERIM",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254154962,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254154962,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90a1ace3b26102fd8c4"
+    },
+    {
+      "taxes": {
+        "imcs": 0.18,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.787374056473461,
+        "bWireNoTax": 0.22233020227255
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.10887803968926199,
+            "te": 0.281288115948657
+          },
+          "peak": {
+            "tusd": 2.37924894607717,
+            "te": 0.281288115948657
+          },
+          "demand": 24.2679187232825
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.10887803968926199,
+            "te": 0.281288115948657,
+            "demand": 24.2679187232825
+          },
+          "peak": {
+            "tusd": 0.10887803968926199,
+            "te": 0.281288115948657,
+            "demand": 94.4399266393923
+          }
+        },
+        "tusdG": 11.1827855730295
+      },
+      "_id": "64aff90a1ace3b26102fd8c5",
+      "powerDistCompany": "CERIPA",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254154962,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254154962,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90a1ace3b26102fd8c5"
+    },
+    {
+      "taxes": {
+        "imcs": 0.18,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.8309879342548101,
+        "bWireNoTax": 0.407384517920056
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.0984640196943014,
+            "te": 0.153195365251874
+          },
+          "peak": {
+            "tusd": 1.99382329369496,
+            "te": 0.153195365251874
+          },
+          "demand": 37.6958879256483
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.0984640196943014,
+            "te": 0.153195365251874,
+            "demand": 37.6958879256483
+          },
+          "peak": {
+            "tusd": 0.0984640196943014,
+            "te": 0.153195365251874,
+            "demand": 78.8058654921401
+          }
+        },
+        "tusdG": 14.3348923836729
+      },
+      "_id": "64aff90a1ace3b26102fd8c6",
+      "powerDistCompany": "CERIS",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254154963,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254154963,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90a1ace3b26102fd8c6"
+    },
+    {
+      "taxes": {
+        "imcs": 0.18,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 1.016339821089867,
+        "bWireNoTax": 0.284045071075105
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.106090485791083,
+            "te": 0.425218568816343
+          },
+          "peak": {
+            "tusd": 1.4825598793436299,
+            "te": 0.425218568816343
+          },
+          "demand": 15.1875434651679
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.106090485791083,
+            "te": 0.425218568816343,
+            "demand": 15.1875434651679
+          },
+          "peak": {
+            "tusd": 0.106090485791083,
+            "te": 0.425218568816343,
+            "demand": 57.2336618210583
+          }
+        },
+        "tusdG": 6.29113433991483
+      },
+      "_id": "64aff90a1ace3b26102fd8c7",
+      "powerDistCompany": "CERMC",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254154968,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254154968,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90a1ace3b26102fd8c7"
+    },
+    {
+      "taxes": {
+        "imcs": 0.25,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.7796544877044931,
+        "bWireNoTax": 0.260282806671712
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.10203201212796201,
+            "te": 0.27552902905028703
+          },
+          "peak": {
+            "tusd": 1.22581015982903,
+            "te": 0.27552902905028703
+          },
+          "demand": 34.9818193426255
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.10203201212796201,
+            "te": 0.27552902905028703,
+            "demand": 34.9818193426255
+          },
+          "peak": {
+            "tusd": 0.10203201212796201,
+            "te": 0.27552902905028703,
+            "demand": 46.7148035956075
+          }
+        },
+        "tusdG": 13.6279136279136
+      },
+      "_id": "64aff90a1ace3b26102fd8c8",
+      "powerDistCompany": "CERMISSOES",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254154969,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254154969,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90a1ace3b26102fd8c8"
+    },
+    {
+      "taxes": {
+        "imcs": 0.25,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.773768923421287,
+        "bWireNoTax": 0.37225686454375395
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.0964161929369704,
+            "te": 0.17976665409033799
+          },
+          "peak": {
+            "tusd": 2.62857801939032,
+            "te": 0.17976665409033799
+          },
+          "demand": 37.7218500710815
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.0964161929369704,
+            "te": 0.17976665409033799,
+            "demand": 37.7218500710815
+          },
+          "peak": {
+            "tusd": 0.0964161929369704,
+            "te": 0.17976665409033799,
+            "demand": 105.271321970029
+          }
+        },
+        "tusdG": 16.5737165737166
+      },
+      "_id": "64aff90a1ace3b26102fd8c9",
+      "powerDistCompany": "CERMOFUL",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254154970,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254154970,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90a1ace3b26102fd8c9"
+    },
+    {
+      "taxes": {
+        "imcs": 0.18,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.710677179287663,
+        "bWireNoTax": 0.14876967458724702
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.118664440752028,
+            "te": 0.290435632091993
+          },
+          "peak": {
+            "tusd": 1.55355926479814,
+            "te": 0.290435632091993
+          },
+          "demand": 34.4522007890886
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.118664440752028,
+            "te": 0.290435632091993,
+            "demand": 34.4522007890886
+          },
+          "peak": {
+            "tusd": 0.118664440752028,
+            "te": 0.290435632091993,
+            "demand": 59.6629757241299
+          }
+        },
+        "tusdG": 6.82738487616536
+      },
+      "_id": "64aff90a1ace3b26102fd8ca",
+      "powerDistCompany": "CERNHE",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254154971,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254154971,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90a1ace3b26102fd8ca"
+    },
+    {
+      "taxes": {
+        "imcs": 0.25,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.784291081058808,
+        "bWireNoTax": 0.434313318044482
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.0923744020564058,
+            "te": 0.10257679497689899
+          },
+          "peak": {
+            "tusd": 3.59891349316541,
+            "te": 0.10257679497689899
+          },
+          "demand": 46.0497529130945
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.0923744020564058,
+            "te": 0.10257679497689899,
+            "demand": 46.0497529130945
+          },
+          "peak": {
+            "tusd": 0.0923744020564058,
+            "te": 0.10257679497689899,
+            "demand": 145.785060538126
+          }
+        },
+        "tusdG": 18.6758186758187
+      },
+      "_id": "64aff90a1ace3b26102fd8cb",
+      "powerDistCompany": "CERPALO",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254154972,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254154972,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90a1ace3b26102fd8cb"
+    },
+    {
+      "taxes": {
+        "imcs": 0.18,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.8547987577301199,
+        "bWireNoTax": 0.20634468757815902
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.0971749337797078,
+            "te": 0.424415261249942
+          },
+          "peak": {
+            "tusd": 2.07133097281312,
+            "te": 0.424415261249942
+          },
+          "demand": 38.9461990595204
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.0971749337797078,
+            "te": 0.424415261249942,
+            "demand": 38.9461990595204
+          },
+          "peak": {
+            "tusd": 0.0971749337797078,
+            "te": 0.424415261249942,
+            "demand": 82.0854840312209
+          }
+        },
+        "tusdG": 7.01049481537286
+      },
+      "_id": "64aff90a1ace3b26102fd8cc",
+      "powerDistCompany": "CERPRO",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254154972,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254154972,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90a1ace3b26102fd8cc"
+    },
+    {
+      "taxes": {
+        "imcs": 0.18,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.8658424429941509,
+        "bWireNoTax": 0.248528860029856
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.10635609296918701,
+            "te": 0.377022418750589
+          },
+          "peak": {
+            "tusd": 1.98362949584167,
+            "te": 0.377022418750589
+          },
+          "demand": 34.745648632321
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.10635609296918701,
+            "te": 0.377022418750589,
+            "demand": 34.745648632321
+          },
+          "peak": {
+            "tusd": 0.10635609296918701,
+            "te": 0.377022418750589,
+            "demand": 78.0567606856529
+          }
+        },
+        "tusdG": 11.5359261700725
+      },
+      "_id": "64aff90a1ace3b26102fd8cd",
+      "powerDistCompany": "CERRP",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254154973,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254154973,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90a1ace3b26102fd8cd"
+    },
+    {
+      "taxes": {
+        "imcs": 0.25,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.602231720863499,
+        "bWireNoTax": 0.16755405555248298
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.113807068502061,
+            "te": 0.24021022717183002
+          },
+          "peak": {
+            "tusd": 1.24352824544126,
+            "te": 0.24021022717183002
+          },
+          "demand": 16.7391982525414
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.113807068502061,
+            "te": 0.24021022717183002,
+            "demand": 16.7391982525414
+          },
+          "peak": {
+            "tusd": 0.113807068502061,
+            "te": 0.24021022717183002,
+            "demand": 46.9668468201803
+          }
+        },
+        "tusdG": 7.46460746460746
+      },
+      "_id": "64aff90a1ace3b26102fd8ce",
+      "powerDistCompany": "CERSAD",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254154974,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254154974,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90a1ace3b26102fd8ce"
+    },
+    {
+      "taxes": {
+        "imcs": 0.25,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.545960150544023,
+        "bWireNoTax": 0.159317820637421
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.0982402654693833,
+            "te": 0.17643119297357798
+          },
+          "peak": {
+            "tusd": 1.6516557347768301,
+            "te": 0.17643119297357798
+          },
+          "demand": 21.3269665734969
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.0982402654693833,
+            "te": 0.17643119297357798,
+            "demand": 21.3269665734969
+          },
+          "peak": {
+            "tusd": 0.0982402654693833,
+            "te": 0.17643119297357798,
+            "demand": 64.5805995452491
+          }
+        },
+        "tusdG": 6.93550693550693
+      },
+      "_id": "64aff90a1ace3b26102fd8cf",
+      "powerDistCompany": "CERSUL",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254154975,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254154975,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90a1ace3b26102fd8cf"
+    },
+    {
+      "taxes": {
+        "imcs": 0.25,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.612963907681208,
+        "bWireNoTax": 0.175664613364041
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.09704663480067291,
+            "te": 0.252946550551746
+          },
+          "peak": {
+            "tusd": 1.1128852554264699,
+            "te": 0.252946550551746
+          },
+          "demand": 33.7409986885361
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.09704663480067291,
+            "te": 0.252946550551746,
+            "demand": 33.7409986885361
+          },
+          "peak": {
+            "tusd": 0.09704663480067291,
+            "te": 0.252946550551746,
+            "demand": 42.2384007571624
+          }
+        },
+        "tusdG": 13.3705133705134
+      },
+      "_id": "64aff90a1ace3b26102fd8d0",
+      "powerDistCompany": "CERTAJA",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254154976,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254154976,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90a1ace3b26102fd8d0"
+    },
+    {
+      "taxes": {
+        "imcs": 0.25,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.6528891710299911,
+        "bWireNoTax": 0.194578588357663
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.12012758170553199,
+            "te": 0.256212845160023
+          },
+          "peak": {
+            "tusd": 0.976628456521039,
+            "te": 0.256212845160023
+          },
+          "demand": 32.7182870392523
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.12012758170553199,
+            "te": 0.256212845160023,
+            "demand": 32.7182870392523
+          },
+          "peak": {
+            "tusd": 0.12012758170553199,
+            "te": 0.256212845160023,
+            "demand": 35.6132417409365
+          }
+        },
+        "tusdG": 38.7816387816388
+      },
+      "_id": "64aff90a1ace3b26102fd8d1",
+      "powerDistCompany": "CERTEL",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254154977,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254154977,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90a1ace3b26102fd8d1"
+    },
+    {
+      "taxes": {
+        "imcs": 0.25,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.6647080882312171,
+        "bWireNoTax": 0.186357617905401
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.09879967184098361,
+            "te": 0.255785032894823
+          },
+          "peak": {
+            "tusd": 1.30285227767637,
+            "te": 0.255785032894823
+          },
+          "demand": 38.4349299970901
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.09879967184098361,
+            "te": 0.255785032894823,
+            "demand": 38.4349299970901
+          },
+          "peak": {
+            "tusd": 0.09879967184098361,
+            "te": 0.255785032894823,
+            "demand": 50.0523156329315
+          }
+        },
+        "tusdG": 9.76690976690977
+      },
+      "_id": "64aff90a1ace3b26102fd8d2",
+      "powerDistCompany": "CERTHIL",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254154978,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254154978,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90a1ace3b26102fd8d2"
+    },
+    {
+      "taxes": {
+        "imcs": 0.25,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.827726424223752,
+        "bWireNoTax": 0.426253928629677
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.104420785886304,
+            "te": 0.16129786863232498
+          },
+          "peak": {
+            "tusd": 2.92968212204153,
+            "te": 0.16129786863232498
+          },
+          "demand": 41.446726729867
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.104420785886304,
+            "te": 0.16129786863232498,
+            "demand": 41.446726729867
+          },
+          "peak": {
+            "tusd": 0.104420785886304,
+            "te": 0.16129786863232498,
+            "demand": 117.445387962146
+          }
+        },
+        "tusdG": 18.961818961819
+      },
+      "_id": "64aff90a1ace3b26102fd8d3",
+      "powerDistCompany": "CERTREL",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254154979,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254154979,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90a1ace3b26102fd8d3"
+    },
+    {
+      "taxes": {
+        "imcs": 0.18,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.684266358405152,
+        "bWireNoTax": 0.211388250575587
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.101734789700044,
+            "te": 0.24214842625251898
+          },
+          "peak": {
+            "tusd": 2.20876147223139,
+            "te": 0.24214842625251898
+          },
+          "demand": 28.0402564275164
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.101734789700044,
+            "te": 0.24214842625251898,
+            "demand": 28.0402564275164
+          },
+          "peak": {
+            "tusd": 0.101734789700044,
+            "te": 0.24214842625251898,
+            "demand": 87.6130354012238
+          }
+        },
+        "tusdG": 18.3763903276098
+      },
+      "_id": "64aff90a1ace3b26102fd8d4",
+      "powerDistCompany": "CERVAM",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254154980,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254154980,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90a1ace3b26102fd8d4"
+    },
+    {
+      "taxes": {
+        "imcs": 0.18,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.860548710602113,
+        "bWireNoTax": 0.33628499900494596
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.10012285411961401,
+            "te": 0.24658638654492698
+          },
+          "peak": {
+            "tusd": 2.3406424700648,
+            "te": 0.24658638654492698
+          },
+          "demand": 32.6203889755343
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.10012285411961401,
+            "te": 0.24658638654492698,
+            "demand": 32.6203889755343
+          },
+          "peak": {
+            "tusd": 0.10012285411961401,
+            "te": 0.24658638654492698,
+            "demand": 93.1663358217226
+          }
+        },
+        "tusdG": 6.85354343890929
+      },
+      "_id": "64aff90a1ace3b26102fd8d5",
+      "powerDistCompany": "CETRIL",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254154982,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254154982,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90a1ace3b26102fd8d5"
+    },
+    {
+      "taxes": {
+        "imcs": 0.17,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.754920141703847,
+        "bWireNoTax": 0.249978895353531
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.153803086977166,
+            "te": 0.288475033304598
+          },
+          "peak": {
+            "tusd": 1.39763042905185,
+            "te": 0.47210500983399695
+          },
+          "demand": 21.3693386256245
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.153803086977166,
+            "te": 0.288475033304598,
+            "demand": 21.3693386256245
+          },
+          "peak": {
+            "tusd": 0.153803086977166,
+            "te": 0.47210500983399695,
+            "demand": 51.0394538400168
+          }
+        },
+        "tusdG": 16.0745943878474
+      },
+      "_id": "64aff90a1ace3b26102fd8d6",
+      "powerDistCompany": "CHESP",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254154983,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254154983,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90a1ace3b26102fd8d6"
+    },
+    {
+      "taxes": {
+        "imcs": 0.25,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.722765993375539,
+        "bWireNoTax": 0.134412709270135
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.11382948911080101,
+            "te": 0.335073056771383
+          },
+          "peak": {
+            "tusd": 1.15365589969021,
+            "te": 0.540359524245855
+          },
+          "demand": 16.5183046975474
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.11382948911080101,
+            "te": 0.335073056771383,
+            "demand": 16.5183046975474
+          },
+          "peak": {
+            "tusd": 0.11382948911080101,
+            "te": 0.540359524245855,
+            "demand": 42.4246873693114
+          }
+        },
+        "tusdG": 8.26540826540827
+      },
+      "_id": "64aff90a1ace3b26102fd8d7",
+      "powerDistCompany": "COCEL",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254154984,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254154984,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90a1ace3b26102fd8d7"
+    },
+    {
+      "taxes": {
+        "imcs": 0.25,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.599504526177139,
+        "bWireNoTax": 0.131791779658727
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.09548004293953641,
+            "te": 0.31567257388951
+          },
+          "peak": {
+            "tusd": 1.08005307691197,
+            "te": 0.31567257388951
+          },
+          "demand": 14.7875488477094
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.09548004293953641,
+            "te": 0.31567257388951,
+            "demand": 14.7875488477094
+          },
+          "peak": {
+            "tusd": 0.09548004293953641,
+            "te": 0.31567257388951,
+            "demand": 40.9321203667338
+          }
+        },
+        "tusdG": 6.36350636350636
+      },
+      "_id": "64aff90a1ace3b26102fd8d8",
+      "powerDistCompany": "CODESAM",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254154984,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254154984,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90a1ace3b26102fd8d8"
+    },
+    {
+      "taxes": {
+        "imcs": 0.25,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.508678368787701,
+        "bWireNoTax": 0.162559933770714
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.131569135263059,
+            "te": 0.15100697222325
+          },
+          "peak": {
+            "tusd": 1.26451983720051,
+            "te": 0.15100697222325
+          },
+          "demand": 18.3723135292443
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.131569135263059,
+            "te": 0.15100697222325,
+            "demand": 18.3723135292443
+          },
+          "peak": {
+            "tusd": 0.131569135263059,
+            "te": 0.15100697222325,
+            "demand": 47.1079965843175
+          }
+        },
+        "tusdG": 7.07850707850708
+      },
+      "_id": "64aff90a1ace3b26102fd8d9",
+      "powerDistCompany": "COOPERA",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254154985,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254154985,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90a1ace3b26102fd8d9"
+    },
+    {
+      "taxes": {
+        "imcs": 0.25,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.650033309635003,
+        "bWireNoTax": 0.164350051059799
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.129462208983517,
+            "te": 0.288510275053371
+          },
+          "peak": {
+            "tusd": 0.920356863116829,
+            "te": 0.47237473115051604
+          },
+          "demand": 15.64
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.129462208983517,
+            "te": 0.288510275053371,
+            "demand": 15.64
+          },
+          "peak": {
+            "tusd": 0.129462208983517,
+            "te": 0.47237473115051604,
+            "demand": 32.35
+          }
+        },
+        "tusdG": 12.970112970113
+      },
+      "_id": "64aff90a1ace3b26102fd8da",
+      "powerDistCompany": "COOPERALIANCA",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254154986,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254154986,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90a1ace3b26102fd8da"
+    },
+    {
+      "taxes": {
+        "imcs": 0.25,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.67717263456585,
+        "bWireNoTax": 0.236050096343321
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.0988878786313295,
+            "te": 0.22703928918952498
+          },
+          "peak": {
+            "tusd": 1.89062283172407,
+            "te": 0.22703928918952498
+          },
+          "demand": 28.3708619998058
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.0988878786313295,
+            "te": 0.22703928918952498,
+            "demand": 28.3708619998058
+          },
+          "peak": {
+            "tusd": 0.0988878786313295,
+            "te": 0.22703928918952498,
+            "demand": 74.485996734851
+          }
+        },
+        "tusdG": 10.5105105105105
+      },
+      "_id": "64aff90a1ace3b26102fd8db",
+      "powerDistCompany": "COOPERCOCAL",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254154986,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254154986,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90a1ace3b26102fd8db"
+    },
+    {
+      "taxes": {
+        "imcs": 0.25,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.577230750159602,
+        "bWireNoTax": 0.10708136034978501
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.109219245185472,
+            "te": 0.282641324487583
+          },
+          "peak": {
+            "tusd": 0.9395986690667659,
+            "te": 0.282641324487583
+          },
+          "demand": 12.8033053873328
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.109219245185472,
+            "te": 0.282641324487583,
+            "demand": 12.8033053873328
+          },
+          "peak": {
+            "tusd": 0.109219245185472,
+            "te": 0.282641324487583,
+            "demand": 34.5275005072183
+          }
+        },
+        "tusdG": 3.41770341770342
+      },
+      "_id": "64aff90a1ace3b26102fd8dc",
+      "powerDistCompany": "COOPERLUZ",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254154987,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254154987,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90a1ace3b26102fd8dc"
+    },
+    {
+      "taxes": {
+        "imcs": 0.25,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.603873084478632,
+        "bWireNoTax": 0.0938108048882096
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.093640193926251,
+            "te": 0.286779213664965
+          },
+          "peak": {
+            "tusd": 1.38343728991198,
+            "te": 0.286779213664965
+          },
+          "demand": 18.8594718600356
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.093640193926251,
+            "te": 0.286779213664965,
+            "demand": 18.8594718600356
+          },
+          "peak": {
+            "tusd": 0.093640193926251,
+            "te": 0.286779213664965,
+            "demand": 53.6173422937154
+          }
+        },
+        "tusdG": 4.08980408980409
+      },
+      "_id": "64aff90a1ace3b26102fd8dd",
+      "powerDistCompany": "COOPERMILA",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254154988,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254154988,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90a1ace3b26102fd8dd"
+    },
+    {
+      "taxes": {
+        "imcs": 0.25,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.9638869908488159,
+        "bWireNoTax": 0.344886577881387
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.107736955620558,
+            "te": 0.283016902298043
+          },
+          "peak": {
+            "tusd": 2.5521707444257498,
+            "te": 0.283016902298043
+          },
+          "demand": 53.220036538798
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.107736955620558,
+            "te": 0.283016902298043,
+            "demand": 53.220036538798
+          },
+          "peak": {
+            "tusd": 0.107736955620558,
+            "te": 0.283016902298043,
+            "demand": 101.639828218822
+          }
+        },
+        "tusdG": 33.1045331045331
+      },
+      "_id": "64aff90a1ace3b26102fd8de",
+      "powerDistCompany": "COOPERNORTE",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254154988,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254154988,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90a1ace3b26102fd8de"
+    },
+    {
+      "taxes": {
+        "imcs": 0.25,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.806306499336684,
+        "bWireNoTax": 0.0838939342210397
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.11146466806173799,
+            "te": 0.35681564725209697
+          },
+          "peak": {
+            "tusd": 1.7851698460533,
+            "te": 0.35681564725209697
+          },
+          "demand": 26.4279460212607
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.11146466806173799,
+            "te": 0.35681564725209697,
+            "demand": 26.4279460212607
+          },
+          "peak": {
+            "tusd": 0.11146466806173799,
+            "te": 0.35681564725209697,
+            "demand": 69.5926392056983
+          }
+        },
+        "tusdG": 3.07450307450307
+      },
+      "_id": "64aff90a1ace3b26102fd8df",
+      "powerDistCompany": "COOPERSUL",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254154989,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254154989,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90a1ace3b26102fd8df"
+    },
+    {
+      "taxes": {
+        "imcs": 0.25,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.717321879413961,
+        "bWireNoTax": 0.217289912546713
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.117992175429306,
+            "te": 0.27619301035701
+          },
+          "peak": {
+            "tusd": 1.64695530553714,
+            "te": 0.27619301035701
+          },
+          "demand": 23.2365867636145
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.117992175429306,
+            "te": 0.27619301035701,
+            "demand": 23.2365867636145
+          },
+          "peak": {
+            "tusd": 0.117992175429306,
+            "te": 0.27619301035701,
+            "demand": 63.5638128300095
+          }
+        },
+        "tusdG": 9.68110968110968
+      },
+      "_id": "64aff90a1ace3b26102fd8e0",
+      "powerDistCompany": "COOPERZEM",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254154992,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254154992,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90a1ace3b26102fd8e0"
+    },
+    {
+      "taxes": {
+        "imcs": 0.25,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.692258124635405,
+        "bWireNoTax": 0.18200164907414298
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.100260323731837,
+            "te": 0.272263657039777
+          },
+          "peak": {
+            "tusd": 1.9891583099171501,
+            "te": 0.272263657039777
+          },
+          "demand": 26.2837925266114
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.100260323731837,
+            "te": 0.272263657039777,
+            "demand": 26.2837925266114
+          },
+          "peak": {
+            "tusd": 0.100260323731837,
+            "te": 0.272263657039777,
+            "demand": 78.4145350598891
+          }
+        },
+        "tusdG": 7.92220792220792
+      },
+      "_id": "64aff90a1ace3b26102fd8e1",
+      "powerDistCompany": "COORSEL",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254154993,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254154993,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90a1ace3b26102fd8e1"
+    },
+    {
+      "taxes": {
+        "imcs": 0.25,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.654362967132408,
+        "bWireNoTax": 0.14341424474484
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.118358269845259,
+            "te": 0.314419918099998
+          },
+          "peak": {
+            "tusd": 1.0379217359414799,
+            "te": 0.49979239239110096
+          },
+          "demand": 17.5831250976138
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.118358269845259,
+            "te": 0.314419918099998,
+            "demand": 17.5831250976138
+          },
+          "peak": {
+            "tusd": 0.118358269845259,
+            "te": 0.49979239239110096,
+            "demand": 37.7710509615386
+          }
+        },
+        "tusdG": 9.25210925210925
+      },
+      "_id": "64aff90a1ace3b26102fd8e2",
+      "powerDistCompany": "COPEL-DIS",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254154993,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254154993,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90a1ace3b26102fd8e2"
+    },
+    {
+      "taxes": {
+        "imcs": 0.25,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.550787487130104,
+        "bWireNoTax": 0.0737445157176097
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.0948834917305716,
+            "te": 0.253245513520359
+          },
+          "peak": {
+            "tusd": 1.3047446824680702,
+            "te": 0.253245513520359
+          },
+          "demand": 30.4534823653333
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.0948834917305716,
+            "te": 0.253245513520359,
+            "demand": 30.4534823653333
+          },
+          "peak": {
+            "tusd": 0.0948834917305716,
+            "te": 0.253245513520359,
+            "demand": 50.3061903474721
+          }
+        },
+        "tusdG": 23.0659230659231
+      },
+      "_id": "64aff90a1ace3b26102fd8e3",
+      "powerDistCompany": "COPREL",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254154994,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254154994,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90a1ace3b26102fd8e3"
+    },
+    {
+      "taxes": {
+        "imcs": 0.18,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.765105712164471,
+        "bWireNoTax": 0.19473992406906002
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.119641321385675,
+            "te": 0.36364340071493
+          },
+          "peak": {
+            "tusd": 1.09730314832309,
+            "te": 0.5980811289755961
+          },
+          "demand": 15.4952271586613
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.119641321385675,
+            "te": 0.36364340071493,
+            "demand": 15.4952271586613
+          },
+          "peak": {
+            "tusd": 0.119641321385675,
+            "te": 0.5980811289755961,
+            "demand": 40.1797937206969
+          }
+        },
+        "tusdG": 8.77619780058804
+      },
+      "_id": "64aff90a1ace3b26102fd8e4",
+      "powerDistCompany": "CPFL PAULISTA",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254154994,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254154994,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90a1ace3b26102fd8e4"
+    },
+    {
+      "taxes": {
+        "imcs": 0.18,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.785517715771358,
+        "bWireNoTax": 0.17421453350460497
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.126943864579085,
+            "te": 0.390501692261573
+          },
+          "peak": {
+            "tusd": 0.951595410067681,
+            "te": 0.6326543568536219
+          },
+          "demand": 13.1660290056793
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.126943864579085,
+            "te": 0.390501692261573,
+            "demand": 13.1660290056793
+          },
+          "peak": {
+            "tusd": 0.126943864579085,
+            "te": 0.6326543568536219,
+            "demand": 33.8105799655275
+          }
+        },
+        "tusdG": 3.32213746847893
+      },
+      "_id": "64aff90a1ace3b26102fd8e5",
+      "powerDistCompany": "CPFL PIRATININGA",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254154995,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254154995,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90a1ace3b26102fd8e5"
+    },
+    {
+      "taxes": {
+        "imcs": 0.18,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.679134516712257,
+        "bWireNoTax": 0.17624815542613
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.114087937464355,
+            "te": 0.30433459546061603
+          },
+          "peak": {
+            "tusd": 1.15160426909406,
+            "te": 0.495342025794813
+          },
+          "demand": 18.8389860021269
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.114087937464355,
+            "te": 0.30433459546061603,
+            "demand": 18.8389860021269
+          },
+          "peak": {
+            "tusd": 0.114087937464355,
+            "te": 0.495342025794813,
+            "demand": 42.520573675904
+          }
+        },
+        "tusdG": 11.8367496416277
+      },
+      "_id": "64aff90a1ace3b26102fd8e6",
+      "powerDistCompany": "CPFL SANTA CRUZ",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254154997,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254154997,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90a1ace3b26102fd8e6"
+    },
+    {
+      "taxes": {
+        "imcs": 0.25,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.800389811342477,
+        "bWireNoTax": 0.27026541465271403
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.124673664637733,
+            "te": 0.243601338436173
+          },
+          "peak": {
+            "tusd": 1.72011311531864,
+            "te": 0.243601338436173
+          },
+          "demand": 52.9116110552325
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.124673664637733,
+            "te": 0.243601338436173,
+            "demand": 52.9116110552325
+          },
+          "peak": {
+            "tusd": 0.124673664637733,
+            "te": 0.243601338436173,
+            "demand": 66.3383670572804
+          }
+        },
+        "tusdG": 13.4277134277134
+      },
+      "_id": "64aff90a1ace3b26102fd8e7",
+      "powerDistCompany": "CRELUZ-D",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254154998,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254154998,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90a1ace3b26102fd8e7"
+    },
+    {
+      "taxes": {
+        "imcs": 0.25,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.835967672132857,
+        "bWireNoTax": 0.290478415526378
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.098547374680249,
+            "te": 0.255094387836765
+          },
+          "peak": {
+            "tusd": 2.28606962724067,
+            "te": 0.255094387836765
+          },
+          "demand": 44.2552135463858
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.098547374680249,
+            "te": 0.255094387836765,
+            "demand": 44.2552135463858
+          },
+          "peak": {
+            "tusd": 0.098547374680249,
+            "te": 0.255094387836765,
+            "demand": 90.9571792613438
+          }
+        },
+        "tusdG": 17.2887172887173
+      },
+      "_id": "64aff90a1ace3b26102fd8e8",
+      "powerDistCompany": "CRERAL",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254154999,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254154999,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90a1ace3b26102fd8e8"
+    },
+    {
+      "taxes": {
+        "imcs": 0.25,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.647304054829765,
+        "bWireNoTax": 0.12464458416685299
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.130946598838586,
+            "te": 0.29256171772372896
+          },
+          "peak": {
+            "tusd": 0.9199882788892509,
+            "te": 0.458337913998158
+          },
+          "demand": 15.64
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.130946598838586,
+            "te": 0.29256171772372896,
+            "demand": 15.64
+          },
+          "peak": {
+            "tusd": 0.130946598838586,
+            "te": 0.458337913998158,
+            "demand": 32.35
+          }
+        },
+        "tusdG": 8.32260832260832
+      },
+      "_id": "64aff90b1ace3b26102fd8e9",
+      "powerDistCompany": "DCELT",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254155000,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254155000,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90b1ace3b26102fd8e9"
+    },
+    {
+      "taxes": {
+        "imcs": 0.25,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.764667848469716,
+        "bWireNoTax": 0.11665447025884601
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.11716731130678999,
+            "te": 0.31813675499785804
+          },
+          "peak": {
+            "tusd": 1.61169419508684,
+            "te": 0.514403779441629
+          },
+          "demand": 33.0162259304222
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.11716731130678999,
+            "te": 0.31813675499785804,
+            "demand": 33.0162259304222
+          },
+          "peak": {
+            "tusd": 0.11716731130678999,
+            "te": 0.514403779441629,
+            "demand": 61.1937877747928
+          }
+        },
+        "tusdG": 7.42170742170742
+      },
+      "_id": "64aff90b1ace3b26102fd8ea",
+      "powerDistCompany": "DEMEI",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254155001,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254155001,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90b1ace3b26102fd8ea"
+    },
+    {
+      "taxes": {
+        "imcs": 0.31,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.760144647233356,
+        "bWireNoTax": 0.18583277681087199
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.12601445996728,
+            "te": 0.31966669545326903
+          },
+          "peak": {
+            "tusd": 1.12502146251828,
+            "te": 0.526420021862985
+          },
+          "demand": 16.0359539233317
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.12601445996728,
+            "te": 0.31966669545326903,
+            "demand": 16.0359539233317
+          },
+          "peak": {
+            "tusd": 0.12601445996728,
+            "te": 0.526420021862985,
+            "demand": 40.9636407697086
+          }
+        },
+        "tusdG": 5.8132666828319
+      },
+      "_id": "64aff90b1ace3b26102fd8eb",
+      "powerDistCompany": "DMED",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254155002,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254155002,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90b1ace3b26102fd8eb"
+    },
+    {
+      "taxes": {
+        "imcs": 0.17,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.7741342740049251,
+        "bWireNoTax": 0.192046475915292
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.146012232208553,
+            "te": 0.338080507690268
+          },
+          "peak": {
+            "tusd": 1.2549444423271199,
+            "te": 0.547030957660079
+          },
+          "demand": 30.4407787270665
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.146012232208553,
+            "te": 0.338080507690268,
+            "demand": 30.4407787270665
+          },
+          "peak": {
+            "tusd": 0.146012232208553,
+            "te": 0.547030957660079,
+            "demand": 45.5883348822232
+          }
+        },
+        "tusdG": 16.7852878696252
+      },
+      "_id": "64aff90b1ace3b26102fd8ec",
+      "powerDistCompany": "EDP ES",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254155002,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254155002,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90b1ace3b26102fd8ec"
+    },
+    {
+      "taxes": {
+        "imcs": 0.18,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.7402889270334079,
+        "bWireNoTax": 0.204597331100519
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.12333086194388,
+            "te": 0.33220856793124304
+          },
+          "peak": {
+            "tusd": 1.0103961379897402,
+            "te": 0.5246076168630049
+          },
+          "demand": 9.86031608943124
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.12333086194388,
+            "te": 0.33220856793124304,
+            "demand": 9.86031608943124
+          },
+          "peak": {
+            "tusd": 0.12333086194388,
+            "te": 0.5246076168630049,
+            "demand": 36.5091732616667
+          }
+        },
+        "tusdG": 4.00226009982108
+      },
+      "_id": "64aff90b1ace3b26102fd8ed",
+      "powerDistCompany": "EDP SP",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254155003,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254155003,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90b1ace3b26102fd8ed"
+    },
+    {
+      "taxes": {
+        "imcs": 0.25,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.671948509598955,
+        "bWireNoTax": 0.245844521523955
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.127182373509561,
+            "te": 0.335750640765354
+          },
+          "peak": {
+            "tusd": 0.9166433859490739,
+            "te": 0.5472623021164099
+          },
+          "demand": 15.64
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.127182373509561,
+            "te": 0.335750640765354,
+            "demand": 15.64
+          },
+          "peak": {
+            "tusd": 0.127182373509561,
+            "te": 0.5472623021164099,
+            "demand": 32.35
+          }
+        },
+        "tusdG": 9.76690976690977
+      },
+      "_id": "64aff90b1ace3b26102fd8ee",
+      "powerDistCompany": "EFLJC",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254155003,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254155003,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90b1ace3b26102fd8ee"
+    },
+    {
+      "taxes": {
+        "imcs": 0.25,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.671365189001174,
+        "bWireNoTax": 0.20026864245107898
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.129967573407837,
+            "te": 0.33314718993769205
+          },
+          "peak": {
+            "tusd": 0.919455822592509,
+            "te": 0.542854069937553
+          },
+          "demand": 15.64
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.129967573407837,
+            "te": 0.33314718993769205,
+            "demand": 15.64
+          },
+          "peak": {
+            "tusd": 0.129967573407837,
+            "te": 0.542854069937553,
+            "demand": 32.35
+          }
+        },
+        "tusdG": 11.8547118547119
+      },
+      "_id": "64aff90b1ace3b26102fd8ef",
+      "powerDistCompany": "EFLUL",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254155004,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254155004,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90b1ace3b26102fd8ef"
+    },
+    {
+      "taxes": {
+        "imcs": 0.25,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.637175383761394,
+        "bWireNoTax": 0.185440165404054
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.10514092209752,
+            "te": 0.28295876790622204
+          },
+          "peak": {
+            "tusd": 1.08226465819565,
+            "te": 0.459468445543121
+          },
+          "demand": 15.1929579207206
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.10514092209752,
+            "te": 0.28295876790622204,
+            "demand": 15.1929579207206
+          },
+          "peak": {
+            "tusd": 0.10514092209752,
+            "te": 0.459468445543121,
+            "demand": 40.1827912431282
+          }
+        },
+        "tusdG": 7.79350779350779
+      },
+      "_id": "64aff90b1ace3b26102fd8f0",
+      "powerDistCompany": "ELETROCAR",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254155004,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254155004,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90b1ace3b26102fd8f0"
+    },
+    {
+      "taxes": {
+        "imcs": 0.17,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.860516942333944,
+        "bWireNoTax": 0.181956827009005
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.156978802334627,
+            "te": 0.390879434374581
+          },
+          "peak": {
+            "tusd": 1.54122438619635,
+            "te": 0.629044826324582
+          },
+          "demand": 18.3718544236571
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.156978802334627,
+            "te": 0.390879434374581,
+            "demand": 18.3718544236571
+          },
+          "peak": {
+            "tusd": 0.156978802334627,
+            "te": 0.629044826324582,
+            "demand": 57.5166740764178
+          }
+        },
+        "tusdG": 15.2476056090514
+      },
+      "_id": "64aff90b1ace3b26102fd8f1",
+      "powerDistCompany": "ELFSM",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254155005,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254155005,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90b1ace3b26102fd8f1"
+    },
+    {
+      "taxes": {
+        "imcs": 0.18,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.8112806411489961,
+        "bWireNoTax": 0.28314680613417403
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.0885562996687044,
+            "te": 0.35836631458065604
+          },
+          "peak": {
+            "tusd": 1.48901615697459,
+            "te": 0.5844522942717271
+          },
+          "demand": 22.7608774901704
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.0885562996687044,
+            "te": 0.35836631458065604,
+            "demand": 22.7608774901704
+          },
+          "peak": {
+            "tusd": 0.0885562996687044,
+            "te": 0.5844522942717271,
+            "demand": 57.5944627115771
+          }
+        },
+        "tusdG": 19.6973977461782
+      },
+      "_id": "64aff90b1ace3b26102fd8f2",
+      "powerDistCompany": "ENEL CE",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254155005,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254155005,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90b1ace3b26102fd8f2"
+    },
+    {
+      "taxes": {
+        "imcs": 0.17,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.771634316406153,
+        "bWireNoTax": 0.174572023438143
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.149743063807759,
+            "te": 0.34938184900097
+          },
+          "peak": {
+            "tusd": 1.48777763004937,
+            "te": 0.565416484708158
+          },
+          "demand": 22.942346018444
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.149743063807759,
+            "te": 0.34938184900097,
+            "demand": 22.942346018444
+          },
+          "peak": {
+            "tusd": 0.149743063807759,
+            "te": 0.565416484708158,
+            "demand": 55.0469844098073
+          }
+        },
+        "tusdG": 14.4852253285988
+      },
+      "_id": "64aff90b1ace3b26102fd913",
+      "powerDistCompany": "ENEL GO",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254155026,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254155026,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90b1ace3b26102fd913"
+    },
+    {
+      "taxes": {
+        "imcs": 0.3,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.9161357249422979,
+        "bWireNoTax": 0.248164032158981
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.18450756099975898,
+            "te": 0.366210717490412
+          },
+          "peak": {
+            "tusd": 1.88413573323562,
+            "te": 0.577885784741088
+          },
+          "demand": 28.4491360508198
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.18450756099975898,
+            "te": 0.366210717490412,
+            "demand": 28.4491360508198
+          },
+          "peak": {
+            "tusd": 0.18450756099975898,
+            "te": 0.577885784741088,
+            "demand": 69.8343465557589
+          }
+        },
+        "tusdG": 21.7258074400932
+      },
+      "_id": "64aff90b1ace3b26102fd8f4",
+      "powerDistCompany": "ENEL RJ",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254155007,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254155007,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90b1ace3b26102fd8f4"
+    },
+    {
+      "taxes": {
+        "imcs": 0.18,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.74,
+        "bWireNoTax": 0.22,
+        "bWireWithTax": 0
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.12,
+            "te": 0.32
+          },
+          "peak": {
+            "tusd": 0.87,
+            "te": 0.51
+          },
+          "demand": 18.82
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.12,
+            "te": 0.32,
+            "demand": 18.82
+          },
+          "peak": {
+            "tusd": 0.12,
+            "te": 0.51,
+            "demand": 31
+          }
+        },
+        "tusdG": 7.44
+      },
+      "_id": "64aff90b1ace3b26102fd8f5",
+      "powerDistCompany": "ENEL SP",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254155007,
+      "lastUpdated": "10/09/2024 | 18:12",
+      "lastUpdatedTimestamp": 1726002752764,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90b1ace3b26102fd8f5"
+    },
+    {
+      "taxes": {
+        "imcs": 0.2,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.833294705615943,
+        "bWireNoTax": 0.341166239358323
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.13293233751418299,
+            "te": 0.283116044025819
+          },
+          "peak": {
+            "tusd": 1.50395618223885,
+            "te": 0.472535200569298
+          },
+          "demand": 20.6152143302258
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.13293233751418299,
+            "te": 0.283116044025819,
+            "demand": 20.6152143302258
+          },
+          "peak": {
+            "tusd": 0.13293233751418299,
+            "te": 0.472535200569298,
+            "demand": 56.3085776481446
+          }
+        },
+        "tusdG": 24.6541184041184
+      },
+      "_id": "64aff90b1ace3b26102fd8f6",
+      "powerDistCompany": "ENERGISA AC",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254155008,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254155008,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90b1ace3b26102fd8f6"
+    },
+    {
+      "taxes": {
+        "imcs": 0.25,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.613876092666927,
+        "bWireNoTax": 0.19445409957023302
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.0529958464730761,
+            "te": 0.30371577463236704
+          },
+          "peak": {
+            "tusd": 0.9351913062681669,
+            "te": 0.497024705473408
+          },
+          "demand": 17.8568425674485
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.0529958464730761,
+            "te": 0.30371577463236704,
+            "demand": 17.8568425674485
+          },
+          "peak": {
+            "tusd": 0.0529958464730761,
+            "te": 0.497024705473408,
+            "demand": 36.1772952326185
+          }
+        },
+        "tusdG": 12.955812955813
+      },
+      "_id": "64aff90b1ace3b26102fd8f7",
+      "powerDistCompany": "ENERGISA BORBOREMA",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254155008,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254155008,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90b1ace3b26102fd8f7"
+    },
+    {
+      "taxes": {
+        "imcs": 0.31,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.8793364124021941,
+        "bWireNoTax": 0.197031403007372
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.14651051057901698,
+            "te": 0.403754247475638
+          },
+          "peak": {
+            "tusd": 1.98497123625122,
+            "te": 0.662729064374142
+          },
+          "demand": 29.8032667978774
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.14651051057901698,
+            "te": 0.403754247475638,
+            "demand": 29.8032667978774
+          },
+          "peak": {
+            "tusd": 0.14651051057901698,
+            "te": 0.662729064374142,
+            "demand": 75.4078229455804
+          }
+        },
+        "tusdG": 18.4190401581706
+      },
+      "_id": "64aff90b1ace3b26102fd8f8",
+      "powerDistCompany": "ENERGISA MG",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254155009,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254155009,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90b1ace3b26102fd8f8"
+    },
+    {
+      "taxes": {
+        "imcs": 0.25,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.89682591527234,
+        "bWireNoTax": 0.32918028229533003
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.126844123593752,
+            "te": 0.330573275615837
+          },
+          "peak": {
+            "tusd": 2.29500519639801,
+            "te": 0.531899461238443
+          },
+          "demand": 31.5262513340353
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.126844123593752,
+            "te": 0.330573275615837,
+            "demand": 31.5262513340353
+          },
+          "peak": {
+            "tusd": 0.126844123593752,
+            "te": 0.531899461238443,
+            "demand": 89.2863080922759
+          }
+        },
+        "tusdG": 17.8607178607179
+      },
+      "_id": "64aff90b1ace3b26102fd8f9",
+      "powerDistCompany": "ENERGISA MS",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254155009,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254155009,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90b1ace3b26102fd8f9"
+    },
+    {
+      "taxes": {
+        "imcs": 0.25,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.909853529481096,
+        "bWireNoTax": 0.35611793604138897
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.138088241894127,
+            "te": 0.326885862693116
+          },
+          "peak": {
+            "tusd": 1.93933777579151,
+            "te": 0.529168647866029
+          },
+          "demand": 28.7663072154317
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.138088241894127,
+            "te": 0.326885862693116,
+            "demand": 28.7663072154317
+          },
+          "peak": {
+            "tusd": 0.138088241894127,
+            "te": 0.529168647866029,
+            "demand": 74.2167031340458
+          }
+        },
+        "tusdG": 21.8075218075218
+      },
+      "_id": "64aff90b1ace3b26102fd8fa",
+      "powerDistCompany": "ENERGISA MT",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254155010,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254155010,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90b1ace3b26102fd8fa"
+    },
+    {
+      "taxes": {
+        "imcs": 0.3,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.9348448280166459,
+        "bWireNoTax": 0.19746580202015301
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.119907119205672,
+            "te": 0.425549808241739
+          },
+          "peak": {
+            "tusd": 1.87000179059213,
+            "te": 0.721614296710514
+          },
+          "demand": 28.727216883051
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.119907119205672,
+            "te": 0.425549808241739,
+            "demand": 28.727216883051
+          },
+          "peak": {
+            "tusd": 0.119907119205672,
+            "te": 0.721614296710514,
+            "demand": 71.7137784733886
+          }
+        },
+        "tusdG": 16.3479806336949
+      },
+      "_id": "64aff90b1ace3b26102fd8fb",
+      "powerDistCompany": "ENERGISA NOVA FRIBURGO",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254155011,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254155011,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90b1ace3b26102fd8fb"
+    },
+    {
+      "taxes": {
+        "imcs": 0.25,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.6753867427889321,
+        "bWireNoTax": 0.227245764182306
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.0861976586436425,
+            "te": 0.289209686736913
+          },
+          "peak": {
+            "tusd": 1.35826658131452,
+            "te": 0.458285631516321
+          },
+          "demand": 26.2801642789805
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.0861976586436425,
+            "te": 0.289209686736913,
+            "demand": 26.2801642789805
+          },
+          "peak": {
+            "tusd": 0.0861976586436425,
+            "te": 0.458285631516321,
+            "demand": 52.2336733660145
+          }
+        },
+        "tusdG": 20.7207207207207
+      },
+      "_id": "64aff90b1ace3b26102fd8fc",
+      "powerDistCompany": "ENERGISA PB",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254155011,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254155011,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90b1ace3b26102fd8fc"
+    },
+    {
+      "taxes": {
+        "imcs": 0.25,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.746454551057022,
+        "bWireNoTax": 0.252779402426787
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.129477937018153,
+            "te": 0.279105421299257
+          },
+          "peak": {
+            "tusd": 1.4038658048396402,
+            "te": 0.443311607353707
+          },
+          "demand": 19.638222427693
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.129477937018153,
+            "te": 0.279105421299257,
+            "demand": 19.638222427693
+          },
+          "peak": {
+            "tusd": 0.129477937018153,
+            "te": 0.443311607353707,
+            "demand": 52.4151381237523
+          }
+        },
+        "tusdG": 12.7127127127127
+      },
+      "_id": "64aff90b1ace3b26102fd8fd",
+      "powerDistCompany": "ENERGISA RO",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254155012,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254155012,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90b1ace3b26102fd8fd"
+    },
+    {
+      "taxes": {
+        "imcs": 0.2,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.725013089965395,
+        "bWireNoTax": 0.309989885600601
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.0716527951592251,
+            "te": 0.284789737576719
+          },
+          "peak": {
+            "tusd": 1.84978360864199,
+            "te": 0.46690094292365003
+          },
+          "demand": 26.5980746466405
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.0716527951592251,
+            "te": 0.284789737576719,
+            "demand": 26.5980746466405
+          },
+          "peak": {
+            "tusd": 0.0716527951592251,
+            "te": 0.46690094292365003,
+            "demand": 73.0828703260966
+          }
+        },
+        "tusdG": 14.9345774345774
+      },
+      "_id": "64aff90b1ace3b26102fd8fe",
+      "powerDistCompany": "ENERGISA SE",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254155012,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254155012,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90b1ace3b26102fd8fe"
+    },
+    {
+      "taxes": {
+        "imcs": 0.18,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.715005401543913,
+        "bWireNoTax": 0.140789694392146
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.12791461831835602,
+            "te": 0.330235677756595
+          },
+          "peak": {
+            "tusd": 1.05962215006978,
+            "te": 0.539943602069168
+          },
+          "demand": 19.4328244128863
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.12791461831835602,
+            "te": 0.330235677756595,
+            "demand": 19.4328244128863
+          },
+          "peak": {
+            "tusd": 0.12791461831835602,
+            "te": 0.539943602069168,
+            "demand": 38.1859927412358
+          }
+        },
+        "tusdG": 29.8992372163104
+      },
+      "_id": "64aff90b1ace3b26102fd912",
+      "powerDistCompany": "ENERGISA SUL SUDESTE",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254155026,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254155026,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90b1ace3b26102fd912"
+    },
+    {
+      "taxes": {
+        "imcs": 0.25,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.8582177959600971,
+        "bWireNoTax": 0.36144390073925003
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.0899858133035237,
+            "te": 0.331477004411257
+          },
+          "peak": {
+            "tusd": 1.9167887614955,
+            "te": 0.548640844584242
+          },
+          "demand": 38.6290500726244
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.0899858133035237,
+            "te": 0.331477004411257,
+            "demand": 38.6290500726244
+          },
+          "peak": {
+            "tusd": 0.0899858133035237,
+            "te": 0.548640844584242,
+            "demand": 75.0087172709343
+          }
+        },
+        "tusdG": 22.3795223795224
+      },
+      "_id": "64aff90b1ace3b26102fd8ff",
+      "powerDistCompany": "ENERGISA TO",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254155013,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254155013,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90b1ace3b26102fd8ff"
+    },
+    {
+      "taxes": {
+        "imcs": 0.25,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.855739002847739,
+        "bWireNoTax": 0.258273568776526
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.13844138082618698,
+            "te": 0.340234915343063
+          },
+          "peak": {
+            "tusd": 1.82501398658274,
+            "te": 0.5412315142335471
+          },
+          "demand": 24.6693988212776
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.13844138082618698,
+            "te": 0.340234915343063,
+            "demand": 24.6693988212776
+          },
+          "peak": {
+            "tusd": 0.13844138082618698,
+            "te": 0.5412315142335471,
+            "demand": 69.2551336207482
+          }
+        },
+        "tusdG": 26.0832260832261
+      },
+      "_id": "64aff90b1ace3b26102fd900",
+      "powerDistCompany": "EQUATORIAL AL",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254155015,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254155015,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90b1ace3b26102fd900"
+    },
+    {
+      "taxes": {
+        "imcs": 0,
+        "pis": 0,
+        "cofins": 0
+      },
+      "b1Tariffs": {
+        "tarif": 0.771634316406153,
+        "bWireNoTax": 0.174572023438143
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.149743063807759,
+            "te": 0.34938184900097
+          },
+          "peak": {
+            "tusd": 1.48777763004937,
+            "te": 0.565416484708158
+          },
+          "demand": 22.942346018444
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.149743063807759,
+            "te": 0.34938184900097,
+            "demand": 22.942346018444
+          },
+          "peak": {
+            "tusd": 0.149743063807759,
+            "te": 0.565416484708158,
+            "demand": 55.0469844098073
+          }
+        },
+        "tusdG": 0
+      },
+      "_id": "64aff90b1ace3b26102fd8f3",
+      "powerDistCompany": "EQUATORIAL GO",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254155006,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254155006,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90b1ace3b26102fd8f3"
+    },
+    {
+      "taxes": {
+        "imcs": 0.25,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.733943204973285,
+        "bWireNoTax": 0.28677994058831097
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.0942940304790172,
+            "te": 0.289621507090431
+          },
+          "peak": {
+            "tusd": 1.81424643202473,
+            "te": 0.46397697000105503
+          },
+          "demand": 24.3623405636474
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.0942940304790172,
+            "te": 0.289621507090431,
+            "demand": 24.3623405636474
+          },
+          "peak": {
+            "tusd": 0.0942940304790172,
+            "te": 0.46397697000105503,
+            "demand": 70.7793516058844
+          }
+        },
+        "tusdG": 38.5528385528386
+      },
+      "_id": "64aff90b1ace3b26102fd901",
+      "powerDistCompany": "EQUATORIAL MA",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254155015,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254155015,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90b1ace3b26102fd901"
+    },
+    {
+      "taxes": {
+        "imcs": 0.17,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.97797922225677,
+        "bWireNoTax": 0.425633837232153
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.135605461933161,
+            "te": 0.270100715151249
+          },
+          "peak": {
+            "tusd": 3.2774830892990297,
+            "te": 0.441706167174943
+          },
+          "demand": 39.2029116896025
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.135605461933161,
+            "te": 0.270100715151249,
+            "demand": 39.2029116896025
+          },
+          "peak": {
+            "tusd": 0.135605461933161,
+            "te": 0.441706167174943,
+            "demand": 129.352172140018
+          }
+        },
+        "tusdG": 24.2152651791206
+      },
+      "_id": "64aff90b1ace3b26102fd902",
+      "powerDistCompany": "EQUATORIAL PA",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254155016,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254155016,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90b1ace3b26102fd902"
+    },
+    {
+      "taxes": {
+        "imcs": 0.25,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.844590121239624,
+        "bWireNoTax": 0.28191950297259305
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.142051089208787,
+            "te": 0.303129539416687
+          },
+          "peak": {
+            "tusd": 2.0616990247741103,
+            "te": 0.498845260805266
+          },
+          "demand": 29.6454483872796
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.142051089208787,
+            "te": 0.303129539416687,
+            "demand": 29.6454483872796
+          },
+          "peak": {
+            "tusd": 0.142051089208787,
+            "te": 0.498845260805266,
+            "demand": 78.9802983183135
+          }
+        },
+        "tusdG": 7.62190762190762
+      },
+      "_id": "64aff90b1ace3b26102fd903",
+      "powerDistCompany": "EQUATORIAL PI",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254155016,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254155016,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90b1ace3b26102fd903"
+    },
+    {
+      "taxes": {
+        "imcs": 0,
+        "pis": 0,
+        "cofins": 0
+      },
+      "b1Tariffs": {
+        "tarif": 0,
+        "bWireNoTax": 0.28191950297259305
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0,
+            "te": 0
+          },
+          "peak": {
+            "tusd": 0,
+            "te": 0
+          },
+          "demand": 0
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0,
+            "te": 0,
+            "demand": 0
+          },
+          "peak": {
+            "tusd": 0,
+            "te": 0,
+            "demand": 0
+          }
+        },
+        "tusdG": 0
+      },
+      "_id": "64aff90b1ace3b26102fd904",
+      "powerDistCompany": "ESS",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254155017,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254155017,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90b1ace3b26102fd904"
+    },
+    {
+      "taxes": {
+        "imcs": 0.3,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.629995322085937,
+        "bWireNoTax": 0.19483147166907802
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.0848787691939923,
+            "te": 0.256649819465519
+          },
+          "peak": {
+            "tusd": 1.0538755281874401,
+            "te": 0.413610686428606
+          },
+          "demand": 13.6604648132677
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.0848787691939923,
+            "te": 0.256649819465519,
+            "demand": 13.6604648132677
+          },
+          "peak": {
+            "tusd": 0.0848787691939923,
+            "te": 0.413610686428606,
+            "demand": 39.7854373015661
+          }
+        },
+        "tusdG": 8.1816510387939
+      },
+      "_id": "64aff90b1ace3b26102fd905",
+      "powerDistCompany": "FORCEL",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254155018,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254155018,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90b1ace3b26102fd905"
+    },
+    {
+      "taxes": {
+        "imcs": 0.25,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.6477177134443799,
+        "bWireNoTax": 0.16901548363691002
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.0998533902383211,
+            "te": 0.30603368908441597
+          },
+          "peak": {
+            "tusd": 0.6311781312256199,
+            "te": 0.5200820434080919
+          },
+          "demand": 21.1395735255785
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.0998533902383211,
+            "te": 0.30603368908441597,
+            "demand": 21.1395735255785
+          },
+          "peak": {
+            "tusd": 0.0998533902383211,
+            "te": 0.5200820434080919,
+            "demand": 21.8725296060291
+          }
+        },
+        "tusdG": 7.97940797940798
+      },
+      "_id": "64aff90b1ace3b26102fd906",
+      "powerDistCompany": "HIDROPAN",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254155018,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254155018,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90b1ace3b26102fd906"
+    },
+    {
+      "taxes": {
+        "imcs": 0.3,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.899503683658156,
+        "bWireNoTax": 0.166589923385797
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.19670997896615,
+            "te": 0.405469796901891
+          },
+          "peak": {
+            "tusd": 0.890164632536791,
+            "te": 0.652418270359707
+          },
+          "demand": 20.4517818363994
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.19670997896615,
+            "te": 0.405469796901891,
+            "demand": 20.4517818363994
+          },
+          "peak": {
+            "tusd": 0.19670997896615,
+            "te": 0.652418270359707,
+            "demand": 28.5954887568044
+          }
+        },
+        "tusdG": 10.4951890666176
+      },
+      "_id": "64aff90b1ace3b26102fd907",
+      "powerDistCompany": "LIGHT",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254155019,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254155019,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90b1ace3b26102fd907"
+    },
+    {
+      "taxes": {
+        "imcs": 0.25,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.678300268792243,
+        "bWireNoTax": 0.13588233847305
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.119348932308201,
+            "te": 0.2789785730571
+          },
+          "peak": {
+            "tusd": 0.974272981220157,
+            "te": 0.451855708350013
+          },
+          "demand": 19.6342907728031
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.119348932308201,
+            "te": 0.2789785730571,
+            "demand": 19.6342907728031
+          },
+          "peak": {
+            "tusd": 0.119348932308201,
+            "te": 0.451855708350013,
+            "demand": 35.0861701338172
+          }
+        },
+        "tusdG": 4.27570427570428
+      },
+      "_id": "64aff90b1ace3b26102fd908",
+      "powerDistCompany": "MUXENERGIA",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254155019,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254155019,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90b1ace3b26102fd908"
+    },
+    {
+      "taxes": {
+        "imcs": 0.25,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.823607636939214,
+        "bWireNoTax": 0.11148386802912699
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.15719435257344,
+            "te": 0.43287966524964
+          },
+          "peak": {
+            "tusd": 0.7837301544291501,
+            "te": 0.705682180901652
+          },
+          "demand": 10.9711294294267
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.15719435257344,
+            "te": 0.43287966524964,
+            "demand": 10.9711294294267
+          },
+          "peak": {
+            "tusd": 0.15719435257344,
+            "te": 0.705682180901652,
+            "demand": 25.6928569336318
+          }
+        },
+        "tusdG": 4.39010439010439
+      },
+      "_id": "64aff90b1ace3b26102fd909",
+      "powerDistCompany": "NEOENERGIA BRASILIA",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254155020,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254155020,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90b1ace3b26102fd909"
+    },
+    {
+      "taxes": {
+        "imcs": 0.25,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.8419316405574839,
+        "bWireNoTax": 0.329383636762535
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.0915434095923424,
+            "te": 0.327883379091676
+          },
+          "peak": {
+            "tusd": 2.4818041206416903,
+            "te": 0.5365665605616601
+          },
+          "demand": 37.5320316271341
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.0915434095923424,
+            "te": 0.327883379091676,
+            "demand": 37.5320316271341
+          },
+          "peak": {
+            "tusd": 0.0915434095923424,
+            "te": 0.5365665605616601,
+            "demand": 98.1709412158643
+          }
+        },
+        "tusdG": 26.7267267267267
+      },
+      "_id": "64aff90b1ace3b26102fd90a",
+      "powerDistCompany": "NEOENERGIA COELBA",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254155021,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254155021,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90b1ace3b26102fd90a"
+    },
+    {
+      "taxes": {
+        "imcs": 0.25,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.758737979841969,
+        "bWireNoTax": 0.25413663874112297
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.0800757756193169,
+            "te": 0.34425048025176397
+          },
+          "peak": {
+            "tusd": 1.92684039656368,
+            "te": 0.56825748053807
+          },
+          "demand": 27.1492512000989
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.0800757756193169,
+            "te": 0.34425048025176397,
+            "demand": 27.1492512000989
+          },
+          "peak": {
+            "tusd": 0.0800757756193169,
+            "te": 0.56825748053807,
+            "demand": 75.8521984715607
+          }
+        },
+        "tusdG": 20.5634205634206
+      },
+      "_id": "64aff90b1ace3b26102fd90b",
+      "powerDistCompany": "NEOENERGIA COSERN",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254155021,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254155021,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90b1ace3b26102fd90b"
+    },
+    {
+      "taxes": {
+        "imcs": 0.18,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.785083862185423,
+        "bWireNoTax": 0.195620881479505
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.13987569212355,
+            "te": 0.325468424784987
+          },
+          "peak": {
+            "tusd": 1.7558883857375098,
+            "te": 0.524719786567649
+          },
+          "demand": 26.600770068394
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.13987569212355,
+            "te": 0.325468424784987,
+            "demand": 26.600770068394
+          },
+          "peak": {
+            "tusd": 0.13987569212355,
+            "te": 0.524719786567649,
+            "demand": 66.2967904805379
+          }
+        },
+        "tusdG": 16.7153215933704
+      },
+      "_id": "64aff90b1ace3b26102fd90c",
+      "powerDistCompany": "NEOENERGIA ELEKTRO",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254155022,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254155022,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90b1ace3b26102fd90c"
+    },
+    {
+      "taxes": {
+        "imcs": 0.25,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.8219382470456189,
+        "bWireNoTax": 0.22790351193945
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.0961994526099972,
+            "te": 0.389526746142639
+          },
+          "peak": {
+            "tusd": 1.33143730558215,
+            "te": 0.636738187241956
+          },
+          "demand": 19.5990015615926
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.0961994526099972,
+            "te": 0.389526746142639,
+            "demand": 19.5990015615926
+          },
+          "peak": {
+            "tusd": 0.0961994526099972,
+            "te": 0.636738187241956,
+            "demand": 50.7391129795579
+          }
+        },
+        "tusdG": 13.3133133133133
+      },
+      "_id": "64aff90b1ace3b26102fd90d",
+      "powerDistCompany": "NEOENERGIA PERNAMBUCO",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254155022,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254155022,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90b1ace3b26102fd90d"
+    },
+    {
+      "taxes": {
+        "imcs": 0.25,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.7173855207545581,
+        "bWireNoTax": 0.232356636206151
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.10907160547256199,
+            "te": 0.249118628073005
+          },
+          "peak": {
+            "tusd": 1.9024106502653202,
+            "te": 0.401111676599806
+          },
+          "demand": 39.117234382623
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.10907160547256199,
+            "te": 0.249118628073005,
+            "demand": 39.117234382623
+          },
+          "peak": {
+            "tusd": 0.10907160547256199,
+            "te": 0.401111676599806,
+            "demand": 73.6150542414595
+          }
+        },
+        "tusdG": 29.7011297011297
+      },
+      "_id": "64aff90b1ace3b26102fd90e",
+      "powerDistCompany": "NOVA PALMA",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254155023,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254155023,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90b1ace3b26102fd90e"
+    },
+    {
+      "taxes": {
+        "imcs": 0.25,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.7853520513016929,
+        "bWireNoTax": 0.250816495699336
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.12357984160662,
+            "te": 0.318735632037679
+          },
+          "peak": {
+            "tusd": 1.29451038036017,
+            "te": 0.508226239740375
+          },
+          "demand": 32.3138019091326
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.12357984160662,
+            "te": 0.318735632037679,
+            "demand": 32.3138019091326
+          },
+          "peak": {
+            "tusd": 0.12357984160662,
+            "te": 0.508226239740375,
+            "demand": 47.9401098680573
+          }
+        },
+        "tusdG": 12.6126126126126
+      },
+      "_id": "64aff90b1ace3b26102fd90f",
+      "powerDistCompany": "RGE",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254155023,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254155023,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90b1ace3b26102fd90f"
+    },
+    {
+      "taxes": {
+        "imcs": 0.25,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.872674159002125,
+        "bWireNoTax": 0.247737149573323
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.131863408629031,
+            "te": 0.416271966973139
+          },
+          "peak": {
+            "tusd": 1.51981611696497,
+            "te": 0.712925514027909
+          },
+          "demand": 19.0244767855468
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.131863408629031,
+            "te": 0.416271966973139,
+            "demand": 19.0244767855468
+          },
+          "peak": {
+            "tusd": 0.131863408629031,
+            "te": 0.712925514027909,
+            "demand": 57.0912537414734
+          }
+        },
+        "tusdG": 21.4214214214214
+      },
+      "_id": "64aff90b1ace3b26102fd910",
+      "powerDistCompany": "RORAIMA ENERGIA",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254155024,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254155024,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90b1ace3b26102fd910"
+    },
+    {
+      "taxes": {
+        "imcs": 0.2,
+        "pis": 0.0176,
+        "cofins": 0.05
+      },
+      "b1Tariffs": {
+        "tarif": 0.723931163558801,
+        "bWireNoTax": 0.271069732951147
+      },
+      "a4Tariffs": {
+        "green": {
+          "nonPeak": {
+            "tusd": 0.08887445311326189,
+            "te": 0.267862216216944
+          },
+          "peak": {
+            "tusd": 2.3690765734627397,
+            "te": 0.438674906888817
+          },
+          "demand": 38.3976039360488
+        },
+        "blue": {
+          "nonPeak": {
+            "tusd": 0.08887445311326189,
+            "te": 0.267862216216944,
+            "demand": 38.3976039360488
+          },
+          "peak": {
+            "tusd": 0.08887445311326189,
+            "te": 0.438674906888817,
+            "demand": 93.3880439140404
+          }
+        },
+        "tusdG": 33.1536894036894
+      },
+      "_id": "64aff90b1ace3b26102fd911",
+      "powerDistCompany": "SULGIPE",
+      "registryDate": "13/07/2023 | 10:15",
+      "registryTimestamp": 1689254155025,
+      "lastUpdated": "13/07/2023 | 10:15",
+      "lastUpdatedTimestamp": 1689254155025,
+      "user": "63481bf1e069700016c7a6ff",
+      "manager": "63481bfee069700016c7a701",
+      "__v": 0,
+      "id": "64aff90b1ace3b26102fd911"
+    }
+  ]
+}
