@@ -1,9 +1,32 @@
 # Leitor de Faturas de Energia — Cross-Project Implementation Spec
 
-**Version:** 1.0.0
+**Version:** 1.1.0
 **Date:** 2026-03-02
 **Feature Doc:** `docs/02_feature_leitor_de_faturas.md`
 **Sample Invoices:** `samples/faturas-de-energia/`
+
+### Changelog (v1.0.0 → v1.1.0)
+
+| # | Category | Change |
+|---|----------|--------|
+| 1 | **Critical** | Backend now maps Nexus HTTP errors properly: 400/422 → 422 `INVALID_FILE_FORMAT`, 401 → 500 `INTERNAL_ERROR`, 5xx/timeout → 502 `NEXUS_UNAVAILABLE` (was: all errors → 502) |
+| 2 | **Critical** | Frontend loading text updated to "até 60 segundos" to match backend's 60s timeout (was: 30s) |
+| 3 | **Critical** | Added multi-provider routing clarification — `OpenAIAgent` already supports non-OpenAI models via provider config |
+| 4 | **Critical** | Added `customerId` ↔ proposal.customer validation; derived `resolvedCustomerId` from proposal to prevent cross-customer file archiving |
+| 5 | **Significant** | API contract now explicitly documents two failure modes: HTTP errors (4xx/5xx) vs business failures (200 OK with `success: false`) |
+| 6 | **Significant** | Added rate limiting: frontend button disable during extraction + backend 60s per-proposal cooldown |
+| 7 | **Significant** | Added `FIELD_LABELS` Portuguese map for `missingFields` display in validation popup |
+| 8 | **Significant** | Documented S3 upload-before-validation as accepted trade-off with lifecycle rule recommendation |
+| 9 | **Significant** | Relaxed `demand` validation from `>= 30` to `> 0` (some Group A consumers have low demand) |
+| 10 | **Significant** | `AgentExtractionOutput.tariff_modality` is now `Optional[str]` — agent returns null for non-invoice documents; service returns extraction failure with "not an energy invoice" message |
+| 11 | **Minor** | `GroupAAzulExtraction` now inherits from `GroupAVerdeExtraction` instead of duplicating fields |
+| 12 | **Minor** | Archive persistence logs a warning when no archive exists (was: silent skip) |
+| 13 | **Minor** | `ExtractionRequest.file_url` uses `HttpUrl` instead of `str` for URL validation |
+| 14 | **Minor** | Added CDN URL vs pre-signed URL clarification (public-read ACL on DO Spaces) |
+| 15 | **Minor** | `ucid` now validated as non-negative integer (was: silently defaulted to 0) |
+| 16 | **Minor** | Added extraction telemetry logging spec (model, success, timing, derived fields) |
+| 17 | **Minor** | Frontend timeout set to 75s (> backend's 60s) to avoid premature timeout errors |
+| 18 | **Minor** | `GroupBExtraction.monthly_consumption` uses `list[float]` (not `list[Optional[float]]`) to reflect post-processed state |
 
 ---
 
@@ -121,7 +144,7 @@
       // Group A Verde fields (in addition to/instead of Group B)
       kwhPricePeak?: number,                 // R$/kWh (> 0, < 10)
       tusdPeak?: number,                     // R$/kWh (> 0, < 10)
-      demand?: number,                       // kW (>= 30)
+      demand?: number,                       // kW (> 0)
       demandTariff?: number,                 // R$ (> 0)
       averageConsumption?: number,           // kWh (> 0) — replicated to 12 months
       averageConsumptionPeak?: number,       // kWh (> 0) — replicated to 12 months
@@ -136,7 +159,22 @@
 }
 ```
 
-**Error Response:** `400 | 403 | 404 | 422 | 500 | 502`
+**Business Failure Response:** `200 OK` (extraction ran but mandatory fields could not be extracted)
+
+> **Note:** Extraction failure is a business outcome, not an HTTP error. The LLM processed the
+> file but couldn't extract required fields. The frontend must handle **both** HTTP errors
+> (status >= 400) **and** 200 OK responses with `success: false`.
+
+```typescript
+{
+  success: false,
+  message: string,                           // Portuguese user-facing message
+  errorCode: "EXTRACTION_FAILED",            // Always EXTRACTION_FAILED for business failures
+  missingFields: string[],                   // Field names the agent could not extract
+}
+```
+
+**HTTP Error Response:** `400 | 403 | 404 | 422 | 500 | 502`
 
 ```typescript
 {
@@ -144,12 +182,12 @@
   message: string,                           // Portuguese user-facing message
   errorCode: "INVALID_FILE_FORMAT"           // Machine-readable error code
     | "FILE_TOO_LARGE"
-    | "EXTRACTION_FAILED"                    // LLM could not extract mandatory fields
-    | "NEXUS_UNAVAILABLE"                    // Nexus API unreachable/timeout
-    | "INVALID_PROPOSAL"
-    | "UNAUTHORIZED"
-    | "INTERNAL_ERROR",
-  missingFields?: string[],                  // Only for EXTRACTION_FAILED
+    | "EXTRACTION_FAILED"                    // File could not be processed by Nexus (422)
+    | "NEXUS_UNAVAILABLE"                    // Nexus API unreachable/timeout (502)
+    | "INVALID_PROPOSAL"                     // Proposal not found or customerId mismatch (404/400)
+    | "UNAUTHORIZED"                         // Auth failure (403)
+    | "INTERNAL_ERROR",                      // Server error (500)
+  missingFields?: string[],                  // Only present for EXTRACTION_FAILED
 }
 ```
 
@@ -339,8 +377,9 @@
 
 **Timeout Considerations:**
 - LLM processing: 10-30 seconds typical
-- Azume Backend should set HTTP timeout to **60 seconds** for this endpoint
 - Nexus should set LLM agent timeout to **45 seconds**
+- Azume Backend should set HTTP timeout to **60 seconds** for Nexus calls
+- Azume Frontend should set HTTP timeout to **75 seconds** (> backend's 60s, to avoid confusing errors where the frontend times out before the backend)
 
 ---
 
@@ -390,9 +429,9 @@ class GroupBExtraction(BaseModel):
         default=None,
         description="Network class: Trifásica, Bifásica, or Monofásica"
     )
-    monthly_consumption: Optional[list[Optional[float]]] = Field(
+    monthly_consumption: Optional[list[float]] = Field(
         default=None, min_length=12, max_length=12,
-        description="Monthly consumption in kWh (Jan-Dec). None for missing months."
+        description="Monthly consumption in kWh (Jan-Dec). After post-processing, all 12 entries are guaranteed to be floats (missing months filled with average)."
     )
     tusd: Optional[float] = Field(
         default=None, ge=0,
@@ -427,7 +466,7 @@ class GroupAVerdeExtraction(BaseModel):
         description="TUSD Ponta (peak distribution tariff) in R$"
     )
     demand: float = Field(
-        ..., ge=30,
+        ..., gt=0,
         description="Contracted demand in kW"
     )
     demand_tariff: float = Field(
@@ -460,38 +499,10 @@ class GroupAVerdeExtraction(BaseModel):
     )
 
 
-class GroupAAzulExtraction(BaseModel):
+class GroupAAzulExtraction(GroupAVerdeExtraction):
     """Grupo A Azul (alta tensão, horo-sazonal azul) extraction result.
-    Extends Verde with peak demand fields.
+    Inherits all Verde fields and adds peak demand fields.
     """
-    power_dist_company: Optional[str] = Field(
-        default=None,
-        description="Power distribution company name (concessionária)"
-    )
-    kwh_price: float = Field(
-        ..., gt=0, lt=10,
-        description="TE Fora Ponta (off-peak energy tariff) in R$"
-    )
-    kwh_price_peak: float = Field(
-        ..., gt=0, lt=10,
-        description="TE Ponta (peak energy tariff) in R$"
-    )
-    tusd: float = Field(
-        ..., gt=0, lt=10,
-        description="TUSD Fora Ponta (off-peak distribution tariff) in R$"
-    )
-    tusd_peak: float = Field(
-        ..., gt=0, lt=10,
-        description="TUSD Ponta (peak distribution tariff) in R$"
-    )
-    demand: float = Field(
-        ..., ge=30,
-        description="Contracted off-peak demand in kW"
-    )
-    demand_tariff: float = Field(
-        ..., gt=0,
-        description="Off-peak demand tariff in R$"
-    )
     demand_peak: float = Field(
         ..., gt=0,
         description="Contracted peak demand in kW"
@@ -499,30 +510,6 @@ class GroupAAzulExtraction(BaseModel):
     demand_tariff_peak: float = Field(
         ..., gt=0,
         description="Peak demand tariff in R$"
-    )
-    public_light_bill: Optional[float] = Field(
-        default=None, gt=0,
-        description="Public lighting tax (CIP/COSIP) in R$"
-    )
-    average_consumption: float = Field(
-        ..., gt=0,
-        description="Average monthly off-peak consumption in kWh"
-    )
-    average_consumption_peak: float = Field(
-        ..., gt=0,
-        description="Average monthly peak consumption in kWh"
-    )
-    icms: Optional[float] = Field(
-        default=None, gt=0, lt=100,
-        description="ICMS tax percentage"
-    )
-    monthly_consumption: Optional[list[float]] = Field(
-        default=None, min_length=12, max_length=12,
-        description="Monthly off-peak consumption in kWh (replicated from average_consumption)"
-    )
-    monthly_consumption_peak: Optional[list[float]] = Field(
-        default=None, min_length=12, max_length=12,
-        description="Monthly peak consumption in kWh (replicated from average_consumption_peak)"
     )
 
 
@@ -687,9 +674,9 @@ class AgentGroupAOutput(BaseModel):
 
 class AgentExtractionOutput(BaseModel):
     """Top-level structured output from the LLM agent."""
-    tariff_modality: str = Field(
-        ...,
-        description="Modalidade tarifária: 'A' ou 'B'"
+    tariff_modality: Optional[str] = Field(
+        default=None,
+        description="Modalidade tarifária: 'A', 'B', ou null se o documento não for uma fatura de energia"
     )
     group_b: Optional[AgentGroupBOutput] = Field(
         default=None,
@@ -827,7 +814,7 @@ Implementation responsibilities:
 | `kwh_price_peak` | `> 0 AND < 10` | Mark as missing |
 | `tusd` (Group A) | `> 0 AND < 10` | Mark as missing |
 | `tusd_peak` | `> 0 AND < 10` | Mark as missing |
-| `demand` | `>= 30` | Mark as missing |
+| `demand` | `> 0` | Mark as missing |
 | `demand_tariff` | `> 0` | Mark as missing |
 | `demand_peak` | `> 0` | Mark as missing |
 | `demand_tariff_peak` | `> 0` | Mark as missing |
@@ -924,6 +911,12 @@ def post_process_group_a(extraction) -> None:
 ```
 
 > **Missing months reporting:** Individual missing months are NOT reported individually in `missing_fields`. The entire `monthly_consumption` field is reported as missing only if ALL 12 months are null/zero after the fill-with-average post-processing. Partial months are silently filled.
+
+**Not-an-Invoice Handling:**
+
+If `tariff_modality` is null (agent determined the document is not an energy invoice):
+- Return `InvoiceExtractionResult(success=False, ...)` with `error_message = "O documento enviado não é uma fatura de energia elétrica."`
+- `missing_fields` should list all mandatory fields for Group B as a reasonable default
 
 **Success Criteria:**
 
@@ -1034,7 +1027,7 @@ Indicadores de Grupo B:
 - Classificação como residencial, comercial BT, ou rural BT
 - Tensão de fornecimento em 127V, 220V ou 380V
 
-Defina `tariff_modality` como "A" ou "B".
+Defina `tariff_modality` como "A" ou "B". Se o documento **não** for uma fatura de energia elétrica (ex: conta de água, boleto, contrato), retorne `tariff_modality` como null e deixe `group_b` e `group_a` como null.
 
 ## Passo 2: Extrair Valores
 
@@ -1290,7 +1283,7 @@ from typing import Optional
 
 
 class ExtractionRequest(BaseModel):
-    file_url: str = Field(..., description="Pre-signed URL to the invoice file")
+    file_url: HttpUrl = Field(..., description="Pre-signed URL to the invoice file")
     model: Optional[str] = Field(
         default=None,
         description="LLM model ID. Defaults to gpt-5-mini."
@@ -1397,6 +1390,38 @@ AVAILABLE_MODELS = {
 DEFAULT_MODEL = "gpt-5-mini"
 ```
 
+> **Multi-provider routing:** `core_ai.agent.OpenAIAgent` already supports multi-provider routing via the OpenAI-compatible API pattern. Non-OpenAI models (Gemini, Claude, Grok) are routed through their respective provider endpoints configured in `core_ai`. The `model` string passed to `initialize_agent()` is used to resolve the provider and endpoint automatically — no adapter work is needed. If a new provider is added in the future, it must be registered in `core_ai`'s provider configuration.
+
+### 3.7 Extraction Telemetry Logging
+
+The service implementation should emit a structured log entry after each extraction attempt for monitoring LLM accuracy, cost, and performance:
+
+```python
+# In EnergyInvoiceServiceImpl, after extraction completes (success or failure):
+logger.info(
+    "energy_invoice_extraction",
+    extra={
+        "model_used": model,
+        "success": result.success,
+        "tariff_modality": result.tariff_modality.value if result.tariff_modality else None,
+        "classification": result.classification.value if result.classification else None,
+        "missing_fields": result.missing_fields,
+        "missing_fields_count": len(result.missing_fields),
+        "processing_time_ms": elapsed_ms,           # Total wall-clock time
+        "agent_time_ms": agent_elapsed_ms,           # LLM inference time only
+        "file_type": content_type,                   # "application/pdf" | "image/jpeg" etc.
+        "pdf_page_count": page_count if is_pdf else None,
+        "derivation_applied": list_of_derived_fields, # e.g. ["kwh_price", "icms"]
+    }
+)
+```
+
+This data enables:
+- Accuracy dashboards (success rate by model, by concessionária, by file type)
+- Cost tracking (requests per model per day)
+- Performance monitoring (P50/P95 latency)
+- Identifying problematic invoice formats (repeated failures for a specific concessionária)
+
 ---
 
 ## 4. Azume Backend Implementation Spec
@@ -1423,6 +1448,8 @@ export default invoiceReadingRoutes;
 ```
 
 > **Note:** `singleFilesUpload` middleware expects the file field name `"file"` in the multipart form data, matching the frontend's `formData.append("file", file)`.
+
+> **S3 upload before validation (accepted trade-off):** The `singleFilesUpload` middleware uploads the file to S3 _before_ the controller validates the proposal exists or the file meets business rules. If controller validation fails, the file remains as an orphan on S3. This is an accepted trade-off — DigitalOcean Spaces lifecycle rules on the `uploads/archives/` prefix should be configured to auto-delete objects older than 30 days. This also matches the existing pattern used by other controllers (voucher upload, contract upload, etc.).
 
 **Mount in `app.ts`:**
 
@@ -1484,7 +1511,48 @@ Add `isSystemAdmin` to the token-refresh JWT payload as well:
 isSystemAdmin: existingUser.isSystemAdmin || false,
 ```
 
+### 4.2b HttpError Extension
+
+The existing `HttpError` class (`src/classes/HttpError.ts`) has no `errorCode` field. Since the API contract returns machine-readable `errorCode` values, extend the class:
+
+**Modified file:** `src/classes/HttpError.ts`
+
+```typescript
+// Add new optional field:
+errorCode?: string;
+
+// Extend constructor (backward-compatible — new param is optional and last):
+constructor(
+  message: string,
+  errCode: number,
+  originalError: Error | null = Error(""),
+  shouldLogout: boolean = false,
+  errorTitle: string = "Erro",
+  errorCode?: string,             // NEW — machine-readable error code for API responses
+)
+```
+
+**Modified file:** Global error handler in `src/app.ts`
+
+Include `errorCode` in the error response when present:
+
+```typescript
+// In the error handler, add:
+res.status(error.code || 500).json({
+  success: false,
+  message: error.message,
+  shouldLogout: error.shouldLogout,
+  title: error.errorTitle,
+  errorCode: error.errorCode || undefined,  // NEW
+});
+```
+
 ### 4.3 Main Extraction Controller
+
+> **Rate limiting / abuse protection:** Each extraction triggers an LLM API call ($$). The following protections apply:
+> - **Frontend:** The "Extrair Dados" button is disabled while `isExtracting` is true, preventing double-clicks.
+> - **Backend (per-proposal):** The controller checks for a recent extraction on the same proposal+ucid. If an extraction was completed within the last **60 seconds**, return 429 with "Aguarde antes de tentar novamente." This prevents rapid-fire resubmissions.
+> - **Future consideration:** Per-user daily rate limit (e.g., 50 extractions/day) can be added if abuse is observed in production.
 
 **New file:** `src/controllers/invoiceReading/extractInvoice.ts`
 
@@ -1516,7 +1584,7 @@ export const extractInvoice = async (
   try {
     const { pid } = req.params;
     const { ucid, customerId, model } = req.body;
-    const ucIndex = parseInt(ucid, 10) || 0; // Consumer unit index for multi-UC proposals
+    const ucIndex = parseInt(ucid, 10); // Consumer unit index for multi-UC proposals (validated below)
     const file = req.file;
 
     // 1. Validate file
@@ -1536,14 +1604,35 @@ export const extractInvoice = async (
     // 2. Validate proposal exists
     const proposal = await Proposal.findById(pid);
     if (!proposal) {
-      return next(new HttpError("Proposta não encontrada.", 404, null, "INVALID_PROPOSAL"));
+      return next(new HttpError("Proposta não encontrada.", 404, null, false, "Erro", "INVALID_PROPOSAL"));
+    }
+
+    // 2b. Validate customerId matches the proposal's customer
+    //     Prevents archiving files under a different customer.
+    if (customerId && proposal.customer?.toString() !== customerId) {
+      return next(new HttpError(
+        "O cliente informado não corresponde à proposta.", 400, null, false, "Erro", "INVALID_PROPOSAL"
+      ));
+    }
+    // Derive customerId from proposal if not provided, to ensure consistency
+    const resolvedCustomerId = proposal.customer?.toString();
+
+    // 2c. Validate ucid is a valid non-negative integer
+    if (isNaN(ucIndex) || ucIndex < 0) {
+      return next(new HttpError(
+        "Índice da unidade consumidora (ucid) inválido.", 400
+      ));
     }
 
     // 3. File is already uploaded to S3 by singleFilesUpload middleware
-    //    Generate pre-signed URL for Nexus
+    //    The singleFilesUpload middleware uses ACL: "public-read", so the CDN URL
+    //    is permanently accessible without authentication. This is the existing pattern
+    //    used by all archive files in the system.
     const fileKey = (file as any).key;
     const fileUrl = `https://azume-files.cdn.digitaloceanspaces.com/${fileKey}`;
 
+    //    Generate pre-signed URL for Nexus (temporary, 60 min) — needed because
+    //    Nexus should not rely on public-read ACL; pre-signed URLs are more explicit.
     const presignedUrl = s3.getSignedUrl("getObject", {
       Bucket: "azume-files",
       Key: fileKey,
@@ -1575,13 +1664,30 @@ export const extractInvoice = async (
       nexusResult = nexusResponse.data;
     } catch (nexusErr: any) {
       console.error(
-        `[Invoice Reading] Nexus extraction failed: ${nexusErr.message}`
+        `[Invoice Reading] Nexus extraction failed: ${nexusErr.message}`,
+        { status: nexusErr.response?.status, data: nexusErr.response?.data }
       );
+
+      // Map Nexus HTTP errors to appropriate backend responses
+      const nexusStatus = nexusErr.response?.status;
+      if (nexusStatus === 400 || nexusStatus === 422) {
+        // Nexus 400/422 = bad file or invalid request — user's file is the problem
+        const nexusMessage = nexusErr.response?.data?.detail
+          || "Arquivo inválido ou não foi possível processar. Verifique o arquivo e tente novamente.";
+        return next(new HttpError(nexusMessage, 422, nexusErr, false, "Erro", "INVALID_FILE_FORMAT"));
+      }
+      if (nexusStatus === 401) {
+        // Nexus 401 = internal config issue (bad OAuth token)
+        console.error("[Invoice Reading] Nexus OAuth token rejected — check NEXUS_CLIENT_ID/SECRET config.");
+        return next(new HttpError(
+          "Erro interno de configuração. Contate o suporte.",
+          500, nexusErr, false, "Erro", "INTERNAL_ERROR"
+        ));
+      }
+      // Nexus 500, timeout, ECONNREFUSED, or any other error = Nexus unavailable
       return next(new HttpError(
         "Não foi possível conectar ao serviço de leitura. Tente novamente.",
-        502,
-        nexusErr,
-        "NEXUS_UNAVAILABLE"
+        502, nexusErr, false, "Erro", "NEXUS_UNAVAILABLE"
       ));
     }
 
@@ -1597,7 +1703,7 @@ export const extractInvoice = async (
     }
 
     // 6. Persist file in archive collection
-    await persistInvoiceInArchive(customerId, fileUrl, file.originalname);
+    await persistInvoiceInArchive(resolvedCustomerId, fileUrl, file.originalname);
 
     // 7. Persist file URL in proposal
     await Proposal.findByIdAndUpdate(pid, {
@@ -1637,7 +1743,10 @@ async function persistInvoiceInArchive(
   originalFilename: string
 ): Promise<void> {
   const archive = await Archive.findOne({ customer: customerId });
-  if (!archive) return; // No archive for this customer — skip silently
+  if (!archive) {
+    console.warn(`[Invoice Reading] No archive found for customer ${customerId} — skipping file persistence.`);
+    return;
+  }
 
   const FOLDER_NAME = "Faturas de Energia";
 
@@ -1901,7 +2010,7 @@ interface InvoiceUploadModalProps {
 - `DialogActions`:
   - "Cancelar" button (secondary)
   - "Extrair Dados" button (primary, disabled until file selected)
-- Loading state: replace content with `LoadingSpinnerFullScreenGraph` + text "Extraindo dados da fatura... Isso pode levar até 30 segundos."
+- Loading state: replace content with `LoadingSpinnerFullScreenGraph` + text "Extraindo dados da fatura... Isso pode levar até 60 segundos."
 
 ### 5.4 InvoiceValidationPopup Component
 
@@ -1935,10 +2044,41 @@ interface InvoiceValidationPopupProps {
   - Missing fields section (if any):
     - Yellow/amber warning banner
     - "Os seguintes campos não foram encontrados na fatura:"
-    - List of missing field labels (in Portuguese)
+    - List of missing field labels (in Portuguese, using `FIELD_LABELS` map below)
 - `DialogActions`:
   - "Cancelar" — close without applying
   - "Confirmar e Preencher" — apply values to the main form
+
+**Portuguese Field Labels Map:**
+
+Used by `InvoiceValidationPopup` to display `missingFields` in user-friendly Portuguese:
+
+```typescript
+const FIELD_LABELS: Record<string, string> = {
+  // Common
+  tariffModality: "Modalidade Tarifária",
+  classification: "Classificação Horo-Sazonal",
+  powerDistCompany: "Concessionária",
+  // Group B
+  kwhPrice: "Valor do kWh",
+  publicLightBill: "Taxa de Iluminação Pública",
+  networkClass: "Classe de Rede",
+  monthlyConsumption: "Consumo Mensal (12 meses)",
+  tusd: "TUSD",
+  icms: "ICMS",
+  // Group A
+  kwhPricePeak: "TE Ponta (kWh)",
+  tusdPeak: "TUSD Ponta",
+  demand: "Demanda Contratada",
+  demandTariff: "Tarifa da Demanda",
+  demandPeak: "Demanda Contratada Ponta",
+  demandTariffPeak: "Tarifa da Demanda Ponta",
+  averageConsumption: "Consumo Médio Fora Ponta",
+  averageConsumptionPeak: "Consumo Médio Ponta",
+};
+
+// Usage: missingFields.map(f => FIELD_LABELS[f] || f)
+```
 
 ### 5.5 Integration with useForm and inputHandler
 
@@ -2061,12 +2201,17 @@ export const extractInvoiceData = async (props: {
 
   const apiUrl = `${process.env.REACT_APP_BACKEND_URL}/proposals/${pid}/invoice-reading`;
 
+  // Timeout must be > backend's 60s Nexus timeout to avoid the frontend
+  // timing out while the backend is still waiting for Nexus.
+  const EXTRACTION_TIMEOUT_MS = 75000; // 75 seconds
+
   const responseData = await sendRequest(
     apiUrl,
     "POST",
     formData,
     { Authorization: "Bearer " + auth.token },
     // Note: do NOT set Content-Type — browser sets it with boundary for FormData
+    EXTRACTION_TIMEOUT_MS,
   );
 
   return responseData;
@@ -2176,7 +2321,7 @@ ProposalStepOne (state owner)
 Upload modal opened → file selected → "Extrair Dados" clicked
 │
 ├── InvoiceUploadModal: isLoading=true
-│   └── Shows: "Extraindo dados da fatura... Isso pode levar até 30 segundos."
+│   └── Shows: "Extraindo dados da fatura... Isso pode levar até 60 segundos."
 │   └── Progress indicator (indeterminate spinner)
 │   └── "Cancelar" button remains active (AbortController)
 │
