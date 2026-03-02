@@ -251,3 +251,30 @@ Os valores de "aliases" são para ajudar o agente a localizar o valor da concess
 | RGE                    | RGE SUL; Rio Grande Energia; CPFL RGE; AES SUL                                       |
 | RORAIMA ENERGIA        | CERR; Boa Vista Energia; Companhia Energetica de Roraima                             |
 | SULGIPE                | Companhia Sul Sergipana de Eletricidade                                              |
+
+### USER STORY
+
+Como usuário, quero poder gerar um orçamento de energia solar. Quero que o sistema leia a fatura de energia e popule os campos do formulário para eu ganhar tempo e facilidade na geração do orçamento.
+
+1. O usuário deve poder fazer upload de uma fatura de energia.
+2. O sistema deve ler a fatura de energia e extrair os valores dos campos obrigatórios.
+3. O sistema deve se esforçar para extrair os valores dos campos opcionais, mas não deve bloquear o sucesso da leitura da fatura de energia.
+4. Se o sistema não conseguir extrair os valores dos campos obrigatórios, deve ser considerado que houve uma falha na leitura da fatura de energia.
+5. Se o sistema conseguir extrair os valores dos campos obrigatórios, deve ser considerado que houve sucesso na leitura da fatura de energia.
+6. Em caso de sucesso, o sistema deve mostrar os valores extraídos de forma clara e organizada para o usuário visualizar e editar caso necessário (validação), antes de popular o formulário os campos extraídos no formulário de geração de orçamento de energia solar.
+7. Se algum campo não obrigatório não for extraído, deve ser exibido um feedback mostrando quais campos o agente não encontrou na fatura de energia.
+8. Uma vez que o usuário tenha validado os valores extraídos, o sistema deve popular o formulário de geração de orçamento de energia solar com os valores extraídos.
+9. O usuário poderá prosseguir com a geração do orçamento de energia solar OU adição de novas unidades consumidoras.
+
+Obs: 1 Fatura de energia = 1 unidade consumidora.
+
+### UI
+
+Para satisfazer o user story, deve-se criar uma interface de usuário que permita o upload de uma fatura de energia e a extração dos valores dos campos obrigatórios.
+
+1. Um botão com a logo do Nexus + texto "Leitura Smart" será adicionado no form da etapa 1 do wizard de geração de proposta de energia solar, antes da seção "Modalidade Tarifária"
+2. Ao clicar no botão, uma modal de upload de fatura de energia será exibida (botão de upload + zona de drop de arquivo)
+3. A validação será feito por meio de um Popu-up, que mostrará os campos extraídos e permitirá ao usuário validar os valores. O popup também mostrará os campos que não foram extraídos (não encontrados na fatura de energia).
+4. No backend, os valores extraídos ser validados de acordo com as regras de negócio definidas ("Valores" das tabelas mostram regras de validação).
+5. No backend do Azume CRM, a URL da conta de energia deverá ser armazenada na coleção de dados "archive" e na coleção de dados "proposal".
+6. Para persistir a URL da conta de energia na colação "archive", o sistema deverá localizar um folder denominado de "Faturas de Energia". Se não for localizado, deverá ser criado um novo folder com o nome "Faturas de Energia".
