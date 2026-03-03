@@ -1,9 +1,29 @@
 # Leitor de Faturas de Energia — Cross-Project Implementation Spec
 
-**Version:** 1.2.0
+**Version:** 1.3.0
 **Date:** 2026-03-03
 **Feature Doc:** `docs/02_feature_leitor_de_faturas.md`
 **Sample Invoices:** `samples/faturas-de-energia/`
+
+### Changelog (v1.2.0 → v1.3.0)
+
+| # | Category | Change |
+|---|----------|--------|
+| 1 | **Critical** | Made `GroupAVerdeExtraction` and `GroupAAzulExtraction` fields Optional — prevents Pydantic `ValidationError` on partial extraction results; success/failure now determined by success criteria logic, not model construction |
+| 2 | **Critical** | Resolved `OpenAIAgent` image passing — specified Approach A (extend `run()` to accept `list[dict]` content parts) and Approach B (fallback to direct SDK), marked as `core_ai` prerequisite |
+| 3 | **Critical** | Fixed Nexus auth — replaced `require_scope("energy-invoice:extract")` (user JWT auth) with `get_authenticated_client` (OAuth client credentials for service-to-service calls) |
+| 4 | **Important** | Added `monthlyConsumption` and `monthlyConsumptionPeak` arrays to Group A fields in API contract (Section 2.1) — were sent by backend but undocumented |
+| 5 | **Important** | Agent factory now uses `create_nexus_agent()` instead of direct `OpenAIAgent` instantiation — aligns with existing pattern, gets timeout/retry/token counting |
+| 6 | **Important** | Added `RATE_LIMITED` error code for 429 responses in API contract, backend controller, and frontend error table |
+| 7 | **Important** | Added `shouldLogout` check to frontend custom `fetch` in `extractInvoiceData` — prevents cryptic errors on expired tokens |
+| 8 | **Important** | Clarified global error handler modification scope — backward-compatible, preserves S3 cleanup, system-wide `success: false` addition |
+| 9 | **Important** | Added error handling for file download failures, GCS upload failures, and expired pre-signed URLs in file processing flow |
+| 10 | **Minor** | Fixed `initialize_agent()` reference in Section 3.6 multi-provider routing note (was: `initialize_agent()`, now: agent constructor) |
+| 11 | **Minor** | Fixed factory pattern — optional DI parameters with defaults, `HttpxHttpClient` instead of `HttpClient` protocol |
+| 12 | **Minor** | Added `str(request.file_url)` conversion in router — Pydantic v2 `HttpUrl` is a `Url` object, not plain `str` |
+| 13 | **Minor** | Fixed field mapping table formatting — removed broken 6th column, moved notes inline with field names |
+| 14 | **Minor** | Added `test_energy_invoice_derivation.py` unit test for derivation rules (kwh_price fallbacks, icms calculation, tusd assignment) |
+| 15 | **Minor** | Added `ucid` upper bound validation (`> 49` → 400 error) to prevent sparse array creation with hundreds of null entries |
 
 ### Changelog (v1.1.0 → v1.2.0)
 
@@ -169,6 +189,8 @@
       demandTariff?: number,                 // R$ (> 0)
       averageConsumption?: number,           // kWh (> 0) — replicated to 12 months
       averageConsumptionPeak?: number,       // kWh (> 0) — replicated to 12 months
+      monthlyConsumption?: number[],         // 12 entries (kWh) — replicated from averageConsumption
+      monthlyConsumptionPeak?: number[],     // 12 entries (kWh) — replicated from averageConsumptionPeak
 
       // Group A Azul additional fields
       demandPeak?: number,                   // kW (> 0)
@@ -195,7 +217,7 @@
 }
 ```
 
-**HTTP Error Response:** `400 | 403 | 404 | 422 | 500 | 502`
+**HTTP Error Response:** `400 | 403 | 404 | 422 | 429 | 500 | 502`
 
 ```typescript
 {
@@ -207,6 +229,7 @@
     | "NEXUS_UNAVAILABLE"                    // Nexus API unreachable/timeout (502)
     | "INVALID_PROPOSAL"                     // Proposal not found or customerId mismatch (404/400)
     | "UNAUTHORIZED"                         // Auth failure (403)
+    | "RATE_LIMITED"                         // Too many requests for same proposal+ucid (429)
     | "INTERNAL_ERROR",                      // Server error (500)
   missingFields?: string[],                  // Only present for EXTRACTION_FAILED
 }
@@ -467,45 +490,51 @@ class GroupBExtraction(BaseModel):
 
 
 class GroupAVerdeExtraction(BaseModel):
-    """Grupo A Verde (alta tensão, horo-sazonal verde) extraction result."""
+    """Grupo A Verde (alta tensão, horo-sazonal verde) extraction result.
+
+    All fields are Optional to allow partial extraction results. Success/failure
+    is determined by the success criteria logic (Section 3.1), not by model
+    construction — this prevents Pydantic ValidationError when the LLM fails
+    to extract a mandatory Group A field.
+    """
     power_dist_company: Optional[str] = Field(
         default=None,
         description="Power distribution company name (concessionária)"
     )
-    kwh_price: float = Field(
-        ..., gt=0, lt=10,
+    kwh_price: Optional[float] = Field(
+        default=None, gt=0, lt=10,
         description="TE Fora Ponta (off-peak energy tariff) in R$"
     )
-    kwh_price_peak: float = Field(
-        ..., gt=0, lt=10,
+    kwh_price_peak: Optional[float] = Field(
+        default=None, gt=0, lt=10,
         description="TE Ponta (peak energy tariff) in R$"
     )
-    tusd: float = Field(
-        ..., gt=0, lt=10,
+    tusd: Optional[float] = Field(
+        default=None, gt=0, lt=10,
         description="TUSD Fora Ponta (off-peak distribution tariff) in R$"
     )
-    tusd_peak: float = Field(
-        ..., gt=0, lt=10,
+    tusd_peak: Optional[float] = Field(
+        default=None, gt=0, lt=10,
         description="TUSD Ponta (peak distribution tariff) in R$"
     )
-    demand: float = Field(
-        ..., gt=0,
+    demand: Optional[float] = Field(
+        default=None, gt=0,
         description="Contracted demand in kW"
     )
-    demand_tariff: float = Field(
-        ..., gt=0,
+    demand_tariff: Optional[float] = Field(
+        default=None, gt=0,
         description="Demand tariff in R$"
     )
     public_light_bill: Optional[float] = Field(
         default=None, gt=0,
         description="Public lighting tax (CIP/COSIP) in R$"
     )
-    average_consumption: float = Field(
-        ..., gt=0,
+    average_consumption: Optional[float] = Field(
+        default=None, gt=0,
         description="Average monthly off-peak consumption in kWh"
     )
-    average_consumption_peak: float = Field(
-        ..., gt=0,
+    average_consumption_peak: Optional[float] = Field(
+        default=None, gt=0,
         description="Average monthly peak consumption in kWh"
     )
     icms: Optional[float] = Field(
@@ -526,12 +555,12 @@ class GroupAAzulExtraction(GroupAVerdeExtraction):
     """Grupo A Azul (alta tensão, horo-sazonal azul) extraction result.
     Inherits all Verde fields and adds peak demand fields.
     """
-    demand_peak: float = Field(
-        ..., gt=0,
+    demand_peak: Optional[float] = Field(
+        default=None, gt=0,
         description="Contracted peak demand in kW"
     )
-    demand_tariff_peak: float = Field(
-        ..., gt=0,
+    demand_tariff_peak: Optional[float] = Field(
+        default=None, gt=0,
         description="Peak demand tariff in R$"
     )
 
@@ -736,12 +765,12 @@ class AgentExtractionOutput(BaseModel):
 | Consumo Dez | `group_b.dec` | `group_b.monthly_consumption[11]` | `monthlyConsumption[11]` | `dec` |
 | TUSD | `group_b.tusd` | `group_b.tusd` | `tusd` | `tusd` |
 | ICMS | `group_b.icms` | `group_b.icms` | `icms` | `icms` |
-| Valor Total Energia | `group_b.total_energy_value` | — | — | — | (raw, used for derivation only — not passed to frontend) |
-| Consumo Mês Atual | `group_b.current_month_consumption` | — | — | — | (raw, used for derivation only — not passed to frontend) |
-| TE Unitária | `group_b.te_unit_price` | — | — | — | (raw, used for derivation only — not passed to frontend) |
-| TUSD Unitária | `group_b.tusd_unit_price` | — | — | — | (raw, used for derivation only — not passed to frontend) |
-| ICMS Valor (B) | `group_b.icms_value` | — | — | — | (raw, used for derivation only — not passed to frontend) |
-| ICMS Base (B) | `group_b.icms_base` | — | — | — | (raw, used for derivation only — not passed to frontend) |
+| Valor Total Energia *(derivation only)* | `group_b.total_energy_value` | — | — | — |
+| Consumo Mês Atual *(derivation only)* | `group_b.current_month_consumption` | — | — | — |
+| TE Unitária *(derivation only)* | `group_b.te_unit_price` | — | — | — |
+| TUSD Unitária *(derivation only)* | `group_b.tusd_unit_price` | — | — | — |
+| ICMS Valor (B) *(derivation only)* | `group_b.icms_value` | — | — | — |
+| ICMS Base (B) *(derivation only)* | `group_b.icms_base` | — | — | — |
 | **Group A** | | | | |
 | Classificação | `group_a.classification` | `classification` | `classification` | `classification` |
 | TE Fora Ponta | `group_a.kwh_price` | `group_a_verde.kwh_price` or `group_a_azul.kwh_price` | `kwhPrice` | `kwhPrice` |
@@ -756,10 +785,10 @@ class AgentExtractionOutput(BaseModel):
 | Consumo Médio FP | `group_a.average_consumption` | `*.average_consumption` | `monthlyConsumption[0-11]` | `averageValue` |
 | Consumo Médio Ponta | `group_a.average_consumption_peak` | `*.average_consumption_peak` | `monthlyConsumptionPeak[0-11]` | `averageValuePeak` |
 | ICMS | `group_a.icms` | `*.icms` | `icms` | `icms` |
-| Consumo Mensal FP | — | `*.monthly_consumption` | `monthlyConsumption` | `jan`-`dec` | (replicated from average_consumption in post-processing) |
-| Consumo Mensal Ponta | — | `*.monthly_consumption_peak` | `monthlyConsumptionPeak` | — | (replicated from average_consumption_peak in post-processing) |
-| ICMS Valor (A) | `group_a.icms_value` | — | — | — | (raw, used for derivation only — not passed to frontend) |
-| ICMS Base (A) | `group_a.icms_base` | — | — | — | (raw, used for derivation only — not passed to frontend) |
+| Consumo Mensal FP *(post-processed)* | — | `*.monthly_consumption` | `monthlyConsumption` | `jan`-`dec` |
+| Consumo Mensal Ponta *(post-processed)* | — | `*.monthly_consumption_peak` | `monthlyConsumptionPeak` | — |
+| ICMS Valor (A) *(derivation only)* | `group_a.icms_value` | — | — | — |
+| ICMS Base (A) *(derivation only)* | `group_a.icms_base` | — | — | — |
 
 > **Note on `kwh_price`:** For Group B this is the all-inclusive price (TE + TUSD + taxes). For Group A this is the TE component only (TUSD is a separate field). Same field name, different semantics — this matches domain conventions where Group A tariffs are always disaggregated.
 
@@ -968,16 +997,24 @@ Group A success requires:
 **Modified file:** `packages/nexus/nexus-services/src/nexus_services/factories.py`
 
 ```python
-def create_energy_invoice_service() -> EnergyInvoiceService:
-    """Create EnergyInvoiceService with all dependencies."""
-    from core_storage.client import StorageClient
-    from core_http.client import HttpClient
-    from nexus_ai.factories import create_energy_invoice_agent_factory
+def create_energy_invoice_service(
+    storage_client=None,
+    http_client=None,
+    agent_factory=None,
+) -> EnergyInvoiceService:
+    """Create EnergyInvoiceService with all dependencies.
+
+    Follows the existing factory pattern: optional DI parameters with defaults.
+    Pass explicit dependencies for testing; production uses auto-created defaults.
+    """
+    from core_storage.client import get_storage_client
+    from core_http.adapters import HttpxHttpClient
+    from nexus_ai.factories.energy_invoice import EnergyInvoiceAgentFactory
 
     return EnergyInvoiceServiceImpl(
-        storage_client=StorageClient(),
-        http_client=HttpClient(),
-        agent_factory=create_energy_invoice_agent_factory(),
+        storage_client=storage_client or get_storage_client(),
+        http_client=http_client or HttpxHttpClient(),
+        agent_factory=agent_factory or EnergyInvoiceAgentFactory(),
     )
 ```
 
@@ -987,7 +1024,8 @@ def create_energy_invoice_service() -> EnergyInvoiceService:
 
 ```python
 import base64
-from core_ai.agent import OpenAIAgent
+import mimetypes
+from nexus_ai.factories import create_nexus_agent
 from nexus_contexts.energy_invoice import ENERGY_INVOICE_SYSTEM_PROMPT
 from nexus_models.energy_invoice_agent import AgentExtractionOutput
 
@@ -1005,32 +1043,64 @@ class EnergyInvoiceAgentFactory:
         Uses structured output (output_type) — no tools, no streaming.
         Single-step: agent classifies (Group A/B, Verde/Azul) and extracts in one call.
 
-        OpenAIAgent is a Pydantic BaseModel — configured via constructor, not methods.
-        Images are encoded as base64 data URIs in the user message, following the
-        OpenAI vision API content parts format.
+        Image handling: OpenAIAgent.run() accepts `user_message: str` only.
+        To pass images to vision models, we need to build structured content
+        parts (list of dicts) following the OpenAI vision API format and pass
+        them through the agent's message construction layer.
+
+        **Implementation requirement:** Before implementing, verify how
+        `create_nexus_agent()` / `OpenAIAgent` handles image input. The agent's
+        `run()` method accepts only a `str` user_message. Two possible approaches:
+
+        **Approach A (preferred):** Extend `OpenAIAgent.run()` in `core_ai` to
+        accept `user_message: str | list[dict]`, where the list form supports
+        OpenAI-style content parts:
+        ```python
+        result = await agent.run(
+            user_message=[
+                {"type": "text", "text": "Extraia os dados desta fatura de energia."},
+                *[
+                    {"type": "image_url", "image_url": {"url": f"data:image/png;base64,{base64.b64encode(img).decode()}"}}
+                    for img in images
+                ],
+            ],
+            session=None,
+            context=None,
+        )
+        ```
+
+        **Approach B (fallback):** Use the OpenAI Agents SDK directly (bypass
+        `OpenAIAgent` wrapper) to call `Runner.run()` with structured content
+        parts, then wrap the result in `AgentRunResponse`.
+
+        The chosen approach must be confirmed against `core_ai.agent.OpenAIAgent`
+        before implementation. If Approach A is chosen, the `core_ai` change is a
+        prerequisite for this feature.
         """
-        agent = OpenAIAgent(
+        agent = create_nexus_agent(
             name="Energy Invoice Extractor",
             system_prompt=ENERGY_INVOICE_SYSTEM_PROMPT,
-            tools=[],
-            mcp_servers=[],
-            output_type=AgentExtractionOutput,
+            provider="openai",  # Resolved by core_ai based on model string
             model=model,
+            output_type=AgentExtractionOutput,
+            tools=[],
+            timeout_seconds=45.0,  # Match Nexus LLM agent timeout
         )
 
-        # Build user message with base64-encoded images as content parts.
-        # OpenAIAgent.run() accepts a plain string user_message. To pass images,
-        # we build a multipart message string with embedded base64 image data URIs.
-        # The agent's internal message builder converts this to the provider's
-        # vision API format (e.g., OpenAI content parts with type: "image_url").
-        #
-        # Implementation note: check how OpenAIAgent.run() handles image content.
-        # If it expects structured content parts (list of dicts), build them as:
-        #   [{"type": "text", "text": "..."}, {"type": "image_url", "image_url": {"url": "data:image/png;base64,..."}}]
-        # If it only accepts a string, the image passing mechanism must be
-        # verified against core_ai.agent.OpenAIAgent's actual implementation.
+        # Build content parts with base64-encoded images.
+        # See implementation requirement above for the chosen approach.
+        content_parts = [
+            {"type": "text", "text": "Extraia os dados desta fatura de energia."},
+        ]
+        for img in images:
+            b64 = base64.b64encode(img).decode()
+            content_parts.append({
+                "type": "image_url",
+                "image_url": {"url": f"data:image/png;base64,{b64}"},
+            })
+
         result = await agent.run(
-            user_message="Extraia os dados desta fatura de energia.",
+            user_message=content_parts,  # Requires core_ai extension (Approach A)
             session=None,
             context=None,
         )
@@ -1038,7 +1108,7 @@ class EnergyInvoiceAgentFactory:
         return result.output
 ```
 
-> **Implementation note:** `OpenAIAgent` is a Pydantic `BaseModel` — it is configured via constructor parameters, not via an `initialize_agent()` method. The extraction result is accessed via `result.output` (not `result.final_output`). The `run()` method signature is `run(user_message, session, context)`. **Before implementing, verify how `OpenAIAgent.run()` accepts image content** — the current signature takes a `str` user message, but vision models require structured content parts with base64-encoded images. The implementation may need to extend `OpenAIAgent` or use a lower-level API to pass image data.
+> **Implementation note:** `OpenAIAgent` is a Pydantic `BaseModel` — configured via constructor parameters. The extraction result is accessed via `result.output` (not `result.final_output`). The `run()` method signature is `run(user_message, session, context)`. **Image passing requires extending `OpenAIAgent.run()` to accept `list[dict]` content parts (Approach A above) or bypassing the wrapper (Approach B).** This is a prerequisite change in `core_ai` that must be implemented before the energy invoice feature. Use `create_nexus_agent()` (from `nexus_ai.factories`) instead of directly instantiating `OpenAIAgent` to get proper timeout, retry, and token counting.
 
 #### `nexus-contexts` — System Prompt
 
@@ -1245,13 +1315,18 @@ from nexus_services.protocols.energy_invoice_service import (
 from nexus_core_api.dependencies.energy_invoice import get_energy_invoice_service
 
 # Auth dependency for service-to-service calls (Azume Backend → Nexus).
-# Nexus uses OAuth client credentials auth — verify the actual dependency name
-# in nexus_core_api/auth/dependencies.py. The existing codebase has:
-# - get_current_user() for user JWT auth
-# - require_scope() / require_all_scopes() for scope-based auth
-# The service-client auth mechanism exists (req.nexusClientData in Express custom.d.ts)
-# but the FastAPI dependency function name must be confirmed from the OAuth router.
-from nexus_core_api.auth.dependencies import require_scope
+# This uses OAuth client credentials auth (NOT user JWT auth).
+# The existing codebase has:
+# - get_current_user() / require_scope() → user JWT auth (not applicable here)
+# - OAuth client credentials → validated in the oauth router, sets nexusClientData
+#
+# **Implementation requirement:** Verify the exact OAuth client auth dependency
+# in nexus_core_api/routers/oauth.py. The dependency should validate the Bearer
+# token as an OAuth client credential token and return the ServiceClient.
+# If no reusable dependency exists, create one that extracts and validates the
+# OAuth token from the Authorization header against the service_clients collection.
+# Do NOT use require_scope() — that checks UserScope enums for user-scoped auth.
+from nexus_core_api.auth.oauth import get_authenticated_client  # Verify exact name
 
 router = APIRouter(tags=["Energy Invoice"], prefix="/energy-invoice")
 
@@ -1264,12 +1339,12 @@ router = APIRouter(tags=["Energy Invoice"], prefix="/energy-invoice")
 )
 async def extract_invoice(
     request: ExtractionRequest,
-    _=Depends(require_scope("energy-invoice:extract")),  # Service-client OAuth scope
+    _=Depends(get_authenticated_client),  # OAuth client credentials auth
     service: EnergyInvoiceService = Depends(get_energy_invoice_service),
 ) -> ExtractionResponse:
     result = await service.extract_invoice_data(
         EnergyInvoiceExtractionInput(
-            file_url=request.file_url,
+            file_url=str(request.file_url),  # HttpUrl → str conversion (Pydantic v2)
             model=request.model or "gpt-5-mini",
         )
     )
@@ -1285,7 +1360,7 @@ async def extract_invoice(
     summary="List available vision models for invoice extraction",
 )
 async def list_models(
-    _=Depends(require_scope("energy-invoice:extract")),  # Service-client OAuth scope
+    _=Depends(get_authenticated_client),  # OAuth client credentials auth
 ) -> dict:
     return {
         "models": [
@@ -1389,10 +1464,16 @@ class ExtractionResponse(BaseModel):
 1. Receive pre-signed S3 URL
    ↓
 2. Download file via httpx (timeout: 30s, max size: 20MB)
+   │  Error: URL expired / 403 Forbidden → raise HTTPException(422, "URL do arquivo expirada ou inacessível.")
+   │  Error: Download timeout / connection error → raise HTTPException(422, "Não foi possível baixar o arquivo.")
+   │  Error: File too large (> 20MB) → raise HTTPException(422, "Arquivo muito grande.")
+   │  Error: Empty response / 0 bytes → raise HTTPException(422, "Arquivo vazio ou corrompido.")
    ↓
 3. Detect content type from HTTP headers + file magic bytes
+   │  Error: Unsupported content type → raise HTTPException(422, "Formato de arquivo não suportado.")
    ↓
 4. Upload to GCS temp path: energy-invoices/temp/{uuid}/{filename}
+   │  Error: GCS upload failure → raise HTTPException(500, "Erro interno ao processar arquivo.")
    ↓
 5. If PDF:
    │  a. Open with PyMuPDF (fitz)
@@ -1463,7 +1544,7 @@ AVAILABLE_MODELS = {
 DEFAULT_MODEL = "gpt-5-mini"
 ```
 
-> **Multi-provider routing:** `core_ai.agent.OpenAIAgent` already supports multi-provider routing via the OpenAI-compatible API pattern. Non-OpenAI models (Gemini, Claude, Grok) are routed through their respective provider endpoints configured in `core_ai`. The `model` string passed to `initialize_agent()` is used to resolve the provider and endpoint automatically — no adapter work is needed. If a new provider is added in the future, it must be registered in `core_ai`'s provider configuration.
+> **Multi-provider routing:** `core_ai.agent.OpenAIAgent` already supports multi-provider routing via the OpenAI-compatible API pattern. Non-OpenAI models (Gemini, Claude, Grok) are routed through their respective provider endpoints configured in `core_ai`. The `model` string passed to the agent constructor (via `create_nexus_agent()`) is used to resolve the provider and endpoint automatically — no adapter work is needed. If a new provider is added in the future, it must be registered in `core_ai`'s provider configuration.
 
 ### 3.7 Extraction Telemetry Logging
 
@@ -1611,16 +1692,19 @@ constructor(
 
 **Modified file:** Global error handler in `src/app.ts`
 
-Include `errorCode` in the error response when present:
+Include `errorCode` and `success: false` in the error response when present:
+
+> **Scope note:** This is a backward-compatible, system-wide enhancement — `success: false` and `errorCode` are added to ALL error responses from all 50+ route files. This is safe because existing frontend code checks `!response.ok` for HTTP errors, not `success`. The existing S3 file cleanup logic (`if (req.file && req.file.key) { s3.deleteObject(...) }`) in the error handler **must be preserved** — do not remove it. For the invoice extraction controller specifically, this cleanup is beneficial: if the controller throws before archiving, the orphan file is cleaned up immediately.
 
 ```typescript
-// In the error handler, add:
+// In the error handler, modify the response JSON to include success and errorCode.
+// PRESERVE the existing S3 file cleanup code above this line.
 res.status(error.code || 500).json({
-  success: false,
+  success: false,                             // NEW — consistent with API contract
   message: error.message,
   shouldLogout: error.shouldLogout,
   title: error.errorTitle,
-  errorCode: error.errorCode || undefined,  // NEW
+  errorCode: error.errorCode || undefined,    // NEW — machine-readable error code
 });
 ```
 
@@ -1711,8 +1795,8 @@ export const extractInvoice = async (
     // Derive customerId from proposal if not provided, to ensure consistency
     const resolvedCustomerId = proposal.customer?.toString();
 
-    // 2c. Validate ucid is a valid non-negative integer
-    if (isNaN(ucIndex) || ucIndex < 0) {
+    // 2c. Validate ucid is a valid non-negative integer with upper bound
+    if (isNaN(ucIndex) || ucIndex < 0 || ucIndex > 49) {
       return next(new HttpError(
         "Índice da unidade consumidora (ucid) inválido.", 400
       ));
@@ -1723,7 +1807,7 @@ export const extractInvoice = async (
     const lastExtraction = recentExtractions.get(cooldownKey);
     if (lastExtraction && Date.now() - lastExtraction < EXTRACTION_COOLDOWN_MS) {
       return next(new HttpError(
-        "Aguarde antes de tentar novamente.", 429
+        "Aguarde antes de tentar novamente.", 429, null, false, "Erro", "RATE_LIMITED"
       ));
     }
 
@@ -2358,6 +2442,12 @@ export const extractInvoiceData = async (props: {
 
     const responseData = await response.json();
 
+    // Replicate sendRequest's auto-logout behavior for expired tokens
+    if (responseData.shouldLogout) {
+      auth.logout();
+      return;
+    }
+
     if (!response.ok && !responseData.success) {
       throw new Error(responseData.message || "Erro ao processar a fatura.");
     }
@@ -2488,6 +2578,7 @@ Upload modal opened → file selected → "Extrair Dados" clicked
 | Invalid file format | "Formato de arquivo não suportado. Envie PDF, JPG, PNG, GIF ou WebP." | Show in modal, don't submit |
 | File too large | "Arquivo muito grande. Tamanho máximo: 20 MB." | Show in modal, don't submit |
 | Extraction failed | "Não foi possível extrair os dados obrigatórios da fatura." | Show in modal with missingFields list |
+| Rate limited (429) | "Aguarde antes de tentar novamente." | Show in modal, disable button briefly |
 | Network error | "Erro de conexão. Verifique sua internet e tente novamente." | Show in modal (ModalError) |
 | Timeout | "A leitura demorou mais que o esperado. Tente novamente." | Show in modal (ModalError) |
 
@@ -2657,6 +2748,7 @@ The full list of accepted concessionária values. This list is shared across all
 | `tests/unit/models/test_energy_invoice.py` | Pydantic model validation — GroupB, GroupAVerde, GroupAAzul field ranges, required vs optional |
 | `tests/unit/models/test_energy_invoice_agent.py` | Agent output model validation — all fields optional, correct types |
 | `tests/unit/services/test_energy_invoice_service.py` | Service validation logic — valid ranges pass, invalid ranges → missing |
+| `tests/unit/services/test_energy_invoice_derivation.py` | `derive_missing_fields_group_b` — kwh_price from te+tusd, from total/consumption; icms from value/base; tusd from tusd_unit_price. `derive_missing_fields_group_a` — icms derivation. Verify derivation skipped when primary field already present. |
 | `tests/unit/services/test_energy_invoice_postprocessing.py` | `fill_missing_months_with_average` — partial months, all present, all missing |
 | `tests/unit/services/test_energy_invoice_postprocessing.py` | `replicate_average_to_months` — correct replication |
 | `tests/unit/services/test_energy_invoice_success_criteria.py` | Success criteria — Group B mandatory fields, Group A Verde/Azul mandatory fields |
