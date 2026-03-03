@@ -1,9 +1,26 @@
 # Leitor de Faturas de Energia — Cross-Project Implementation Spec
 
-**Version:** 1.3.0
+**Version:** 1.4.0
 **Date:** 2026-03-03
 **Feature Doc:** `docs/02_feature_leitor_de_faturas.md`
 **Sample Invoices:** `samples/faturas-de-energia/`
+
+### Changelog (v1.3.0 → v1.4.0)
+
+| # | Category | Change |
+|---|----------|--------|
+| 1 | **Critical** | Fixed Nexus auth — replaced non-existent `get_authenticated_client` (from `auth.oauth`) with actual `require_service_auth` (from `dependencies.service_auth`), returns `ServiceTokenClaims` |
+| 2 | **Critical** | Resolved OpenAIAgent image passing — committed to Approach A (extend `run()` to accept `str \| list[dict]`) as a blocking prerequisite, removed Approach B fallback |
+| 3 | **Important** | Fixed `kwh_price` derivation order — `total_energy_value / consumption` (more accurate) now checked before `te + tusd` (approximation), matching the stated preference |
+| 4 | **Important** | Fixed `demand_tariff` and `demand_tariff_peak` unit descriptions — corrected from "R$" to "R$/kW" in API contract (Section 2.1) and Pydantic models (Section 2.4) to match agent prompt |
+| 5 | **Important** | Fixed `provider` parameter in agent factory — replaced hardcoded `provider="openai"` with dynamic lookup from `AVAILABLE_MODELS[model]["provider"]` for multi-provider support |
+| 6 | **Important** | Added `factories.py` → `factories/` package migration prerequisite — `nexus_ai/factories.py` must be renamed to `factories/__init__.py` before creating `factories/energy_invoice.py` |
+| 7 | **Important** | Added `isSystemAdmin` to backend login HTTP response body — frontend reads response body (not JWT), so the field must be in both `jwt.sign()` and `res.json()` in `logUser.ts` and `logClientWithToken.ts` |
+| 8 | **Important** | Added concessionaria alias resolution logic in service layer — `resolve_concessionaria()` function with `ALIAS_TO_CANONICAL` dict from Section 6, applied before enum validation |
+| 9 | **Minor** | Deduplicated models list — `GET /models` endpoint now uses `AVAILABLE_MODELS` dict from Section 3.6 instead of hardcoded inline list |
+| 10 | **Minor** | Typed `ExtractionResponse` group fields — replaced `Optional[dict]` with `Optional[GroupBExtraction]` etc. for OpenAPI schema preservation |
+| 11 | **Minor** | Documented `extractInvoiceData` shouldLogout handling — returns `undefined` on logout, callers must check `if (!result) return` |
+| 12 | **Minor** | Documented partial failure trade-off in archive → proposal persistence sequence |
 
 ### Changelog (v1.2.0 → v1.3.0)
 
@@ -186,7 +203,7 @@
       kwhPricePeak?: number,                 // R$/kWh (> 0, < 10)
       tusdPeak?: number,                     // R$/kWh (> 0, < 10)
       demand?: number,                       // kW (> 0)
-      demandTariff?: number,                 // R$ (> 0)
+      demandTariff?: number,                 // R$/kW (> 0)
       averageConsumption?: number,           // kWh (> 0) — replicated to 12 months
       averageConsumptionPeak?: number,       // kWh (> 0) — replicated to 12 months
       monthlyConsumption?: number[],         // 12 entries (kWh) — replicated from averageConsumption
@@ -194,7 +211,7 @@
 
       // Group A Azul additional fields
       demandPeak?: number,                   // kW (> 0)
-      demandTariffPeak?: number,             // R$ (> 0)
+      demandTariffPeak?: number,             // R$/kW (> 0)
     },
     missingFields: string[],                 // Field names the agent could not extract
     invoiceFileUrl: string,                  // Permanent S3 URL of the uploaded invoice
@@ -523,7 +540,7 @@ class GroupAVerdeExtraction(BaseModel):
     )
     demand_tariff: Optional[float] = Field(
         default=None, gt=0,
-        description="Demand tariff in R$"
+        description="Demand tariff in R$/kW"
     )
     public_light_bill: Optional[float] = Field(
         default=None, gt=0,
@@ -561,7 +578,7 @@ class GroupAAzulExtraction(GroupAVerdeExtraction):
     )
     demand_tariff_peak: Optional[float] = Field(
         default=None, gt=0,
-        description="Peak demand tariff in R$"
+        description="Peak demand tariff in R$/kW"
     )
 
 
@@ -875,9 +892,33 @@ Implementation responsibilities:
 | `public_light_bill` | `> 0` | Set to None (best-effort) |
 | `tusd` (Group B) | `>= 0` | Set to None (best-effort) |
 | `icms` | `> 0 AND < 100` | Set to None (best-effort) |
-| `power_dist_company` | Must match concessionária enum (case-insensitive, normalized to uppercase before comparison) | Set to None (best-effort) |
+| `power_dist_company` | Must match concessionária enum after alias resolution (see below) | Set to None (best-effort) |
 | PDF page count | <= 5 pages | Return 422 with "PDF com muitas páginas. Máximo: 5 páginas." |
 | `classification` | Must be "Azul" or "Verde" | Mark as missing |
+
+**Concessionária Alias Resolution (applied BEFORE validation):**
+
+The LLM agent may return alias names (e.g., "ELETROPAULO") instead of canonical names (e.g., "ENEL SP"). The service layer must resolve aliases before validating against the enum:
+
+```python
+def resolve_concessionaria(name: Optional[str]) -> Optional[str]:
+    """Resolve concessionária alias to canonical name.
+
+    Uses the alias mapping from Section 6. Returns the canonical name if found,
+    or the original name (uppercased) if it's already canonical. Returns None
+    if the name doesn't match any canonical name or alias.
+    """
+    if name is None:
+        return None
+    normalized = name.strip().upper()
+    # Check canonical names first
+    if normalized in CONCESSIONARIAS:
+        return normalized
+    # Check aliases
+    return ALIAS_TO_CANONICAL.get(normalized)
+```
+
+The `ALIAS_TO_CANONICAL` dict should be built from Section 6's alias table (e.g., `{"ELETROPAULO": "ENEL SP", "AES ELETROPAULO": "ENEL SP", "CPFL": "CPFL PAULISTA", ...}`). This dict lives in the service implementation alongside the validation logic.
 
 **Deterministic Derivation Rules (applied AFTER validation, BEFORE post-processing):**
 
@@ -886,20 +927,19 @@ def derive_missing_fields_group_b(extraction: AgentGroupBOutput) -> AgentGroupBO
     """Derive missing Group B fields from raw components.
     Applied after validation, before post-processing.
     """
-    # 1. kwh_price: derive from total / consumption, or te + tusd
-    #    Note: te + tusd is an APPROXIMATION — it excludes taxes (ICMS, PIS/COFINS).
-    #    Group B kwh_price should be the all-inclusive price, so this derivation
-    #    underestimates. The total_energy_value / consumption fallback is more
-    #    accurate because it implicitly includes taxes. Prefer that path when available.
+    # 1. kwh_price: derive from total / consumption (preferred), or te + tusd (fallback)
+    #    total_energy_value / consumption is more accurate because it implicitly
+    #    includes taxes (ICMS, PIS/COFINS). te + tusd is an APPROXIMATION that
+    #    excludes taxes and underestimates the all-inclusive price.
     if extraction.kwh_price is None:
-        if extraction.te_unit_price is not None and extraction.tusd_unit_price is not None:
-            extraction.kwh_price = round(extraction.te_unit_price + extraction.tusd_unit_price, 6)
-        elif (extraction.total_energy_value is not None
+        if (extraction.total_energy_value is not None
               and extraction.current_month_consumption is not None
               and extraction.current_month_consumption > 0):
             extraction.kwh_price = round(
                 extraction.total_energy_value / extraction.current_month_consumption, 6
             )
+        elif extraction.te_unit_price is not None and extraction.tusd_unit_price is not None:
+            extraction.kwh_price = round(extraction.te_unit_price + extraction.tusd_unit_price, 6)
 
     # 2. icms: derive percentage from absolute values
     if extraction.icms is None:
@@ -1022,12 +1062,15 @@ def create_energy_invoice_service(
 
 **New file:** `packages/nexus/nexus-ai/src/nexus_ai/factories/energy_invoice.py`
 
+> **Migration prerequisite:** The existing `nexus_ai/factories.py` is a single file, not a package directory. Before creating this file, rename `factories.py` → `factories/__init__.py`. All existing imports (`from nexus_ai.factories import create_nexus_agent`) will continue to work unchanged.
+
 ```python
 import base64
 import mimetypes
 from nexus_ai.factories import create_nexus_agent
 from nexus_contexts.energy_invoice import ENERGY_INVOICE_SYSTEM_PROMPT
 from nexus_models.energy_invoice_agent import AgentExtractionOutput
+from nexus_services.impl.energy_invoice_config import AVAILABLE_MODELS
 
 
 class EnergyInvoiceAgentFactory:
@@ -1045,42 +1088,25 @@ class EnergyInvoiceAgentFactory:
 
         Image handling: OpenAIAgent.run() accepts `user_message: str` only.
         To pass images to vision models, we need to build structured content
-        parts (list of dicts) following the OpenAI vision API format and pass
-        them through the agent's message construction layer.
+        parts (list of dicts) following the OpenAI vision API format.
 
-        **Implementation requirement:** Before implementing, verify how
-        `create_nexus_agent()` / `OpenAIAgent` handles image input. The agent's
-        `run()` method accepts only a `str` user_message. Two possible approaches:
-
-        **Approach A (preferred):** Extend `OpenAIAgent.run()` in `core_ai` to
+        **Prerequisite (BLOCKING):** Extend `OpenAIAgent.run()` in `core_ai` to
         accept `user_message: str | list[dict]`, where the list form supports
-        OpenAI-style content parts:
-        ```python
-        result = await agent.run(
-            user_message=[
-                {"type": "text", "text": "Extraia os dados desta fatura de energia."},
-                *[
-                    {"type": "image_url", "image_url": {"url": f"data:image/png;base64,{base64.b64encode(img).decode()}"}}
-                    for img in images
-                ],
-            ],
-            session=None,
-            context=None,
-        )
-        ```
-
-        **Approach B (fallback):** Use the OpenAI Agents SDK directly (bypass
-        `OpenAIAgent` wrapper) to call `Runner.run()` with structured content
-        parts, then wrap the result in `AgentRunResponse`.
-
-        The chosen approach must be confirmed against `core_ai.agent.OpenAIAgent`
-        before implementation. If Approach A is chosen, the `core_ai` change is a
-        prerequisite for this feature.
+        OpenAI-style content parts. This change must be implemented in
+        `packages/core/core-ai/src/core_ai/agent.py` BEFORE the energy invoice
+        feature. The extension should:
+        1. Change `run()` signature: `user_message: str | list[dict]`
+        2. When `list[dict]`, pass content parts directly to the underlying
+           SDK's message construction (no str conversion)
+        3. Maintain backward compatibility — existing `str` callers unchanged
         """
+        # Resolve provider from model config (must match AVAILABLE_MODELS in Section 3.6)
+        provider = AVAILABLE_MODELS.get(model, {}).get("provider", "openai")
+
         agent = create_nexus_agent(
             name="Energy Invoice Extractor",
             system_prompt=ENERGY_INVOICE_SYSTEM_PROMPT,
-            provider="openai",  # Resolved by core_ai based on model string
+            provider=provider,
             model=model,
             output_type=AgentExtractionOutput,
             tools=[],
@@ -1108,7 +1134,7 @@ class EnergyInvoiceAgentFactory:
         return result.output
 ```
 
-> **Implementation note:** `OpenAIAgent` is a Pydantic `BaseModel` — configured via constructor parameters. The extraction result is accessed via `result.output` (not `result.final_output`). The `run()` method signature is `run(user_message, session, context)`. **Image passing requires extending `OpenAIAgent.run()` to accept `list[dict]` content parts (Approach A above) or bypassing the wrapper (Approach B).** This is a prerequisite change in `core_ai` that must be implemented before the energy invoice feature. Use `create_nexus_agent()` (from `nexus_ai.factories`) instead of directly instantiating `OpenAIAgent` to get proper timeout, retry, and token counting.
+> **Implementation note:** `OpenAIAgent` is a Pydantic `BaseModel` — configured via constructor parameters. The extraction result is accessed via `result.output` (not `result.final_output`). The `run()` method signature is `run(user_message, session, context)`. **PREREQUISITE:** Extending `OpenAIAgent.run()` to accept `user_message: str | list[dict]` is a blocking dependency — implement this in `core_ai` first (see prerequisite note in agent factory above). Use `create_nexus_agent()` (from `nexus_ai.factories`) instead of directly instantiating `OpenAIAgent` to get proper timeout, retry, and token counting.
 
 #### `nexus-contexts` — System Prompt
 
@@ -1316,17 +1342,12 @@ from nexus_core_api.dependencies.energy_invoice import get_energy_invoice_servic
 
 # Auth dependency for service-to-service calls (Azume Backend → Nexus).
 # This uses OAuth client credentials auth (NOT user JWT auth).
-# The existing codebase has:
-# - get_current_user() / require_scope() → user JWT auth (not applicable here)
-# - OAuth client credentials → validated in the oauth router, sets nexusClientData
-#
-# **Implementation requirement:** Verify the exact OAuth client auth dependency
-# in nexus_core_api/routers/oauth.py. The dependency should validate the Bearer
-# token as an OAuth client credential token and return the ServiceClient.
-# If no reusable dependency exists, create one that extracts and validates the
-# OAuth token from the Authorization header against the service_clients collection.
-# Do NOT use require_scope() — that checks UserScope enums for user-scoped auth.
-from nexus_core_api.auth.oauth import get_authenticated_client  # Verify exact name
+# The existing `require_service_auth` dependency validates Bearer tokens issued
+# by the OAuth token exchange endpoint and returns ServiceTokenClaims with
+# decoded claims (client_id, scopes, etc.). Do NOT use require_scope() or
+# get_current_user() — those check UserScope enums for user-scoped JWT auth.
+from nexus_core_api.dependencies.service_auth import require_service_auth
+from nexus_services.protocols.service_client_service import ServiceTokenClaims
 
 router = APIRouter(tags=["Energy Invoice"], prefix="/energy-invoice")
 
@@ -1339,7 +1360,7 @@ router = APIRouter(tags=["Energy Invoice"], prefix="/energy-invoice")
 )
 async def extract_invoice(
     request: ExtractionRequest,
-    _=Depends(get_authenticated_client),  # OAuth client credentials auth
+    _: ServiceTokenClaims = Depends(require_service_auth),  # OAuth client credentials auth
     service: EnergyInvoiceService = Depends(get_energy_invoice_service),
 ) -> ExtractionResponse:
     result = await service.extract_invoice_data(
@@ -1360,34 +1381,14 @@ async def extract_invoice(
     summary="List available vision models for invoice extraction",
 )
 async def list_models(
-    _=Depends(get_authenticated_client),  # OAuth client credentials auth
+    _: ServiceTokenClaims = Depends(require_service_auth),  # OAuth client credentials auth
 ) -> dict:
+    # Uses the single source of truth from Section 3.6 — do NOT duplicate the list here.
+    from nexus_services.impl.energy_invoice_config import AVAILABLE_MODELS, DEFAULT_MODEL
     return {
         "models": [
-            {
-                "id": "gpt-5-mini",
-                "display_name": "GPT-5 Mini",
-                "provider": "openai",
-                "is_default": True,
-            },
-            {
-                "id": "gemini-3-flash-preview",
-                "display_name": "Gemini 3 Flash",
-                "provider": "google",
-                "is_default": False,
-            },
-            {
-                "id": "claude-sonnet-4-5",
-                "display_name": "Claude Sonnet 4.5",
-                "provider": "anthropic",
-                "is_default": False,
-            },
-            {
-                "id": "grok-4-1-fast",
-                "display_name": "Grok 4.1 Fast",
-                "provider": "xai",
-                "is_default": False,
-            },
+            {"id": model_id, **config, "is_default": model_id == DEFAULT_MODEL}
+            for model_id, config in AVAILABLE_MODELS.items()
         ]
     }
 ```
@@ -1421,6 +1422,9 @@ app.include_router(energy_invoice.router, prefix=API_PREFIX)
 ```python
 from pydantic import BaseModel, Field, HttpUrl
 from typing import Optional
+from nexus_models.energy_invoice import (
+    GroupBExtraction, GroupAVerdeExtraction, GroupAAzulExtraction,
+)
 
 
 class ExtractionRequest(BaseModel):
@@ -1432,13 +1436,17 @@ class ExtractionRequest(BaseModel):
 
 
 class ExtractionResponse(BaseModel):
-    """Maps InvoiceExtractionResult to HTTP response."""
+    """Maps InvoiceExtractionResult to HTTP response.
+
+    Uses typed Pydantic models for group fields instead of dict to preserve
+    schema information for OpenAPI/Swagger documentation.
+    """
     success: bool
     tariff_modality: Optional[str] = None
     classification: Optional[str] = None
-    group_b: Optional[dict] = None
-    group_a_verde: Optional[dict] = None
-    group_a_azul: Optional[dict] = None
+    group_b: Optional[GroupBExtraction] = None
+    group_a_verde: Optional[GroupAVerdeExtraction] = None
+    group_a_azul: Optional[GroupAAzulExtraction] = None
     missing_fields: list[str] = []
     model_used: str
     error_message: Optional[str] = None
@@ -1449,9 +1457,9 @@ class ExtractionResponse(BaseModel):
             success=result.success,
             tariff_modality=result.tariff_modality.value if result.tariff_modality else None,
             classification=result.classification.value if result.classification else None,
-            group_b=result.group_b.model_dump(exclude_none=False) if result.group_b else None,
-            group_a_verde=result.group_a_verde.model_dump(exclude_none=False) if result.group_a_verde else None,
-            group_a_azul=result.group_a_azul.model_dump(exclude_none=False) if result.group_a_azul else None,
+            group_b=result.group_b,
+            group_a_verde=result.group_a_verde,
+            group_a_azul=result.group_a_azul,
             missing_fields=result.missing_fields,
             model_used=result.model_used,
             error_message=result.error_message,
@@ -1651,21 +1659,29 @@ isSystemAdmin?: boolean;
 
 **Modified file:** `src/controllers/user/logUser.ts`
 
-Add `isSystemAdmin` to the JWT payload in `jwt.sign()`:
+Add `isSystemAdmin` to the JWT payload in `jwt.sign()` AND to the HTTP response body:
 
 ```typescript
 // In the jwt.sign() payload object, add:
 isSystemAdmin: existingUser.isSystemAdmin || false,
+
+// In the res.json() response body (alongside token, userId, email, etc.), add:
+isSystemAdmin: existingUser.isSystemAdmin || false,
 ```
+
+> **Why both?** The JWT payload carries `isSystemAdmin` for `checkAuth` middleware (server-side). The response body carries it for the frontend `login()` function (client-side) — the frontend does not decode the JWT, it reads the response body.
 
 **Migration note:** Existing users in MongoDB do not have `isSystemAdmin`. Mongoose's `default: false` applies on read, so existing users will correctly evaluate as non-admin. To grant system admin access, manually set `isSystemAdmin: true` for specific users via MongoDB shell or admin tool. Adding `isSystemAdmin` to the JWT payload requires all users to **re-login** to get a new token containing the field — until then, `decodedToken.isSystemAdmin` will be `undefined`, which defaults to `false` via `|| false` in checkAuth.
 
 **Modified file:** `src/controllers/user/logClientWithToken.ts`
 
-Add `isSystemAdmin` to the token-refresh JWT payload as well:
+Add `isSystemAdmin` to the token-refresh JWT payload AND response body as well:
 
 ```typescript
 // In the jwt.sign() payload object, add:
+isSystemAdmin: existingUser.isSystemAdmin || false,
+
+// In the res.json() response body, add:
 isSystemAdmin: existingUser.isSystemAdmin || false,
 ```
 
@@ -1896,6 +1912,9 @@ export const extractInvoice = async (
     await persistInvoiceInArchive(resolvedCustomerId, fileUrl, file.originalname);
 
     // 7. Persist file URL in proposal
+    // Note: If this fails after step 6 succeeds, the archive has the file but the
+    // proposal does not. This is an accepted trade-off — the archive file is still
+    // valid and accessible. The user can retry the extraction to update the proposal.
     await Proposal.findByIdAndUpdate(pid, {
       $set: { [`invoiceFileUrls.${ucIndex}`]: fileUrl },
     });
@@ -2442,7 +2461,8 @@ export const extractInvoiceData = async (props: {
 
     const responseData = await response.json();
 
-    // Replicate sendRequest's auto-logout behavior for expired tokens
+    // Replicate sendRequest's auto-logout behavior for expired tokens.
+    // Returns undefined — callers MUST check: `if (!result) return;`
     if (responseData.shouldLogout) {
       auth.logout();
       return;
@@ -2546,7 +2566,7 @@ ProposalStepOne (state owner)
 │
 ├── InvoiceUploadModal
 │   ├── Props: open, onClose, onSubmit, isLoading, isSystemAdmin, availableModels
-│   └── onSubmit → extractInvoiceData() → setExtractionResult() → setShowValidationPopup(true)
+│   └── onSubmit → extractInvoiceData() → if (!result) return → setExtractionResult() → setShowValidationPopup(true)
 │
 ├── InvoiceValidationPopup
 │   ├── Props: open, onClose, onConfirm, extraction
