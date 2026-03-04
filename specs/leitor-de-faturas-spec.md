@@ -291,7 +291,7 @@
     {
       "id": "grok-4-1-fast",
       "display_name": "Grok 4.1 Fast",
-      "provider": "xai",
+      "provider": "grok",
       "is_default": false
     }
   ]
@@ -704,7 +704,7 @@ class AgentGroupAOutput(BaseModel):
     )
     demand_tariff: Optional[float] = Field(
         default=None,
-        description="Tarifa da demanda (fora ponta para Azul, única para Verde) em R$"
+        description="Tarifa da demanda (fora ponta para Azul, única para Verde) em R$/kW"
     )
     demand_peak: Optional[float] = Field(
         default=None,
@@ -712,7 +712,7 @@ class AgentGroupAOutput(BaseModel):
     )
     demand_tariff_peak: Optional[float] = Field(
         default=None,
-        description="Tarifa da demanda ponta em R$ (somente Azul)"
+        description="Tarifa da demanda ponta em R$/kW (somente Azul)"
     )
     public_light_bill: Optional[float] = Field(
         default=None,
@@ -1071,7 +1071,7 @@ import mimetypes
 from nexus_ai.factories import create_nexus_agent
 from nexus_contexts.energy_invoice import ENERGY_INVOICE_SYSTEM_PROMPT
 from nexus_models.energy_invoice_agent import AgentExtractionOutput
-from nexus_services.impl.energy_invoice_config import AVAILABLE_MODELS
+from nexus_models.energy_invoice_config import AVAILABLE_MODELS
 
 
 class EnergyInvoiceAgentFactory:
@@ -1385,7 +1385,7 @@ async def list_models(
     _: ServiceTokenClaims = Depends(require_service_auth),  # OAuth client credentials auth
 ) -> dict:
     # Uses the single source of truth from Section 3.6 — do NOT duplicate the list here.
-    from nexus_services.impl.energy_invoice_config import AVAILABLE_MODELS, DEFAULT_MODEL
+    from nexus_models.energy_invoice_config import AVAILABLE_MODELS, DEFAULT_MODEL
     return {
         "models": [
             {"id": model_id, **config, "is_default": model_id == DEFAULT_MODEL}
@@ -1415,6 +1415,8 @@ from nexus_core_api.routers import energy_invoice
 # In services/api/src/nexus_core_api/main.py — add router registration:
 app.include_router(energy_invoice.router, prefix=API_PREFIX)
 ```
+
+> **Note:** The above is illustrative. Nexus Core uses `router.add_api_route()` for route registration — the implementation spec follows the project's existing pattern.
 
 ### 3.4 Request/Response Schemas
 
@@ -1481,8 +1483,7 @@ class ExtractionResponse(BaseModel):
 3. Detect content type from HTTP headers + file magic bytes
    │  Error: Unsupported content type → raise HTTPException(422, "Formato de arquivo não suportado.")
    ↓
-4. Upload to GCS temp path: energy-invoices/temp/{uuid}/{filename}
-   │  Error: GCS upload failure → raise HTTPException(500, "Erro interno ao processar arquivo.")
+4. Process file in-memory (no GCS temp upload — images are base64-encoded directly)
    ↓
 5. If PDF:
    │  a. Open with PyMuPDF (fitz)
@@ -1517,11 +1518,7 @@ class ExtractionResponse(BaseModel):
    ↓
 11. Determine success/failure based on mandatory fields
    ↓
-12. GCS temp file cleanup: Use GCS object lifecycle policy configured on the
-    `energy-invoices/temp/` prefix to auto-delete objects older than 1 hour.
-    No application-level cleanup needed — configure lifecycle rule at infra level.
-   ↓
-13. Return result
+12. Return result
 ```
 
 ### 3.6 Model Configuration
@@ -1530,25 +1527,27 @@ class ExtractionResponse(BaseModel):
 AVAILABLE_MODELS = {
     "gpt-5-mini": {
         "display_name": "GPT-5 Mini",
-        "provider": "openai",
-        "is_default": True,
+        "model_type": ModelType.GPT_5_MINI,      # typed enum reference
+        "provider_type": ProviderType.OPENAI,
     },
     "gemini-3-flash-preview": {
         "display_name": "Gemini 3 Flash",
-        "provider": "google",
-        "is_default": False,
+        "model_type": ModelType.GEMINI_3_FLASH,
+        "provider_type": ProviderType.GOOGLE,
     },
     "claude-sonnet-4-5": {
         "display_name": "Claude Sonnet 4.5",
-        "provider": "anthropic",
-        "is_default": False,
+        "model_type": ModelType.CLAUDE_SONNET_4_5,
+        "provider_type": ProviderType.ANTHROPIC,
     },
     "grok-4-1-fast": {
         "display_name": "Grok 4.1 Fast",
-        "provider": "xai",
-        "is_default": False,
+        "model_type": ModelType.GROK_4_1_FAST,
+        "provider_type": ProviderType.GROK,
     },
 }
+# Note: `is_default` is computed at response time (`model_id == DEFAULT_MODEL`),
+# not stored in the config dict. See GET /models endpoint in Section 3.3.
 
 DEFAULT_MODEL = "gpt-5-mini"
 ```
