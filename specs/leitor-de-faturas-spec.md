@@ -245,6 +245,7 @@
     | "EXTRACTION_FAILED"                    // File could not be processed by Nexus (422)
     | "NEXUS_UNAVAILABLE"                    // Nexus API unreachable/timeout (502)
     | "INVALID_PROPOSAL"                     // Proposal not found or customerId mismatch (404/400)
+    | "INVALID_UCID"                         // ucid out of range or not a valid integer (400)
     | "UNAUTHORIZED"                         // Auth failure (403)
     | "RATE_LIMITED"                         // Too many requests for same proposal+ucid (429)
     | "INTERNAL_ERROR",                      // Server error (500)
@@ -1599,14 +1600,12 @@ import { singleFilesUpload } from "../middlewares/fileUpload";
 import { extractInvoice } from "../controllers/invoiceReading/extractInvoice";
 import { getAvailableModels } from "../controllers/invoiceReading/getAvailableModels";
 
-const invoiceReadingRoutes = express.Router();
+export const invoiceReadingRoutes = express.Router();
 
 invoiceReadingRoutes
   .use(checkAuth)
   .post("/:pid/invoice-reading", singleFilesUpload, extractInvoice)
   .get("/invoice-reading/models", getAvailableModels);
-
-export default invoiceReadingRoutes;
 ```
 
 > **Note:** `singleFilesUpload` middleware expects the file field name `"file"` in the multipart form data, matching the frontend's `formData.append("file", file)`.
@@ -1616,9 +1615,14 @@ export default invoiceReadingRoutes;
 **Mount in `app.ts`:**
 
 ```typescript
-import invoiceReadingRoutes from "./routes/invoiceReadingRoutes";
+import { invoiceReadingRoutes } from "./routes/invoiceReadingRoutes";
 // ...
-app.use("/api/proposals", invoiceReadingRoutes);
+// Mount inside the existing `if (nexusEnabled)` block (~line 383):
+if (nexusEnabled) {
+  app.use("/api/proposals", invoiceReadingRoutes);  // NEW — invoice reading depends on Nexus
+  app.use("/api/nexus", nexusAPIRoutes);             // existing
+}
+app.use("/api/proposals", proposalsRoutes);          // existing (outside block)
 ```
 
 ### 4.2 Auth & User Model Changes
@@ -1739,10 +1743,8 @@ import { HttpError } from "../../classes/HttpError";
 import { getNexusOAuthToken } from "../../util/nexus/nexusOAuthClient";
 import { Proposal } from "../../models/proposal";
 import { Archive } from "../../models/archive";
-import { Customer } from "../../models/customer";
 import { s3 } from "../../middlewares/fileUpload";
 import axios from "axios";
-import { v1 as uuidv1 } from "uuid";
 
 // --- Rate limiting: per-proposal+ucid cooldown (60s) ---
 // In-memory map: key = `${proposalId}:${ucIndex}` → last extraction timestamp.
@@ -1752,13 +1754,15 @@ const recentExtractions = new Map<string, number>();
 const EXTRACTION_COOLDOWN_MS = 60_000; // 60 seconds
 
 // Periodic cleanup to prevent unbounded growth (every 10 minutes)
+// NOTE: Uses .forEach instead of for...of — project targets ES5,
+// which doesn't support iterating Map with for...of without --downlevelIteration.
 setInterval(() => {
   const now = Date.now();
-  for (const [key, timestamp] of recentExtractions) {
+  recentExtractions.forEach((timestamp, key) => {
     if (now - timestamp > EXTRACTION_COOLDOWN_MS) {
       recentExtractions.delete(key);
     }
-  }
+  });
 }, 10 * 60_000);
 
 const ACCEPTED_MIME_TYPES = [
@@ -1775,6 +1779,7 @@ export const extractInvoice = async (
   res: Response,
   next: NextFunction
 ) => {
+  const startTime = Date.now();
   try {
     const { pid } = req.params;
     const { ucid, customerId, model } = req.body;
@@ -1783,16 +1788,16 @@ export const extractInvoice = async (
 
     // 1. Validate file
     if (!file) {
-      return next(new HttpError("Nenhum arquivo enviado.", 400));
+      return next(new HttpError("Nenhum arquivo enviado.", 400, null, false, "Erro", "INVALID_FILE_FORMAT"));
     }
     if (!ACCEPTED_MIME_TYPES.includes(file.mimetype)) {
       return next(new HttpError(
         "Formato de arquivo não suportado. Envie PDF, JPG, PNG, GIF ou WebP.",
-        400
+        400, null, false, "Erro", "INVALID_FILE_FORMAT"
       ));
     }
     if (file.size > MAX_FILE_SIZE) {
-      return next(new HttpError("Arquivo muito grande. Tamanho máximo: 20 MB.", 400));
+      return next(new HttpError("Arquivo muito grande. Tamanho máximo: 20 MB.", 400, null, false, "Erro", "FILE_TOO_LARGE"));
     }
 
     // 2. Validate proposal exists
@@ -1801,20 +1806,25 @@ export const extractInvoice = async (
       return next(new HttpError("Proposta não encontrada.", 404, null, false, "Erro", "INVALID_PROPOSAL"));
     }
 
+    // 2b. Validate customerId is provided (required by API contract)
+    if (!customerId) {
+      return next(new HttpError(
+        "O ID do cliente é obrigatório.", 400, null, false, "Erro", "INVALID_PROPOSAL"
+      ));
+    }
     // 2b. Validate customerId matches the proposal's customer
     //     Prevents archiving files under a different customer.
-    if (customerId && proposal.customer?.toString() !== customerId) {
+    if (proposal.customer?.toString() !== customerId) {
       return next(new HttpError(
         "O cliente informado não corresponde à proposta.", 400, null, false, "Erro", "INVALID_PROPOSAL"
       ));
     }
-    // Derive customerId from proposal if not provided, to ensure consistency
     const resolvedCustomerId = proposal.customer?.toString();
 
     // 2c. Validate ucid is a valid non-negative integer with upper bound
     if (isNaN(ucIndex) || ucIndex < 0 || ucIndex > 49) {
       return next(new HttpError(
-        "Índice da unidade consumidora (ucid) inválido.", 400
+        "Índice da unidade consumidora (ucid) inválido.", 400, null, false, "Erro", "INVALID_UCID"
       ));
     }
 
@@ -1826,6 +1836,10 @@ export const extractInvoice = async (
         "Aguarde antes de tentar novamente.", 429, null, false, "Erro", "RATE_LIMITED"
       ));
     }
+
+    // Record extraction timestamp for rate limiting BEFORE Nexus call (optimistic).
+    // Protects against repeated expensive requests even if Nexus times out.
+    recentExtractions.set(cooldownKey, Date.now());
 
     // 3. File is already uploaded to S3 by singleFilesUpload middleware
     //    The singleFilesUpload middleware uses ACL: "public-read", so the CDN URL
@@ -1894,9 +1908,6 @@ export const extractInvoice = async (
       ));
     }
 
-    // 4b. Record extraction timestamp for rate limiting
-    recentExtractions.set(cooldownKey, Date.now());
-
     // 5. Handle extraction failure
     if (!nexusResult.success) {
       return res.status(200).json({
@@ -1909,7 +1920,9 @@ export const extractInvoice = async (
     }
 
     // 6. Persist file in archive collection
-    await persistInvoiceInArchive(resolvedCustomerId, fileUrl, file.originalname);
+    if (resolvedCustomerId) {
+      await persistInvoiceInArchive(resolvedCustomerId, fileUrl, file.originalname);
+    }
 
     // 7. Persist file URL in proposal
     // Note: If this fails after step 6 succeeds, the archive has the file but the
@@ -2217,12 +2230,9 @@ interface InvoiceUploadModalProps {
   onSubmit: (file: File, model?: string) => void;
   isLoading: boolean;
   isSystemAdmin: boolean;
-  availableModels?: Array<{
-    id: string;
-    display_name: string;
-    provider: string;
-    is_default: boolean;
-  }>;
+  sendRequest: SendRequestFn;   // needed for model fetching (admin only)
+  auth: AuthContextProps;        // needed for model fetching (admin only)
+  error?: string;
 }
 ```
 
@@ -2238,12 +2248,12 @@ interface InvoiceUploadModalProps {
     - MUI v4 `Select` / `InputSelectRequired` dropdown
     - Label: "Modelo de IA"
     - Only visible when `isSystemAdmin === true`
-    - Options populated from `availableModels` prop
+    - Options populated from internal `models` state (fetched via `getInvoiceReadingModels` when modal opens)
     - Default selection: the model with `is_default: true`
 - `DialogActions`:
   - "Cancelar" button (secondary)
   - "Extrair Dados" button (primary, disabled until file selected)
-- Loading state: replace content with `LoadingSpinnerFullScreenGraph` + text "Extraindo dados da fatura... Isso pode levar até 60 segundos."
+- Loading state: replace content with `LoadingSpinnerOverlayRegular` (standard in-modal spinner) + text "Extraindo dados da fatura... Isso pode levar até 60 segundos."
 
 ### 5.4 InvoiceValidationPopup Component
 
@@ -2269,9 +2279,9 @@ interface InvoiceValidationPopupProps {
 - `DialogContent`:
   - Success banner: "Leitura realizada com sucesso!" (green/teal)
   - Extracted fields section:
-    - Each field displayed as an **editable input** (using existing Input components)
+    - Each field displayed as an **editable input** (using existing Input components), except `classification` which is **read-only text** (changing it would alter the entire field set)
     - Group B: kwhPrice, publicLightBill, networkClass, powerDistCompany, 12 months, tusd, icms
-    - Group A Verde: classification, kwhPrice, kwhPricePeak, tusd, tusdPeak, demand, demandTariff, publicLightBill, averageConsumption, averageConsumptionPeak, icms
+    - Group A Verde: classification (read-only), kwhPrice, kwhPricePeak, tusd, tusdPeak, demand, demandTariff, publicLightBill, averageConsumption, averageConsumptionPeak, icms
     - Group A Azul: Verde fields + demandPeak, demandTariffPeak
     - Fields organized in a 2-column grid (using `form-inputs-grid-1fr-1fr` class)
   - Missing fields section (if any):
@@ -2308,6 +2318,7 @@ const FIELD_LABELS: Record<string, string> = {
   demandTariffPeak: "Tarifa da Demanda Ponta",
   averageConsumption: "Consumo Médio Fora Ponta",
   averageConsumptionPeak: "Consumo Médio Ponta",
+  monthlyConsumptionPeak: "Consumo Mensal Ponta (12 meses)",
 };
 
 // Usage: missingFields.map(f => FIELD_LABELS[f] || f)
@@ -2317,14 +2328,19 @@ const FIELD_LABELS: Record<string, string> = {
 
 When the user confirms the validation popup, populate form fields:
 
+> **Note:** `editedFields` contains the user-reviewed values from `InvoiceValidationPopup` and
+> takes precedence over `extraction.fields`. The function reads `tariffModality` and
+> `classification` from `extraction` (structural metadata), but all field values come from
+> `editedFields`. This allows the user to correct OCR/LLM mistakes before populating the form.
+
 ```typescript
 const applyExtractionToForm = (
   extraction: ExtractionResult,
+  editedFields: ExtractionFields,
   inputHandler: InputHandlerFn,
-  setFormData: SetFormDataFn,
-  formState: FormState,
 ) => {
-  const { tariffModality, classification, fields } = extraction;
+  const { tariffModality, classification } = extraction;
+  const fields = editedFields;
 
   // Set tariff modality
   inputHandler(
@@ -2424,7 +2440,7 @@ Add new functions:
  * This avoids the default sendRequest behavior while still using auth headers.
  */
 export const extractInvoiceData = async (props: {
-  auth: AuthContext;
+  auth: AuthContextProps;
   pid: string;
   ucid: number;
   customerId: string;
@@ -2468,8 +2484,14 @@ export const extractInvoiceData = async (props: {
       return;
     }
 
-    if (!response.ok && !responseData.success) {
+    if (!response.ok) {
       throw new Error(responseData.message || "Erro ao processar a fatura.");
+    }
+
+    // Business failure: 200 OK but extraction couldn't get mandatory fields
+    // (see Section 2.1 "Business Failure Response"). Must NOT open validation popup.
+    if (!responseData.success) {
+      throw new Error(responseData.message || "Não foi possível extrair os dados da fatura.");
     }
 
     return responseData;
@@ -2483,7 +2505,7 @@ export const extractInvoiceData = async (props: {
  */
 export const getInvoiceReadingModels = async (props: {
   sendRequest: SendRequestFn;
-  auth: AuthContext;
+  auth: AuthContextProps;
 }) => {
   const { sendRequest, auth } = props;
 
@@ -2559,18 +2581,18 @@ The `SmartReadingButton` is always visible regardless of current ucid. The uploa
 ProposalStepOne (state owner)
 │
 ├── State: showUploadModal, showValidationPopup, extractionResult, isExtracting
-│   State: availableModels (fetched lazily when modal opens, if isSystemAdmin)
 │
 ├── SmartReadingButton
 │   └── onClick → setShowUploadModal(true)
 │
 ├── InvoiceUploadModal
-│   ├── Props: open, onClose, onSubmit, isLoading, isSystemAdmin, availableModels
-│   └── onSubmit → extractInvoiceData() → if (!result) return → setExtractionResult() → setShowValidationPopup(true)
+│   ├── Props: open, onClose, onSubmit, isLoading, isSystemAdmin, sendRequest, auth
+│   ├── Internal state: models, selectedModel (fetched via useEffect when open && isSystemAdmin)
+│   └── onSubmit → extractInvoiceData() → if (!result) return → check result.success → setExtractionResult() → setShowValidationPopup(true)
 │
 ├── InvoiceValidationPopup
 │   ├── Props: open, onClose, onConfirm, extraction
-│   └── onConfirm → applyExtractionToForm(editedFields, inputHandler, ...)
+│   └── onConfirm → applyExtractionToForm(extraction, editedFields, inputHandler)
 │
 ├── [existing components continue below...]
 └── InputsStep1TariffModalities, InputsStep1UCs, etc.
