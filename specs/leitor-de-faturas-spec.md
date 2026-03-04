@@ -1,9 +1,24 @@
 # Leitor de Faturas de Energia — Cross-Project Implementation Spec
 
-**Version:** 1.4.0
-**Date:** 2026-03-03
+**Version:** 1.5.0
+**Date:** 2026-03-04
 **Feature Doc:** `docs/02_feature_leitor_de_faturas.md`
 **Sample Invoices:** `samples/faturas-de-energia/`
+
+### Changelog (v1.4.0 → v1.5.0)
+
+| # | Category | Change |
+|---|----------|--------|
+| 1 | **Critical** | Replaced synchronous request/response with polling architecture — POST returns 202 Accepted with `request_id`, frontend polls GET endpoint for results |
+| 2 | **Critical** | Added `GET /api/proposals/:pid/invoice-reading/:requestId` polling endpoint to Frontend → Backend contract |
+| 3 | **Critical** | Added `GET /api/v1/energy-invoice/extract/{request_id}` polling endpoint to Backend → Nexus contract |
+| 4 | **Critical** | Added `ExtractionRequest` Beanie Document with TTL index for async job state in Nexus |
+| 5 | **Important** | Nexus POST now returns 202 with `{ request_id, status: "pending" }` — processing happens in background via `asyncio.create_task` |
+| 6 | **Important** | Removed cascading timeout chain (75s → 60s → 45s) — POST calls are fast (< 2s), agent timeout only affects background task |
+| 7 | **Important** | Frontend polling uses step backoff: 2s intervals (0-10s), 3s intervals (10-30s), 5s intervals (30-120s) |
+| 8 | **Important** | Moved `EXTRACTION_FAILED` to polling responses; removed `NEXUS_UNAVAILABLE` (replaced by `NEXUS_PROCESSING_ERROR` in polling) |
+| 9 | **Minor** | Updated loading text from "até 60 segundos" to "Isso pode levar alguns instantes" |
+| 10 | **Minor** | Simplified frontend cancellation — AbortController only for user cancellation, no timeout race |
 
 ### Changelog (v1.3.0 → v1.4.0)
 
@@ -121,29 +136,35 @@
 ### Sequence of Operations
 
 ```
-1. [Frontend]  User clicks "Leitura Smart" → upload modal opens
-2. [Frontend]  User selects file (+ optional model if isSystemAdmin)
-3. [Frontend]  POST /api/proposals/:pid/invoice-reading (multipart/form-data)
-4. [Backend]   checkAuth → validate file format/size
-5. [Backend]   Upload file to S3 (DigitalOcean Spaces)
-6. [Backend]   Generate pre-signed S3 URL (60 min expiry)
-7. [Backend]   getNexusOAuthToken() → POST Nexus /api/v1/energy-invoice/extract
+1.  [Frontend]  User clicks "Leitura Smart" → upload modal opens
+2.  [Frontend]  User selects file (+ optional model if isSystemAdmin)
+3.  [Frontend]  POST /api/proposals/:pid/invoice-reading (multipart/form-data)
+4.  [Backend]   checkAuth → validate file format/size
+5.  [Backend]   Upload file to S3 (DigitalOcean Spaces)
+6.  [Backend]   Generate pre-signed S3 URL (60 min expiry)
+7.  [Backend]   getNexusOAuthToken() → POST Nexus /api/v1/energy-invoice/extract
                Body: { file_url, model? }
-8. [Nexus]     checkAuthNexusClient → validate request
-9. [Nexus]     Download file from pre-signed URL
-10. [Nexus]    Upload to GCS (temp storage for agent processing)
-11. [Nexus]    If PDF: render pages as images (PyMuPDF)
-12. [Nexus]    Create task agent (OpenAI Agents SDK, structured output)
-13. [Nexus]    agent.run() with images → LLM extracts data
-14. [Nexus]    Validate extraction against business rules
-15. [Nexus]    Post-process (fill missing months with average for Group B)
-16. [Nexus]    Return structured result to Azume Backend
-17. [Backend]  Validate extraction result
-18. [Backend]  Persist file URL in "archive" collection ("Faturas de Energia" folder)
-19. [Backend]  Persist file URL in "proposal" collection (new invoiceFileUrls array, indexed by ucid)
-20. [Backend]  Return extraction result to Frontend
-21. [Frontend] Show validation popup with extracted fields (editable) + missing fields
-22. [Frontend] User confirms → populate form fields via inputHandler
+8.  [Nexus]     require_service_auth → validate request
+9.  [Nexus]     Create ExtractionRequest document (status=pending, 1-hour TTL)
+10. [Nexus]     Fire asyncio.create_task(process_extraction)
+11. [Nexus]     Return 202 Accepted { request_id, status: "pending" }
+12. [Backend]   Persist file URL in "archive" + "proposal" collections
+13. [Backend]   Return 202 Accepted { requestId, status: "pending", invoiceFileUrl }
+14. [Frontend]  Begin polling: GET /api/proposals/:pid/invoice-reading/:requestId
+    --- Background processing in Nexus ---
+15. [Nexus]     Update status → processing
+16. [Nexus]     Download file from pre-signed URL
+17. [Nexus]     Upload to GCS (temp storage for agent processing)
+18. [Nexus]     If PDF: render pages as images (PyMuPDF)
+19. [Nexus]     Create task agent (OpenAI Agents SDK, structured output)
+20. [Nexus]     agent.run() with images → LLM extracts data
+21. [Nexus]     Validate extraction against business rules
+22. [Nexus]     Post-process (fill missing months with average for Group B)
+23. [Nexus]     Update ExtractionRequest: status → completed/failed, store result
+    --- Polling resumes ---
+24. [Frontend]  Poll returns status: "completed" with extraction data
+25. [Frontend]  Show validation popup with extracted fields (editable) + missing fields
+26. [Frontend]  User confirms → populate form fields via inputHandler
 ```
 
 ### System Responsibilities
@@ -181,11 +202,37 @@
 | Accepted extensions | `.jpg`, `.jpeg`, `.png`, `.gif`, `.webp`, `.pdf` |
 | Max file size | 20 MB |
 
-**Success Response:** `200 OK`
+**Success Response (Submit):** `202 Accepted`
 
 ```typescript
 {
   success: true,
+  requestId: string,           // From Nexus extraction request
+  status: "pending",
+  invoiceFileUrl: string,      // Permanent CDN URL (known after S3 upload)
+}
+```
+
+**Polling Endpoint:** `GET /api/proposals/:pid/invoice-reading/:requestId`
+
+**Auth:** `checkAuth` (standard CRM JWT)
+
+**Pending/Processing Response:** `200 OK`
+
+```typescript
+{
+  success: true,
+  status: "pending" | "processing",
+  requestId: string,
+}
+```
+
+**Completed (extraction success) Response:** `200 OK`
+
+```typescript
+{
+  success: true,
+  status: "completed",
   extraction: {
     tariffModality: "A" | "B",
     classification?: "Azul" | "Verde",      // Group A only
@@ -219,22 +266,30 @@
 }
 ```
 
-**Business Failure Response:** `200 OK` (extraction ran but mandatory fields could not be extracted)
-
-> **Note:** Extraction failure is a business outcome, not an HTTP error. The LLM processed the
-> file but couldn't extract required fields. The frontend must handle **both** HTTP errors
-> (status >= 400) **and** 200 OK responses with `success: false`.
+**Completed (business failure) Response:** `200 OK`
 
 ```typescript
 {
   success: false,
+  status: "completed",
   message: string,                           // Portuguese user-facing message
-  errorCode: "EXTRACTION_FAILED",            // Always EXTRACTION_FAILED for business failures
+  errorCode: "EXTRACTION_FAILED",
   missingFields: string[],                   // Field names the agent could not extract
 }
 ```
 
-**HTTP Error Response:** `400 | 403 | 404 | 422 | 429 | 500 | 502`
+**Processing Failed Response:** `200 OK`
+
+```typescript
+{
+  success: false,
+  status: "failed",
+  message: string,                           // Portuguese user-facing message
+  errorCode: "NEXUS_PROCESSING_ERROR",
+}
+```
+
+**POST HTTP Error Response:** `400 | 403 | 404 | 429 | 500 | 502`
 
 ```typescript
 {
@@ -242,16 +297,15 @@
   message: string,                           // Portuguese user-facing message
   errorCode: "INVALID_FILE_FORMAT"           // Machine-readable error code
     | "FILE_TOO_LARGE"
-    | "EXTRACTION_FAILED"                    // File could not be processed by Nexus (422)
-    | "NEXUS_UNAVAILABLE"                    // Nexus API unreachable/timeout (502)
     | "INVALID_PROPOSAL"                     // Proposal not found or customerId mismatch (404/400)
     | "INVALID_UCID"                         // ucid out of range or not a valid integer (400)
     | "UNAUTHORIZED"                         // Auth failure (403)
     | "RATE_LIMITED"                         // Too many requests for same proposal+ucid (429)
     | "INTERNAL_ERROR",                      // Server error (500)
-  missingFields?: string[],                  // Only present for EXTRACTION_FAILED
 }
 ```
+
+> **Note:** `EXTRACTION_FAILED` no longer appears in POST responses — it surfaces through the polling endpoint. `NEXUS_UNAVAILABLE` has been removed entirely, replaced by `NEXUS_PROCESSING_ERROR` in polling responses.
 
 ---
 
@@ -317,7 +371,7 @@
 
 **Endpoint:** `POST /api/v1/energy-invoice/extract`
 
-**Auth:** Nexus OAuth client credentials (`checkAuthNexusClient` — existing pattern)
+**Auth:** `require_service_auth` (Nexus service auth — existing pattern)
 
 **Request:** `application/json`
 
@@ -335,115 +389,103 @@
 | `file_url` | string (URL) | Yes | Pre-signed S3 URL to the invoice file |
 | `model` | string | No | LLM model ID. Default: `gpt-5-mini` |
 
-**Success Response:** `200 OK`
+**Submit Response:** `202 Accepted`
 
 ```json
 {
-  "success": true,
-  "tariff_modality": "B",
-  "classification": null,
-  "group_b": {
-    "power_dist_company": "CPFL PAULISTA",
-    "kwh_price": 0.85,
-    "public_light_bill": 42.50,
-    "network_class": "Trifásica",
-    "monthly_consumption": [320, 280, 350, 310, 290, 270, 300, 340, 330, 360, 310, 290],
-    "tusd": 0.35,
-    "icms": 18.0
+  "request_id": "ext_abc123",
+  "status": "pending"
+}
+```
+
+**Polling Endpoint:** `GET /api/v1/energy-invoice/extract/{request_id}`
+
+**Auth:** `require_service_auth` (Nexus service auth — existing pattern)
+
+**Response:** `200 OK`
+
+```json
+// When pending/processing:
+{
+  "request_id": "ext_abc123",
+  "status": "pending",
+  "created_at": "2026-03-04T10:30:00Z",
+  "completed_at": null,
+  "result": null,
+  "error": null
+}
+
+// When completed (success):
+{
+  "request_id": "ext_abc123",
+  "status": "completed",
+  "created_at": "2026-03-04T10:30:00Z",
+  "completed_at": "2026-03-04T10:30:25Z",
+  "result": {
+    "success": true,
+    "tariff_modality": "B",
+    "classification": null,
+    "group_b": { ... },
+    "group_a_verde": null,
+    "group_a_azul": null,
+    "missing_fields": ["tusd"],
+    "model_used": "gpt-5-mini"
   },
-  "group_a_verde": null,
-  "group_a_azul": null,
-  "missing_fields": ["tusd"],
-  "model_used": "gpt-5-mini"
+  "error": null
 }
-```
 
-**Group A Verde example:**
-
-```json
+// When completed (business failure):
 {
-  "success": true,
-  "tariff_modality": "A",
-  "classification": "Verde",
-  "group_b": null,
-  "group_a_verde": {
-    "power_dist_company": "COPEL-DIS",
-    "kwh_price": 0.42,
-    "kwh_price_peak": 1.15,
-    "tusd": 0.28,
-    "tusd_peak": 0.75,
-    "demand": 120.0,
-    "demand_tariff": 32.50,
-    "public_light_bill": 85.00,
-    "average_consumption": 4500,
-    "average_consumption_peak": 1200,
-    "icms": 18.0
+  "request_id": "ext_abc123",
+  "status": "completed",
+  "created_at": "2026-03-04T10:30:00Z",
+  "completed_at": "2026-03-04T10:30:18Z",
+  "result": {
+    "success": false,
+    "tariff_modality": null,
+    "classification": null,
+    "group_b": null,
+    "group_a_verde": null,
+    "group_a_azul": null,
+    "missing_fields": ["kwh_price", "network_class", "monthly_consumption"],
+    "model_used": "gpt-5-mini",
+    "error_message": "Não foi possível extrair os campos obrigatórios da fatura de energia."
   },
-  "group_a_azul": null,
-  "missing_fields": [],
-  "model_used": "gpt-5-mini"
+  "error": null
 }
-```
 
-**Group A Azul example:**
-
-```json
+// When failed (processing error):
 {
-  "success": true,
-  "tariff_modality": "A",
-  "classification": "Azul",
-  "group_b": null,
-  "group_a_verde": null,
-  "group_a_azul": {
-    "power_dist_company": "ENEL SP",
-    "kwh_price": 0.38,
-    "kwh_price_peak": 1.05,
-    "tusd": 0.25,
-    "tusd_peak": 0.68,
-    "demand": 150.0,
-    "demand_tariff": 28.00,
-    "demand_peak": 80.0,
-    "demand_tariff_peak": 45.00,
-    "public_light_bill": 120.00,
-    "average_consumption": 5800,
-    "average_consumption_peak": 1500,
-    "icms": 25.0
-  },
-  "missing_fields": ["icms"],
-  "model_used": "gpt-5-mini"
+  "request_id": "ext_abc123",
+  "status": "failed",
+  "created_at": "2026-03-04T10:30:00Z",
+  "completed_at": "2026-03-04T10:30:05Z",
+  "result": null,
+  "error": {
+    "code": "file_download_error",
+    "message": "Failed to download file from provided URL"
+  }
 }
 ```
 
-**Failure Response:** `200 OK` (extraction failure is a business outcome, not an HTTP error)
+**Error Response:** `404 Not Found` (request_id not found or expired)
 
-```json
-{
-  "success": false,
-  "tariff_modality": null,
-  "classification": null,
-  "group_b": null,
-  "group_a_verde": null,
-  "group_a_azul": null,
-  "missing_fields": ["kwh_price", "network_class", "monthly_consumption"],
-  "model_used": "gpt-5-mini",
-  "error_message": "Não foi possível extrair os campos obrigatórios da fatura de energia."
-}
-```
-
-**HTTP Error Responses:**
+**POST HTTP Error Responses:**
 
 | Status | Condition |
 |--------|-----------|
 | 400 | Invalid request body (missing file_url, invalid model ID) |
-| 401 | Invalid/missing OAuth token |
-| 422 | File could not be downloaded or processed (corrupt, unsupported) |
+| 401 | Invalid/missing service auth token |
 | 500 | Internal server error |
 
-**Timeout Considerations:**
-- LLM processing: 10-30 seconds typical
-- Nexus should set LLM agent timeout to **45 seconds**
-- Azume Backend should set HTTP timeout to **60 seconds** for Nexus calls
-- Azume Frontend should set HTTP timeout to **75 seconds** (> backend's 60s, to avoid confusing errors where the frontend times out before the backend)
+**Timeout & Polling Considerations:**
+- POST calls are fast (< 2s) — just creates an ExtractionRequest and fires a background task
+- Agent timeout: 45 seconds (unchanged, affects background task only)
+- Nexus POST timeout from backend: 10 seconds (just creating a job)
+- Backend polling GET timeout: 10 seconds (just a DB lookup)
+- Frontend polling: step backoff (2s → 3s → 5s intervals), max 120s total
+- ExtractionRequest TTL: 1 hour via MongoDB TTL index (auto-cleanup)
+- Cloud Run requires `--no-cpu-throttling` for background tasks to run after 202 response
 
 ---
 
@@ -1597,6 +1639,7 @@ import express from "express";
 import { checkAuth } from "../middlewares/checkAuth";
 import { singleFilesUpload } from "../middlewares/fileUpload";
 import { extractInvoice } from "../controllers/invoiceReading/extractInvoice";
+import { pollExtractionStatus } from "../controllers/invoiceReading/pollExtractionStatus";
 import { getAvailableModels } from "../controllers/invoiceReading/getAvailableModels";
 
 export const invoiceReadingRoutes = express.Router();
@@ -1604,6 +1647,7 @@ export const invoiceReadingRoutes = express.Router();
 invoiceReadingRoutes
   .use(checkAuth)
   .post("/:pid/invoice-reading", singleFilesUpload, extractInvoice)
+  .get("/:pid/invoice-reading/:requestId", pollExtractionStatus)
   .get("/invoice-reading/models", getAvailableModels);
 ```
 
@@ -1864,89 +1908,47 @@ export const extractInvoice = async (
       nexusPayload.model = model;
     }
 
-    let nexusResult;
-    try {
-      const nexusResponse = await axios.post(
-        `${process.env.NEXUS_API_BASE_URL}/api/v1/energy-invoice/extract`,
-        nexusPayload,
-        {
-          headers: {
-            Authorization: `Bearer ${nexusToken}`,
-            "Content-Type": "application/json",
-          },
-          timeout: 60000, // 60s timeout for LLM processing
-        }
-      );
-      nexusResult = nexusResponse.data;
-    } catch (nexusErr: any) {
-      console.error(
-        `[Invoice Reading] Nexus extraction failed: ${nexusErr.message}`,
-        { status: nexusErr.response?.status, data: nexusErr.response?.data }
-      );
-
-      // Map Nexus HTTP errors to appropriate backend responses
-      const nexusStatus = nexusErr.response?.status;
-      if (nexusStatus === 400 || nexusStatus === 422) {
-        // Nexus 400/422 = bad file or invalid request — user's file is the problem
-        const nexusMessage = nexusErr.response?.data?.detail
-          || "Arquivo inválido ou não foi possível processar. Verifique o arquivo e tente novamente.";
-        return next(new HttpError(nexusMessage, 422, nexusErr, false, "Erro", "INVALID_FILE_FORMAT"));
+    // Step 7: Submit to Nexus (fast — just creates a job)
+    const token = await getNexusOAuthToken();
+    const nexusResponse = await axios.post(
+      `${NEXUS_API_URL}/api/v1/energy-invoice/extract`,
+      { file_url: preSignedUrl, ...(model && { model }) },
+      {
+        headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+        timeout: 10000, // 10s timeout — just creating a job, no LLM processing
       }
-      if (nexusStatus === 401) {
-        // Nexus 401 = internal config issue (bad OAuth token)
-        console.error("[Invoice Reading] Nexus OAuth token rejected — check NEXUS_CLIENT_ID/SECRET config.");
-        return next(new HttpError(
-          "Erro interno de configuração. Contate o suporte.",
-          500, nexusErr, false, "Erro", "INTERNAL_ERROR"
-        ));
-      }
-      // Nexus 500, timeout, ECONNREFUSED, or any other error = Nexus unavailable
-      return next(new HttpError(
-        "Não foi possível conectar ao serviço de leitura. Tente novamente.",
-        502, nexusErr, false, "Erro", "NEXUS_UNAVAILABLE"
-      ));
-    }
+    );
+    const { request_id } = nexusResponse.data;
 
-    // 5. Handle extraction failure
-    if (!nexusResult.success) {
-      return res.status(200).json({
+    // Step 8-9: Persist file URL in archive + proposal (only needs CDN URL, not extraction result)
+    await persistInvoiceArchive(proposalId, customerId, ucid, cdnUrl);
+    await persistInvoiceInProposal(proposalId, ucid, cdnUrl);
+
+    // Step 10: Return 202 Accepted — frontend will poll for results
+    return res.status(202).json({
+      success: true,
+      requestId: request_id,
+      status: "pending",
+      invoiceFileUrl: cdnUrl,
+    });
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const status = error.response?.status;
+      if (status === 400 || status === 422) {
+        return res.status(422).json({
+          success: false,
+          message: "Arquivo não pôde ser processado pelo Nexus.",
+          errorCode: "INVALID_FILE_FORMAT",
+        });
+      }
+      // Nexus unreachable or any other error
+      return res.status(500).json({
         success: false,
-        message: nexusResult.error_message ||
-          "Não foi possível extrair os dados obrigatórios da fatura de energia.",
-        errorCode: "EXTRACTION_FAILED",
-        missingFields: nexusResult.missing_fields || [],
+        message: "Erro interno ao processar a fatura.",
+        errorCode: "INTERNAL_ERROR",
       });
     }
-
-    // 6. Persist file in archive collection
-    if (resolvedCustomerId) {
-      await persistInvoiceInArchive(resolvedCustomerId, fileUrl, file.originalname);
-    }
-
-    // 7. Persist file URL in proposal
-    // Note: If this fails after step 6 succeeds, the archive has the file but the
-    // proposal does not. This is an accepted trade-off — the archive file is still
-    // valid and accessible. The user can retry the extraction to update the proposal.
-    await Proposal.findByIdAndUpdate(pid, {
-      $set: { [`invoiceFileUrls.${ucIndex}`]: fileUrl },
-    });
-
-    // 8. Transform and return result
-    const extraction = transformNexusResult(nexusResult);
-
-    return res.status(200).json({
-      success: true,
-      extraction: {
-        ...extraction,
-        invoiceFileUrl: fileUrl,
-      },
-    });
-  } catch (err: any) {
-    return next(new HttpError(
-      "Erro ao processar a fatura de energia.",
-      500,
-      err
-    ));
+    next(error);
   }
 };
 ```
@@ -2252,7 +2254,7 @@ interface InvoiceUploadModalProps {
 - `DialogActions`:
   - "Cancelar" button (secondary)
   - "Extrair Dados" button (primary, disabled until file selected)
-- Loading state: replace content with `LoadingSpinnerOverlayRegular` (standard in-modal spinner) + text "Extraindo dados da fatura... Isso pode levar até 60 segundos."
+- Loading state: replace content with `LoadingSpinnerOverlayRegular` (standard in-modal spinner) + text "Processando fatura... Isso pode levar alguns instantes."
 
 ### 5.4 InvoiceValidationPopup Component
 
@@ -2427,75 +2429,102 @@ const applyExtractionToForm = (
 Add new functions:
 
 ```typescript
-/**
- * Extract data from an energy invoice via Leitura Smart.
- *
- * Note: the shared `sendRequest` hook (from useHttpClient) does NOT support
- * a custom timeout parameter. Its signature is:
- *   sendRequest(url, method, body, headers, successMessage, zeroResultsKey, pollOnTimeout)
- *
- * Since LLM extraction can take 60+ seconds (backend timeout is 60s),
- * we use a custom fetch with AbortController to enforce a 75s timeout.
- * This avoids the default sendRequest behavior while still using auth headers.
- */
-export const extractInvoiceData = async (props: {
-  auth: AuthContextProps;
-  pid: string;
-  ucid: number;
-  customerId: string;
-  file: File;
-  model?: string;
-  abortController?: AbortController;
-}) => {
-  const { auth, pid, ucid, customerId, file, model, abortController } = props;
-
+export const extractInvoiceData = async (
+  proposalId: string,
+  ucid: number,
+  customerId: string,
+  file: File,
+  model: string | undefined,
+  auth: AuthContextProps,
+  abortSignal?: AbortSignal,  // For user cancellation only
+): Promise<ExtractionResult | undefined> => {
+  // 1. POST: submit file → 202 { requestId, status: "pending", invoiceFileUrl }
   const formData = new FormData();
   formData.append("file", file);
   formData.append("ucid", String(ucid));
   formData.append("customerId", customerId);
   if (model) formData.append("model", model);
 
-  const apiUrl = `${process.env.REACT_APP_BACKEND_URL}/proposals/${pid}/invoice-reading`;
-
-  // Timeout must be > backend's 60s Nexus timeout to avoid the frontend
-  // timing out while the backend is still waiting for Nexus.
-  const EXTRACTION_TIMEOUT_MS = 75000; // 75 seconds
-
-  // Use AbortController for timeout (sendRequest doesn't support custom timeouts)
-  const controller = abortController || new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), EXTRACTION_TIMEOUT_MS);
-
-  try {
-    const response = await fetch(apiUrl, {
+  const submitResponse = await fetch(
+    `${API_URL}/api/proposals/${proposalId}/invoice-reading`,
+    {
       method: "POST",
+      headers: { Authorization: `Bearer ${auth.token}` },
       body: formData,
-      headers: { Authorization: "Bearer " + auth.token },
-      // Note: do NOT set Content-Type — browser sets it with boundary for FormData
-      signal: controller.signal,
-    });
+      signal: abortSignal,
+    }
+  );
 
-    const responseData = await response.json();
+  if (shouldLogout(submitResponse)) {
+    auth.logout();
+    return undefined;
+  }
 
-    // Replicate sendRequest's auto-logout behavior for expired tokens.
-    // Returns undefined — callers MUST check: `if (!result) return;`
-    if (responseData.shouldLogout) {
+  const submitData = await submitResponse.json();
+  if (!submitResponse.ok || !submitData.success) {
+    throw new ExtractionError(submitData.message, submitData.errorCode);
+  }
+
+  const { requestId, invoiceFileUrl } = submitData;
+
+  // 2. Poll: GET /invoice-reading/:requestId with step backoff
+  //    - 2s intervals for first 10s
+  //    - 3s intervals for 10-30s
+  //    - 5s intervals for 30-120s
+  //    - After 120s: throw timeout error
+  const startTime = Date.now();
+  const MAX_POLL_TIME = 120_000;
+
+  const getInterval = (elapsed: number): number => {
+    if (elapsed < 10_000) return 2_000;
+    if (elapsed < 30_000) return 3_000;
+    return 5_000;
+  };
+
+  while (true) {
+    const elapsed = Date.now() - startTime;
+    if (elapsed >= MAX_POLL_TIME) {
+      throw new ExtractionError(
+        "O processamento demorou mais que o esperado. Tente novamente.",
+        "TIMEOUT"
+      );
+    }
+
+    await new Promise((resolve) => setTimeout(resolve, getInterval(elapsed)));
+
+    if (abortSignal?.aborted) {
+      throw new DOMException("Aborted", "AbortError");
+    }
+
+    const pollResponse = await fetch(
+      `${API_URL}/api/proposals/${proposalId}/invoice-reading/${requestId}`,
+      {
+        method: "GET",
+        headers: { Authorization: `Bearer ${auth.token}` },
+        signal: abortSignal,
+      }
+    );
+
+    if (shouldLogout(pollResponse)) {
       auth.logout();
-      return;
+      return undefined;
     }
 
-    if (!response.ok) {
-      throw new Error(responseData.message || "Erro ao processar a fatura.");
+    const data = await pollResponse.json();
+
+    if (data.status === "pending" || data.status === "processing") continue;
+
+    if (data.status === "completed" && data.success) {
+      return { ...data.extraction, invoiceFileUrl };
     }
 
-    // Business failure: 200 OK but extraction couldn't get mandatory fields
-    // (see Section 2.1 "Business Failure Response"). Must NOT open validation popup.
-    if (!responseData.success) {
-      throw new Error(responseData.message || "Não foi possível extrair os dados da fatura.");
+    if (data.status === "completed" && !data.success) {
+      throw new ExtractionError(data.message, data.errorCode, data.missingFields);
     }
 
-    return responseData;
-  } finally {
-    clearTimeout(timeoutId);
+    if (data.status === "failed") {
+      throw new ExtractionError(data.message, data.errorCode);
+    }
   }
 };
 
@@ -2603,7 +2632,7 @@ ProposalStepOne (state owner)
 Upload modal opened → file selected → "Extrair Dados" clicked
 │
 ├── InvoiceUploadModal: isLoading=true
-│   └── Shows: "Extraindo dados da fatura... Isso pode levar até 60 segundos."
+│   └── Shows: "Processando fatura... Isso pode levar alguns instantes."
 │   └── Progress indicator (indeterminate spinner)
 │   └── "Cancelar" button remains active (AbortController)
 │
