@@ -1,9 +1,18 @@
 # Leitor de Faturas de Energia — Cross-Project Implementation Spec
 
-**Version:** 1.5.0
+**Version:** 1.6.0
 **Date:** 2026-03-04
 **Feature Doc:** `docs/02_feature_leitor_de_faturas.md`
 **Sample Invoices:** `samples/faturas-de-energia/`
+
+### Changelog (v1.5.0 → v1.6.0)
+
+| # | Category | Change |
+|---|----------|--------|
+| 1 | **Critical** | Fixed route ordering bug in Section 4.1 — `/invoice-reading/models` was shadowed by `/:pid/invoice-reading/:requestId`; moved static route before parameterized routes |
+| 2 | **Critical** | Fixed archive `url` field in Section 4.4 — was storing full CDN URL (`fileUrl`), now stores S3 key (`fileKey`) to match existing `addFile.ts` convention |
+| 3 | **Significant** | Removed `invoiceFileUrl` from polling completed response in Section 2.1 — polling controller proxies Nexus which doesn't know the CDN URL; `invoiceFileUrl` is only in the POST 202 response |
+| 4 | **Minor** | Added `errorCode` param to `getAvailableModels` 403 HttpError in Section 4.7 |
 
 ### Changelog (v1.4.0 → v1.5.0)
 
@@ -261,7 +270,9 @@
       demandTariffPeak?: number,             // R$/kW (> 0)
     },
     missingFields: string[],                 // Field names the agent could not extract
-    invoiceFileUrl: string,                  // Permanent S3 URL of the uploaded invoice
+    // NOTE: invoiceFileUrl is NOT in polling responses — it is only returned in the
+    // POST 202 response. The polling controller proxies Nexus, which doesn't know the
+    // CDN URL. Frontend should retain invoiceFileUrl from the initial POST response.
   }
 }
 ```
@@ -1646,9 +1657,12 @@ export const invoiceReadingRoutes = express.Router();
 
 invoiceReadingRoutes
   .use(checkAuth)
+  // Static route MUST come before parameterized routes — Express matches top-down,
+  // and "GET /invoice-reading/models" would match "/:pid/invoice-reading/:requestId"
+  // with pid="invoice-reading", requestId="models" if defined after it.
+  .get("/invoice-reading/models", getAvailableModels)
   .post("/:pid/invoice-reading", singleFilesUpload, extractInvoice)
-  .get("/:pid/invoice-reading/:requestId", pollExtractionStatus)
-  .get("/invoice-reading/models", getAvailableModels);
+  .get("/:pid/invoice-reading/:requestId", pollExtractionStatus);
 ```
 
 > **Note:** `singleFilesUpload` middleware expects the file field name `"file"` in the multipart form data, matching the frontend's `formData.append("file", file)`.
@@ -1962,7 +1976,7 @@ export const extractInvoice = async (
  */
 async function persistInvoiceInArchive(
   customerId: string,
-  fileUrl: string,
+  fileKey: string,
   originalFilename: string
 ): Promise<void> {
   const archive = await Archive.findOne({ customer: customerId });
@@ -1991,9 +2005,12 @@ async function persistInvoiceInArchive(
   }
 
   // Add file to the folder
+  // NOTE: `url` stores the S3 key (not the full CDN URL), matching the existing
+  // convention in addFile.ts (line 233: `url: req.file.key`). Frontend/consumers
+  // prepend the CDN domain when constructing the full URL.
   const newFile = {
     name: originalFilename,
-    url: fileUrl,
+    url: fileKey,
     folder: folder._id.toString(),
     order: archive.files.filter(
       (f: any) => f.folder === folder!._id.toString()
@@ -2135,7 +2152,7 @@ export const getAvailableModels = async (
   try {
     // Only system admins can access this endpoint
     if (!req.userData?.isSystemAdmin) {
-      return next(new HttpError("Acesso restrito a administradores do sistema.", 403));
+      return next(new HttpError("Acesso restrito a administradores do sistema.", 403, null, false, "Erro", "UNAUTHORIZED"));
     }
 
     // Check cache
