@@ -1,9 +1,22 @@
 # Leitor de Faturas de Energia — Cross-Project Implementation Spec
 
-**Version:** 1.6.0
+**Version:** 1.7.0
 **Date:** 2026-03-04
 **Feature Doc:** `docs/02_feature_leitor_de_faturas.md`
 **Sample Invoices:** `samples/faturas-de-energia/`
+
+### Changelog (v1.6.0 → v1.7.0)
+
+| # | Category | Change |
+|---|----------|--------|
+| 1 | **Critical** | Fixed Section 3.3 router — was showing stale synchronous `HTTP_200_OK` pattern; now shows 202 Accepted async POST + GET polling endpoint matching Nexus Core spec |
+| 2 | **Important** | Fixed Section 3.1 factory parameter names — `storage_client`/`http_client` → `file_downloader`/`page_renderer` to match Nexus Core spec |
+| 3 | **Important** | Fixed Section 3.1 derivation/post-processing code — was directly mutating frozen Pydantic models; now uses `model_copy(update=...)` |
+| 4 | **Important** | Fixed Section 3.6 `AVAILABLE_MODELS` — ModelType enum names now use tier-based names (e.g., `GPT_MID_TIER`) matching `core_types/ai.py`; added missing `"provider"` key to each model entry |
+| 5 | **Important** | Fixed Section 4.6b telemetry — was referencing POST controller; now correctly references polling controller where terminal extraction results are available |
+| 6 | **Important** | Fixed Section 1 system diagram — removed GCS temp storage box (Nexus processes in-memory per Section 3.5) |
+| 7 | **Important** | Fixed sequence of operations — removed step 17 "Upload to GCS" (processing is in-memory) |
+| 8 | **Minor** | Fixed Section 5.11 timeout error message — "A leitura demorou..." → "O processamento demorou..." to match Section 5.6 code |
 
 ### Changelog (v1.5.0 → v1.6.0)
 
@@ -134,12 +147,12 @@
 │  (React 17/MUI4) │     │  (Express.js)     │     │  (FastAPI)       │     │     │
 │                  │◀────│                  │◀────│                  │◀────│     │
 └──────────────────┘     └──────────────────┘     └──────────────────┘     └─────┘
-                               │                         │
-                               ▼                         ▼
-                         ┌──────────┐              ┌──────────┐
-                         │ S3/DO    │              │ GCS      │
-                         │ Spaces   │              │ (temp)   │
-                         └──────────┘              └──────────┘
+                               │
+                               ▼
+                         ┌──────────┐
+                         │ S3/DO    │
+                         │ Spaces   │
+                         └──────────┘
 ```
 
 ### Sequence of Operations
@@ -162,9 +175,8 @@
 14. [Frontend]  Begin polling: GET /api/proposals/:pid/invoice-reading/:requestId
     --- Background processing in Nexus ---
 15. [Nexus]     Update status → processing
-16. [Nexus]     Download file from pre-signed URL
-17. [Nexus]     Upload to GCS (temp storage for agent processing)
-18. [Nexus]     If PDF: render pages as images (PyMuPDF)
+16. [Nexus]     Download file from pre-signed URL (in-memory)
+17. [Nexus]     If PDF: render pages as images (PyMuPDF)
 19. [Nexus]     Create task agent (OpenAI Agents SDK, structured output)
 20. [Nexus]     agent.run() with images → LLM extracts data
 21. [Nexus]     Validate extraction against business rules
@@ -980,7 +992,11 @@ The `ALIAS_TO_CANONICAL` dict should be built from Section 6's alias table (e.g.
 def derive_missing_fields_group_b(extraction: AgentGroupBOutput) -> AgentGroupBOutput:
     """Derive missing Group B fields from raw components.
     Applied after validation, before post-processing.
+
+    Uses model_copy(update=...) because AgentGroupBOutput is frozen (immutable).
     """
+    updates: dict = {}
+
     # 1. kwh_price: derive from total / consumption (preferred), or te + tusd (fallback)
     #    total_energy_value / consumption is more accurate because it implicitly
     #    includes taxes (ICMS, PIS/COFINS). te + tusd is an APPROXIMATION that
@@ -989,18 +1005,18 @@ def derive_missing_fields_group_b(extraction: AgentGroupBOutput) -> AgentGroupBO
         if (extraction.total_energy_value is not None
               and extraction.current_month_consumption is not None
               and extraction.current_month_consumption > 0):
-            extraction.kwh_price = round(
+            updates["kwh_price"] = round(
                 extraction.total_energy_value / extraction.current_month_consumption, 6
             )
         elif extraction.te_unit_price is not None and extraction.tusd_unit_price is not None:
-            extraction.kwh_price = round(extraction.te_unit_price + extraction.tusd_unit_price, 6)
+            updates["kwh_price"] = round(extraction.te_unit_price + extraction.tusd_unit_price, 6)
 
     # 2. icms: derive percentage from absolute values
     if extraction.icms is None:
         if (extraction.icms_value is not None
             and extraction.icms_base is not None
             and extraction.icms_base > 0):
-            extraction.icms = round(
+            updates["icms"] = round(
                 (extraction.icms_value / extraction.icms_base) * 100, 2
             )
 
@@ -1009,23 +1025,28 @@ def derive_missing_fields_group_b(extraction: AgentGroupBOutput) -> AgentGroupBO
     #    assignment is correct. tusd_unit_price is extracted from the tariff
     #    breakdown while tusd is the primary field — they represent the same value.
     if extraction.tusd is None and extraction.tusd_unit_price is not None:
-        extraction.tusd = extraction.tusd_unit_price
+        updates["tusd"] = extraction.tusd_unit_price
 
-    return extraction
+    return extraction.model_copy(update=updates) if updates else extraction
 
 
 def derive_missing_fields_group_a(extraction: AgentGroupAOutput) -> AgentGroupAOutput:
-    """Derive missing Group A fields from raw components."""
+    """Derive missing Group A fields from raw components.
+
+    Uses model_copy(update=...) because AgentGroupAOutput is frozen (immutable).
+    """
+    updates: dict = {}
+
     # 1. icms: derive percentage from absolute values
     if extraction.icms is None:
         if (extraction.icms_value is not None
             and extraction.icms_base is not None
             and extraction.icms_base > 0):
-            extraction.icms = round(
+            updates["icms"] = round(
                 (extraction.icms_value / extraction.icms_base) * 100, 2
             )
 
-    return extraction
+    return extraction.model_copy(update=updates) if updates else extraction
 ```
 
 **Post-Processing Rules (Group B only):**
@@ -1051,16 +1072,21 @@ def replicate_average_to_months(average: float) -> list[float]:
     return [round(average, 2)] * 12
 
 
-def post_process_group_a(extraction) -> None:
-    """Post-process Group A extraction: replicate averages to monthly arrays."""
+def post_process_group_a(extraction: GroupAVerdeExtraction) -> GroupAVerdeExtraction:
+    """Post-process Group A extraction: replicate averages to monthly arrays.
+
+    Uses model_copy(update=...) because extraction models are frozen (immutable).
+    """
+    updates: dict = {}
     if extraction.average_consumption is not None:
-        extraction.monthly_consumption = replicate_average_to_months(
+        updates["monthly_consumption"] = replicate_average_to_months(
             extraction.average_consumption
         )
     if extraction.average_consumption_peak is not None:
-        extraction.monthly_consumption_peak = replicate_average_to_months(
+        updates["monthly_consumption_peak"] = replicate_average_to_months(
             extraction.average_consumption_peak
         )
+    return extraction.model_copy(update=updates) if updates else extraction
 ```
 
 > **Missing months reporting:** Individual missing months are NOT reported individually in `missing_fields`. The entire `monthly_consumption` field is reported as missing only if ALL 12 months are null/zero after the fill-with-average post-processing. Partial months are silently filled.
@@ -1092,8 +1118,8 @@ Group A success requires:
 
 ```python
 def create_energy_invoice_service(
-    storage_client=None,
-    http_client=None,
+    file_downloader=None,
+    page_renderer=None,
     agent_factory=None,
 ) -> EnergyInvoiceService:
     """Create EnergyInvoiceService with all dependencies.
@@ -1101,13 +1127,13 @@ def create_energy_invoice_service(
     Follows the existing factory pattern: optional DI parameters with defaults.
     Pass explicit dependencies for testing; production uses auto-created defaults.
     """
-    from core_storage.client import get_storage_client
-    from core_http.adapters import HttpxHttpClient
+    from nexus_services.impl.file_downloader import HttpxFileDownloader
+    from nexus_services.impl.page_renderer import PyMuPdfPageRenderer
     from nexus_ai.factories.energy_invoice import EnergyInvoiceAgentFactory
 
     return EnergyInvoiceServiceImpl(
-        storage_client=storage_client or get_storage_client(),
-        http_client=http_client or HttpxHttpClient(),
+        file_downloader=file_downloader or HttpxFileDownloader(),
+        page_renderer=page_renderer or PyMuPdfPageRenderer(),
         agent_factory=agent_factory or EnergyInvoiceAgentFactory(),
     )
 ```
@@ -1408,22 +1434,50 @@ router = APIRouter(tags=["Energy Invoice"], prefix="/energy-invoice")
 
 @router.post(
     "/extract",
-    response_model=ExtractionResponse,
-    status_code=status.HTTP_200_OK,
-    summary="Extract data from an energy invoice",
+    response_model=ExtractionAcceptedResponse,
+    status_code=status.HTTP_202_ACCEPTED,
+    summary="Submit energy invoice for extraction (async)",
 )
 async def extract_invoice(
     request: ExtractionRequest,
     _: ServiceTokenClaims = Depends(require_service_auth),  # OAuth client credentials auth
     service: EnergyInvoiceService = Depends(get_energy_invoice_service),
-) -> ExtractionResponse:
-    result = await service.extract_invoice_data(
+) -> ExtractionAcceptedResponse:
+    """Create an ExtractionRequest document and fire a background task.
+    Returns 202 Accepted immediately — caller polls GET /extract/{request_id} for results.
+    """
+    extraction_request = await service.create_extraction_request(
         EnergyInvoiceExtractionInput(
             file_url=str(request.file_url),  # HttpUrl → str conversion (Pydantic v2)
             model=request.model or "gpt-5-mini",
         )
     )
-    return ExtractionResponse.from_domain(result)
+    # Fire background task — runs after 202 response is sent
+    # Requires Cloud Run --no-cpu-throttling for background tasks
+    import asyncio
+    asyncio.create_task(service.process_extraction(extraction_request.id))
+    return ExtractionAcceptedResponse(
+        request_id=str(extraction_request.id),
+        status="pending",
+    )
+
+
+@router.get(
+    "/extract/{request_id}",
+    response_model=ExtractionStatusResponse,
+    status_code=status.HTTP_200_OK,
+    summary="Poll extraction request status",
+)
+async def get_extraction_status(
+    request_id: str,
+    _: ServiceTokenClaims = Depends(require_service_auth),
+    service: EnergyInvoiceService = Depends(get_energy_invoice_service),
+) -> ExtractionStatusResponse:
+    """Return current status of an extraction request (pending/processing/completed/failed)."""
+    extraction_request = await service.get_extraction_request(request_id)
+    if not extraction_request:
+        raise HTTPException(status_code=404, detail="Extraction request not found or expired.")
+    return ExtractionStatusResponse.from_domain(extraction_request)
 ```
 
 #### `GET /api/v1/energy-invoice/models`
@@ -1580,22 +1634,26 @@ class ExtractionResponse(BaseModel):
 AVAILABLE_MODELS = {
     "gpt-5-mini": {
         "display_name": "GPT-5 Mini",
-        "model_type": ModelType.GPT_5_MINI,      # typed enum reference
+        "provider": "openai",                    # Used by GET /models response and agent factory
+        "model_type": ModelType.GPT_MID_TIER,    # Tier-based enum (matches core_types/ai.py)
         "provider_type": ProviderType.OPENAI,
     },
     "gemini-3-flash-preview": {
         "display_name": "Gemini 3 Flash",
-        "model_type": ModelType.GEMINI_3_FLASH,
+        "provider": "google",
+        "model_type": ModelType.GEMINI_MID_TIER,
         "provider_type": ProviderType.GOOGLE,
     },
     "claude-sonnet-4-5": {
         "display_name": "Claude Sonnet 4.5",
-        "model_type": ModelType.CLAUDE_SONNET_4_5,
+        "provider": "anthropic",
+        "model_type": ModelType.ANTHROPIC_MID_TIER,
         "provider_type": ProviderType.ANTHROPIC,
     },
     "grok-4-1-fast": {
         "display_name": "Grok 4.1 Fast",
-        "model_type": ModelType.GROK_4_1_FAST,
+        "provider": "grok",                      # Matches ProviderType.GROK (not "xai")
+        "model_type": ModelType.GROK_MID_TIER,
         "provider_type": ProviderType.GROK,
     },
 }
@@ -2113,21 +2171,21 @@ function snakeToCamel(s: string): string {
 
 ### 4.6b Backend Telemetry Logging
 
-The extraction controller should log a structured entry after each extraction attempt for operational monitoring:
+The **polling controller** (`pollExtractionStatus`) should log a structured entry when an extraction reaches a terminal state (`completed` or `failed`) for operational monitoring. This is placed in the polling controller (not the POST controller) because the POST controller only submits the job — the actual extraction result is only available when the polling endpoint returns a terminal status.
 
 ```typescript
+// In pollExtractionStatus, when status is "completed" or "failed":
 console.log(JSON.stringify({
   event: "invoice_reading_extraction",
   proposalId: pid,
-  ucIndex,
+  requestId,
   userId: req.userData?.userId,
-  success: nexusResult.success,
-  tariffModality: nexusResult.tariff_modality,
-  modelUsed: nexusResult.model_used,
-  missingFieldsCount: nexusResult.missing_fields?.length || 0,
-  processingTimeMs: Date.now() - startTime,
-  fileType: file.mimetype,
-  fileSizeBytes: file.size,
+  status: nexusResult.status,
+  success: nexusResult.result?.success ?? false,
+  tariffModality: nexusResult.result?.tariff_modality,
+  modelUsed: nexusResult.result?.model_used,
+  missingFieldsCount: nexusResult.result?.missing_fields?.length || 0,
+  errorCode: nexusResult.error?.code,
 }));
 ```
 
@@ -2667,7 +2725,7 @@ Upload modal opened → file selected → "Extrair Dados" clicked
 | Extraction failed | "Não foi possível extrair os dados obrigatórios da fatura." | Show in modal with missingFields list |
 | Rate limited (429) | "Aguarde antes de tentar novamente." | Show in modal, disable button briefly |
 | Network error | "Erro de conexão. Verifique sua internet e tente novamente." | Show in modal (ModalError) |
-| Timeout | "A leitura demorou mais que o esperado. Tente novamente." | Show in modal (ModalError) |
+| Timeout | "O processamento demorou mais que o esperado. Tente novamente." | Show in modal (ModalError) |
 
 ### 5.12 AuthContext Changes
 
