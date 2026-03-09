@@ -74,7 +74,7 @@
 | ELETROCAR              | Centrais Eletricas de Carazinho                                                      |
 | ELFSM                  | Empresa Luz e Forca Santa Maria                                                      |
 | ENEL CE                | COELCE; Companhia Energetica do Ceara; Enel Distribuicao Ceara                       |
-| ENEL GO                | CELG; CELG-D; Companhia Energetica de Goias; Enel Distribuicao Goias                 |
+| ENEL GO                | Enel Distribuicao Goias                                                              |
 | ENEL RJ                | AMPLA; CERJ; Ampla Energia e Servicos; Enel Distribuicao Rio                         |
 | ENEL SP                | ELETROPAULO; AES ELETROPAULO; Eletropaulo Metropolitana; Enel Distribuicao Sao Paulo |
 | ENERGISA AC            | EAC; ELETROACRE; Empresa de Eletricidade do Acre                                     |
