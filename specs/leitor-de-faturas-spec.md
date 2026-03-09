@@ -2836,7 +2836,7 @@ The full list of accepted concessionária values. This list is shared across all
 | CPFL PIRATININGA | Companhia Piratininga de Forca e Luz; PIRATININGA |
 | CPFL SANTA CRUZ | Companhia Luz e Forca Santa Cruz; CLFSC |
 | CRELUZ-D | CRELUZ; CRELUZ Distribuicao; CRELUZ - COOPERATIVA DE DISTRIBUIÇÃO DE ENERGIA |
-| CRERAL | CRERAR Cooperativa Regional de Eletrificação Rural do Alto Uruguai |
+| CRERAL | Cooperativa Regional de Eletrificação Rural do Alto Uruguai |
 | DCELT | DCELT Energia; Distribuidora Catarinense de Energia Elétrica S/A |
 | DEMEI | Departamento Municipal de Energia de Ijui |
 | DMED | DME Distribuicao; DME; DME-D |
