@@ -1,9 +1,15 @@
 # Leitor de Faturas de Energia — Cross-Project Implementation Spec
 
-**Version:** 1.7.0
-**Date:** 2026-03-04
+**Version:** 1.8.0
+**Date:** 2026-03-10
 **Feature Doc:** `docs/02_feature_leitor_de_faturas.md`
 **Sample Invoices:** `samples/faturas-de-energia/`
+
+### Changelog (v1.7.0 → v1.8.0)
+
+| # | Category | Change |
+|---|----------|--------|
+| 1 | **Important** | Added "Conhecimento de Domínio - Grupo A" section to extraction agent system prompt — covers TE+TUSD composition, FPonta Indutivo/Capacitivo, Demanda Contratada vs Medida, Verde vs Azul indicators, and Energia Reativa Excedente |
 
 ### Changelog (v1.6.0 → v1.7.0)
 
@@ -1247,6 +1253,25 @@ Indicadores de Grupo B:
 - Tensão de fornecimento em 127V, 220V ou 380V
 
 Defina `tariff_modality` como "A" ou "B". Se o documento **não** for uma fatura de energia elétrica (ex: conta de água, boleto, contrato), retorne `tariff_modality` como null e deixe `group_b` e `group_a` como null.
+
+## Conhecimento de Domínio - Grupo A
+
+Estas informações ajudam a interpretar corretamente os campos das faturas do Grupo A.
+
+### Tarifa Binômia (TE + TUSD)
+A tarifa do Grupo A é composta por TE (Tarifa de Energia) + TUSD (Tarifa de Uso do Sistema de Distribuição). Algumas concessionárias (ex: EDP) mostram TE e TUSD em linhas separadas para cada posto tarifário (Ponta e Fora Ponta). Outras (ex: CEMIG) mostram uma tarifa única combinada. Quando separados, extraia TE e TUSD individualmente para os campos correspondentes.
+
+### Fora Ponta: Indutivo e Capacitivo
+O consumo e a energia fora ponta podem ser subdivididos em "FPonta Ind." (indutivo, fator de potência ≥ 0,92 indutivo) e "FPonta Cap." (capacitivo, fator de potência ≥ 0,92 capacitivo, geralmente entre 23h30 e 6h30). Quando ambos aparecem na fatura, o consumo fora ponta total é a soma dos dois valores.
+
+### Demanda Contratada vs Demanda Medida
+A fatura mostra a "Demanda Contratada" (valor fixado em contrato, em kW) e a "Demanda Medida" (maior potência registrada em intervalos de 15 min no período). Para o campo `demand`, extraia sempre a Demanda CONTRATADA. Ignore os itens "Demanda Não Utilizada" (contratada - medida) e "Demanda Ultrapassada" (multa quando medida > contratada) — estes são cálculos derivados, não o valor contratado.
+
+### Modalidade Verde vs Azul
+Na modalidade Verde, existe apenas UMA tarifa de demanda (sem diferenciação horária). Na modalidade Azul, existem DUAS tarifas de demanda: uma para Ponta e outra para Fora Ponta. Se a fatura mostrar "Demanda Ponta" vazia ou ausente, é indicativo de modalidade Verde.
+
+### Energia Reativa Excedente
+Itens como "ERE - Energia Reativa Excedente" ou "UFER" são multas por fator de potência abaixo de 0,92. Estes NÃO devem ser incluídos nos campos de consumo ativo — são cobranças separadas.
 
 ## Passo 2: Extrair Valores
 
