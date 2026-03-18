@@ -2,7 +2,7 @@
 
 ### User-facing features (full-stack)
 
-[ ] Novos filtros de exportação de vendas: vendedor específico / equipe espcífica
+[X] Novos filtros de exportação de vendas: vendedor específico / equipe específica
 [ ] Abrir endpoint de API para POST de um novo lead / negócio
 [ ] Adicionar campo de estado civil para customers + tag para geração de contrato
 [ ] Feature de "batch add" proprietários
