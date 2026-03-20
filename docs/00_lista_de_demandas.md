@@ -16,7 +16,7 @@ AFTER NEXUS DEPLOY TO PRODUCTION:
 
 ### Documentation Updates
 
-[ ] Update documentation for new energy invoice extraction feature
+[X] Update documentation for new energy invoice extraction feature
 
 ### Before Deploy to production
 
