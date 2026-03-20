@@ -4,7 +4,7 @@
 
 [X] Novos filtros de exportação de vendas: vendedor específico / equipe específica | [X] Documented
 [X] Abrir endpoint de API para POST de um novo lead / negócio | [X] Documented
-[ ] Feature de "batch add" proprietários | [ ] Documented
+[X] Feature de "batch add" proprietários | [X] Documented
 [ ] Adicionar campo de estado civil para customers + tag para geração de contrato | [ ] Documented
 [X] Adicionar notificação de novo lead para o colaborador que o lead foi atribuído
 
