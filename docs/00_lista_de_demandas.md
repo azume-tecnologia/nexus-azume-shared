@@ -20,10 +20,10 @@ AFTER NEXUS DEPLOY TO PRODUCTION:
 
 ### Before Deploy to production
 
-[ ] Setup Nexus production IaC and environment variables
+[X] Setup Nexus production IaC and environment variables
 [ ] Setup env vars on Heroku and DigitalOcean
-[ ] Update Azume knowledge files with new features
-[ ] Re-seed Azume Knowledge
+[X] Update Azume knowledge files with new features
+[X] Re-seed Azume Knowledge
 
 ### Backend commit stage pipeline (CI/CD)
 
