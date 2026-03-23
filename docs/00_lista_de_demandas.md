@@ -16,6 +16,16 @@ AFTER NEXUS DEPLOY TO PRODUCTION:
 
 ### Documentation Updates
 
+### Correções
+
+[ ] Fix bug ativação do Nexus IA
+[ ] Fix leitura smart 10x o valor extraído indo para o formulário
+[ ] Fix bug leitura smart warning de ponta e fora ponta trocado mostrando campo de taxa iluminação pública incorretamente
+[ ] Cap de 3 páginas no leitura smart
+[ ] Sistema para liberar o Nexus IA para o usuário
+[ ] Tirar doc de telas do contexto estático do Nexus IA (mover para RAG)
+[ ] Atualizar documentação para colocar a leitura smart e o Nexus IA como módulo adicional do Azume CRM
+
 [X] Update documentation for new energy invoice extraction feature
 
 ### Before Deploy to production
