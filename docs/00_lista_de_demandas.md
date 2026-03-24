@@ -19,6 +19,7 @@ AFTER NEXUS DEPLOY TO PRODUCTION:
 ### Correções
 
 [ ] Fix bug ativação do Nexus IA
+[ ] Fix fetch other users chats not filtering by account
 [ ] Fix leitura smart 10x o valor extraído indo para o formulário
 [ ] Fix bug leitura smart warning de ponta e fora ponta trocado mostrando campo de taxa iluminação pública incorretamente
 [ ] Cap de 3 páginas no leitura smart
