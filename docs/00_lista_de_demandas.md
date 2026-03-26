@@ -32,7 +32,7 @@ AFTER NEXUS DEPLOY TO PRODUCTION:
 [X] Re-seed Azume Knowledge (dev and prod)
 [X] Re-run integration tests
 [X] Redeploy dev
-[ ] Re-run e2e tests
+[X] Re-run e2e tests
 [ ] Redeploy prod
 
 ### Before Deploy to production
