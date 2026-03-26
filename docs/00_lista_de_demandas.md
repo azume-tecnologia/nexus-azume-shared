@@ -30,8 +30,8 @@ AFTER NEXUS DEPLOY TO PRODUCTION:
 [X] Update Secret Manager with new API keys (prod and dev)
 [X] Atualizar documentação para colocar a leitura smart e o Nexus IA como módulo adicional do Azume CRM
 [X] Re-seed Azume Knowledge (dev and prod)
-[ ] Re-run integration tests
-[ ] Redeploy dev
+[X] Re-run integration tests
+[X] Redeploy dev
 [ ] Re-run e2e tests
 [ ] Redeploy prod
 
