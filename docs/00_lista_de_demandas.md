@@ -27,16 +27,21 @@ AFTER NEXUS DEPLOY TO PRODUCTION:
 [X] Sistema para liberar o Nexus IA para o usuário
 [X] Atualizar documentação para o novo sistema de liberação de acesso ao Nexus IA
 [X] Gerar OpenAI e Gemini API keys para produção do Nexus IA e Invoice Extraction
-[ ] Atualizar documentação para colocar a leitura smart e o Nexus IA como módulo adicional do Azume CRM
-
-[X] Update documentation for new energy invoice extraction feature
+[X] Update Secret Manager with new API keys (prod and dev)
+[X] Atualizar documentação para colocar a leitura smart e o Nexus IA como módulo adicional do Azume CRM
+[X] Re-seed Azume Knowledge (dev and prod)
+[ ] Re-run integration tests
+[ ] Redeploy dev
+[ ] Re-run e2e tests
+[ ] Redeploy prod
 
 ### Before Deploy to production
 
 [X] Setup Nexus production IaC and environment variables
-[ ] Setup env vars on Heroku and DigitalOcean
+[X] Setup env vars on Heroku and DigitalOcean
 [X] Update Azume knowledge files with new features
 [X] Re-seed Azume Knowledge
+[X] Update documentation for new energy invoice extraction feature
 
 ### Backend commit stage pipeline (CI/CD)
 
