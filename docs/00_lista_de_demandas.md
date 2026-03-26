@@ -33,7 +33,7 @@ AFTER NEXUS DEPLOY TO PRODUCTION:
 [X] Re-run integration tests
 [X] Redeploy dev
 [X] Re-run e2e tests
-[ ] Redeploy prod
+[X] Redeploy prod
 
 ### Before Deploy to production
 
