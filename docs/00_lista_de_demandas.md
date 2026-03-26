@@ -23,9 +23,10 @@ AFTER NEXUS DEPLOY TO PRODUCTION:
 [X] Fix leitura smart 10x o valor extraído indo para o formulário
 [X] Fix bug leitura smart warning de ponta e fora ponta trocado mostrando campo de taxa iluminação pública incorretamente
 [X] Cap de 1 página (PDF) no leitura smart. Verificar se imagem precisa de algum tipo de cap de segurança também.
-[ ] Tirar doc de telas do contexto estático do Nexus IA (mover para RAG)
-[ ] Gerar OpenAI e Gemini API keys para produção do Nexus IA e Invoice Extraction
-[ ] Sistema para liberar o Nexus IA para o usuário
+[X] Tirar doc de telas do contexto estático do Nexus IA (mover para RAG)
+[X] Sistema para liberar o Nexus IA para o usuário
+[X] Atualizar documentação para o novo sistema de liberação de acesso ao Nexus IA
+[X] Gerar OpenAI e Gemini API keys para produção do Nexus IA e Invoice Extraction
 [ ] Atualizar documentação para colocar a leitura smart e o Nexus IA como módulo adicional do Azume CRM
 
 [X] Update documentation for new energy invoice extraction feature
