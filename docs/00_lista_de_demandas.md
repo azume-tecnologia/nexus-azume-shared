@@ -34,7 +34,7 @@ AFTER NEXUS DEPLOY TO PRODUCTION:
 [X] Redeploy dev
 [X] Re-run e2e tests
 [X] Redeploy prod
-[ ] Account toggling asynchronously with polling
+[X] Account toggling asynchronously with polling
 
 ### Before Deploy to production
 
