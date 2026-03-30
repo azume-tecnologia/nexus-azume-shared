@@ -10,9 +10,10 @@
 
 AFTER NEXUS DEPLOY TO PRODUCTION:
 
+[X] Augument sales export feature to Azume CRM with "note type"
+[X] Augument lead export feature to Azume CRM with "lead owner"
 [ ] Add proposal export feature to Azume CRM
-[ ] Augument sales export feature to Azume CRM with "note type"
-[ ] Augument lead export feature to Azume CRM with "lead owner"
+
 
 ### Documentation Updates
 
