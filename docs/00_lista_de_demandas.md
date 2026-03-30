@@ -7,9 +7,9 @@
 [X] Feature de "batch add" proprietários | [X] Documented
 [X] Adicionar campo de estado civil para customers + tag para geração de contrato | [X] Documented
 [X] Adicionar notificação de novo lead para o colaborador que o lead foi atribuído | [X] Documented
-[X] Melhorar feature de exportação de vendas para Azume CRM com "tipo de nota" | [ ] Documented
-[X] Melhorar feature de exportação de leads para Azume CRM com "proprietário do lead" | [ ] Documented
-[X] Adicionar feature de exportação de propostas para Azume CRM | [ ] Documented
+[X] Melhorar feature de exportação de vendas para Azume CRM com "tipo de nota" | [X] Documented
+[X] Melhorar feature de exportação de leads para Azume CRM com "proprietário do lead" | [X] Documented
+[X] Adicionar feature de exportação de propostas para Azume CRM | [X] Documented
 
 
 ### Documentation Updates
