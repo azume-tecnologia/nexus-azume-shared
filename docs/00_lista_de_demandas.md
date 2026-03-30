@@ -9,7 +9,7 @@
 [X] Adicionar notificação de novo lead para o colaborador que o lead foi atribuído
 [X] Melhorar feature de exportação de vendas para Azume CRM com "tipo de nota"
 [X] Melhorar feature de exportação de leads para Azume CRM com "proprietário do lead"
-[ ] Adicionar feature de exportação de propostas para Azume CRM
+[X] Adicionar feature de exportação de propostas para Azume CRM
 
 
 ### Documentation Updates
