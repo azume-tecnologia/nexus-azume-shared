@@ -4,7 +4,7 @@
 
 [X] Novos filtros de exportação de vendas: vendedor específico / equipe específica | [X] Documented
 [X] Abrir endpoint de API para POST de um novo lead / negócio | [X] Documented
-[X] Feature de "batch add" proprietários | [X] Documented
+[X] Feature de "batch add" proprietários (adição de proprietários em massa) | [X] Documented
 [X] Adicionar campo de estado civil para customers + tag para geração de contrato | [X] Documented
 [X] Adicionar notificação de novo lead para o colaborador que o lead foi atribuído | [X] Documented
 [X] Melhorar feature de exportação de vendas para Azume CRM com "tipo de nota" | [X] Documented
