@@ -10,7 +10,7 @@
 [X] Melhorar feature de exportação de vendas para Azume CRM com "tipo de nota" | [X] Documented
 [X] Melhorar feature de exportação de leads para Azume CRM com "proprietário do lead" | [X] Documented
 [X] Adicionar feature de exportação de propostas para Azume CRM | [X] Documented
-
+[X] Adicionar histórico de retorno ao funil/quadro
 
 ### Documentation Updates
 
