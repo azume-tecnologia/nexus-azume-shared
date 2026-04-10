@@ -92,8 +92,7 @@ Sou Paulo Castagnari, um dos sócios da empresa Azume. Quem terá acesso a este 
 - Nossa estratégia atual é maximizar lucro e distribuir o maior lucro possível para os sócios, mantendo um caixa saudável.
 - Porque não estamos focando em crescimento: o mercado de energia solar no Brasil está em queda, o que deve continuar no futuro próximo.
 
-
-**Nosso cliente:**
+## Nosso cliente
 
 - Nosso negócio é B2B.
 - Nossos clientes são integradores de energia solar fotovoltaica. São empresas que instalam sistemas de energia solar fotovoltaica em residências e empresas.
@@ -104,18 +103,18 @@ Sou Paulo Castagnari, um dos sócios da empresa Azume. Quem terá acesso a este 
 - O número de empresas integradoras no Brasil está em queda, o que deve continuar no futuro próximo (o que se reflete em 80% do nosso faturamento de renovação de assinaturas anuais).
 - As empresas integradoras de energia solar fotovoltaica atuam principalmente com sistemas de microgeração de energia solar (até 75kWp). São sistemas de pequeno porte, instalados em residências e empresas. Existem, entretanto, alguns clientes que executam projetos de minigeração (até 1MWp).
 - As empresas integradoras de energia solar fotovoltaica atuam principalmente com sistemas de energia solar on-grid (conectados à rede elétrica). Inclusive hoje o Azume é totalmente orientado para geração de propostas para sistemas on-grid (e principalmente microgeração). Qualquer sistema on-grid depende de aprovação da distribuidora de energia local para ser conectado à rede elétrica.
+- As empresas integradoras de energia solar fotovoltaica atuam geração distribuída (GD) de energia elétrica, gerada por módulos fotovoltaicos. GD é a geração de energia elétrica em pequeno porte, instalada próxima ao consumidor final. Costuma ser junto à carga da unidade consumidora (UC), mas pode ser instalado em qualquer local que faça parte do mesmo distribuidor de energia local e distibuído entre diferentes unidades consumidoras (UCs)
+- Em suma, nossos clientes atuam principalmente com GD de sistemas on-grid de microgeração.
 
-**A grande ameaça:**
+## A grande ameaça
 
 São vários fatores que compõem a ameaça ao setor de energia solar fotovoltaica no Brasil:
 - Mercado fortemente regulado, lobby forte de empresas distribuidoras de energia contra. Isso trás pouca segurança jurídica para os integradores de energia solar fotovoltaica.
-- Saturação da rede elétrica brasileira (ou pelo menos o que as distribuidoras brasileiras estão afirmando). 
+- Saturação da rede elétrica brasileira (ou pelo menos o que as distribuidoras brasileiras estão afirmando). Cada vez mais projetos são rejeitados por distribuidoras brasileiras por causa da saturação da rede elétrica, afirmando problemas com .
 
-Projetos de software que estão envolvidos:
+## Empresa de educação
 
-**Empresa de educação:**
-
-**Análise prévia de oportunidades:**
+## Análise prévia de oportunidades
 
 
 ## Projetos de software envolvidos
