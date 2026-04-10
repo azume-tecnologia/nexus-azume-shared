@@ -237,6 +237,9 @@ OBS: Pode ser que a otimização de tudo isso para setores específicos possa se
 
 **Nexus:**
 Software AI powered. Hoje consiste em um chat multiprovedor (GPT, Claude, Gemini, etc...) com IA generativa + um leitor smart de faturas de energia integrado diretamento ao Azume CRM (para extrair dados relevantes e facilitar o processo de geração de propostas). Além de multiprovedor, o Nexus também é multi-usuários (diferentemente do ChatGPT, Claude Chat, etc...), ou seja, tal como o Azume CRM o Nexus possui contas para múltiplos usuários (colaboradores). E cada colaborador pode ser associado a um ou múltiplos setores da empresa (comercial, financeiro, etc...). Porém possui menos recursos do que ChatGPT, Claude Chat, etc. Apenas aceita mensagens de texto e leitura de arquivos.
+
+Hoje está sendo rodado o piloto do Nexus com uma base seleta de usuários para entender os custos operacionais. Provavelmente será um addon para os usuários do Azume CRM (com assinatura mensal). Quando se tornar um produto que "anda com as próprias pernas", será um produto de ticket médio alto e será disponibilizado para usuários externos ao Azume CRM (não apenas para os usuários do Azume CRM).
+
 - Repositório local backend: /home/paulo/projects/nexus/nexus-core
 - Repositório local frontend: /home/paulo/projects/nexus/nexus-portal
 - Repositório online backend: https://github.com/azume-tecnologia/nexus-core
@@ -244,8 +247,13 @@ Software AI powered. Hoje consiste em um chat multiprovedor (GPT, Claude, Gemini
 
 **Azume CRM:**
 CRM/Gerador de Propostas/Gerenciador de Empresas de Energia Solar Fotovoltaica.
+- Repositório local: /home/paulo/projects/azume/azume-frontend-crm
+- Repositório online: https://github.com/azume-tecnologia/azume-frontend-crm
 
-**Azume Frontend:**
+**Azume Financeiro:**
+Software financeiro simples, integrado ao Azume CRM. O desenvolvimento do Azume Financeiro é terceirizado (desenvolvido por um desenvolvedor freelancer externo). Mudanças são mais lentas e custosas. Não é um produto que por si só dá ROI, ele vem para complementar o Azume CRM (acrescen)
+- Repositório local: /home/paulo/projects/azume/azume-financeiro
+- Repositório online: https://github.com/azume-tecnologia/azume-financeiro
 
 Nota para agente: leia os repositórios locais de todos os produtos para entender mais sobre os projetos.
 
