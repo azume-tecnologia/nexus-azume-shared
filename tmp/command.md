@@ -201,7 +201,14 @@ A ideia é excelente, conseguir facilmente construir contexto para IA e facilmen
 Mas ser um concorrente direto, i.e, não ter diferencial de valor em relação a um software como o NotebookLM, é ir de encontro ao fracasso.
 
 **Soluções "óbvias" powered by IA:**
-Soluções genéricas e óbvias powered by IA devem ser evitadas. O aumento da facilidade de desenvolver software com IA generativa torna a criação de soluções genéricas e óbvias muito mais fácil e barata. A concorrência se torna muito forte e a diferença de valor é muito pequena. Sobrevive quem possui mais recursos e mais tempo para investir em marketing e vendas e quem já domina o mercado.
+Soluções genéricas e óbvias powered by IA devem ser evitadas. O aumento da facilidade de desenvolver software com IA generativa torna a criação de soluções genéricas e óbvias muito mais fácil e barata. A concorrência se torna muito forte e a diferença de valor é muito pequena. Sobrevive quem possui mais recursos e mais tempo para investir em marketing e vendas e quem já domina o mercado. Abaixo vão alguns exemplos do que eu identifico como soluções "óbvias" powered by IA:
+- CRM com IA generativa (Azume CRM é diferente por ser um CRM voltado para empresas integradoras de GD de energia solar fotovoltaica - nichado e especializado)
+- Gerador de apresentações, PDFs, relatórios, etc. com IA generativa. Isso também é algo que Chats com IA generativa vem incorporando nos SaaS de chat com IA generativa há tempos. Um exemplo bom é a Manus: https://manus.im/
+- Chatbots com IA generativa.
+- Solução de IA para atendimento ao cliente.
+- Solução de IA para geração de conteúdo.
+- Solução de IA para geração de código (já mencionado anteriormente).
+- Solução de IA para qualificação de leads.
 
 ## Projetos de software envolvidos
 
