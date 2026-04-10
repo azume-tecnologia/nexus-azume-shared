@@ -144,6 +144,16 @@ Existe um outro negócio que nós (Paulo, Thúlio e Victor) possuímos com outra
 
 Veja que, a ideia é ter uma solução de software "nichada", voltado a um tipo de negócio específico. Somos uma empresa pequena de tecnologia e é difícil concorrer com empresas grandes de tecnologia que possuem muito mais recursos. Soluções "abertas" (que atendem a qualquer público) normalmente estão já dominadas por grandes empresas e não há espaço para concorrência de uma empresa com poucos recursos. Portanto, ideias como "software comercial (AI powered)" não são ideais para a Azume. Precisamos de um deferencial competitivo para a Azume. Precisamos correr de concorrência com big techs.
 
+A ideia é expandir a proposta de valor do nosso(s) software(s) para outros nichos de mercado.
+
+Importante considerar:
+
+- Estratégia de distribuição de software (como vai ser divulgado? existem influencers do nicho que podem ajudar a distribuir a solução? esses influencers já vendem alguma solução similar?)
+- Estamos buscando (mas não limitados a) usar IA Generativa na solução (algo quente no marcado brasileiro). O Nexus já é uma solução AI powered que precisa ser expandida e melhorada para ter diferencial competitivo.
+- Estamos buscando (mas não limitados a) ofertar um SaaS (Software as a Service) como principal oferta de valor. Pode ser incrementado com cursos/treinamentos/consultorias/etc.
+- Estamos buscando um público B2B e um produto de ticket médio alto.
+
+
 **
 
 
