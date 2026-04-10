@@ -248,7 +248,12 @@ Hoje está sendo rodado o piloto do Nexus com uma base seleta de usuários para 
 **Azume CRM:**
 CRM/Gerador de Propostas/Gerenciador de Empresas de Energia Solar Fotovoltaica. Principal produto da Azume hoje. Sustenta a empresa atualmente.
 
-- Repositório 
+- Repositório local backend: /home/paulo/projects/azume/azume-backend
+- Repositório local frontend do usuário: /home/paulo/projects/azume/azume-frontend-crm
+- Repositório local frontend do administrador: /home/paulo/projects/azume/azume-frontend-adm
+- Repositório online backend: https://github.com/azume-tecnologia/azume-backend
+- Repositório online frontend do usuário: https://github.com/azume-tecnologia/azume-frontend-crm
+- Repositório online frontend do administrador: https://github.com/azume-tecnologia/azume-frontend-adm
 
 **Azume Financeiro:**
 Software financeiro simples, integrado ao Azume CRM. O desenvolvimento do Azume Financeiro é terceirizado (desenvolvido por um desenvolvedor freelancer externo). Mudanças são mais lentas e custosas. Não é um produto que por si só dá ROI, ele vem para complementar o Azume CRM (acrescendo valor ao Azume CRM). É um addon opcional de ticket médio baixo (cerca de R$ 600,00 por ano).
