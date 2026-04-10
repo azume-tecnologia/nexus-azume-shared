@@ -149,7 +149,7 @@ A ideia é expandir a proposta de valor do nosso(s) software(s) para outros nich
 Importante considerar:
 
 - Estratégia de distribuição de software (como vai ser divulgado? existem influencers do nicho que podem ajudar a distribuir a solução? esses influencers já vendem alguma solução similar?)
-- Estamos buscando (mas não limitados a) usar IA Generativa na solução (algo quente no marcado brasileiro). O Nexus já é uma solução AI powered que precisa ser expandida e melhorada para ter diferencial competitivo.
+- Estamos buscando (mas não limitados a) usar IA Generativa na solução (algo quente no marcado brasileiro). O Nexus já é uma solução AI powered que precisa ser expandida e melhorada para ter diferencial competitivo. O potencial da IA em SaaS é enorme e deve ser explorado.
 - Estamos buscando (mas não limitados a) ofertar um SaaS (Software as a Service) como principal oferta de valor. Pode ser incrementado com cursos/treinamentos/consultorias/etc.
 - Estamos buscando um público B2B e um produto de ticket médio alto.
 
