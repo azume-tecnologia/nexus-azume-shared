@@ -184,7 +184,7 @@ A solução se tornaria ponta-a-ponta, mas nasceria com a qualificação de lead
 - Um software que reduz o custo operacional da empresa, reduzindo a necessidade de equipe comercial e suporte ao cliente. A proposta de valor é clara e fácil de medir.
 - Um software que se rodar bem, de fato pode solucionar dores muito latentes com gestão de equipe comercial, algo notavelmente difícil. 
 3. Contras Identificados:
-- Só a com essa ideia inicial não existe diferencial competitivo com os milhares de outras soluções com IA sendo desenvolvidas para a área comercial. Cai no problema de ser "óbvio" e "genérico". Precisaria ter um diferencial de valor ao longo da trajetória para ser especializado em algo.
+- Só com essa ideia inicial não existe diferencial competitivo com os milhares de outras soluções com IA sendo desenvolvidas para a área comercial. Cai no problema de ser "óbvio" e "genérico". Precisaria ter um diferencial de valor ao longo da trajetória para ser especializado em algo.
 
 ## Concorrência
 
