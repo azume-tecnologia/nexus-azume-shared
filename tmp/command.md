@@ -191,6 +191,15 @@ Já está completamente saturado de grandes concorrentes com soluções extremam
 - GitHub Copilot
 Novamente, praticamente todos os provedores de modelos de IA generativa possuem seus próprios SaaS de engenharia de software.
 
+**NotebookLM e produtos similares:**
+NotebookLM é uma solução excelente e com um tier gratuito extramamente generoso (porém, não é uma solução ideal para empresas). É algo que somente provedores de modelos de IA generativa podem oferecer devido ao custo alto do consumo de tokens.
+
+Link para a solução: https://notebooklm.google
+
+A ideia é excelente, conseguir facilmente construir contexto para IA e facilmente gerar diversos tipos de documentos a partir disso. É algo que talvez o Nexus deva ter para ajudar a construir a oferta de valor principal do Nexus.
+
+Mas ser um concorrente direto, i.e, não ter diferencial de valor em relação a um software como o NotebookLM, é ir de encontro ao fracasso.
+
 ## Projetos de software envolvidos
 
 **Nexus Core:**
