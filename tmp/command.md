@@ -171,6 +171,26 @@ Com todas essas considerações, podemos explorar algumas oportunidades que fora
 - Atualmente não há volume o suficiente de sistemas off-grid e híbridos (com armazenamento de energia) para manter a empresa sustentável com um ticket médio baixo. O módulo de baterias precisaria ter um ticket médio muito mais alto. Nosso público atual, no geral, possui recursos extremamente limitados para investir em sistemas off-grid e híbridos (com armazenamento de energia).
 - Incerteza de como a IA generativa performaria em projetos de engenharia (engenharia em geral, exceto engenharia de software em que a capacidade de IA generativa já foi comprovada).
 
+## Concorrência
+
+Como mencionado anteriormente, queremos evitar concorrência direta com big techs e com soluções "abertas" (que atendem a qualquer público). Exemplo de soluções concorrentes das quais não queremos ser concorrentes diretos:
+
+**Chats de IA Generativa:**
+Obviamente a pior concorrência é a concorrência direta com provedores do modelos de IA generativa, que possuem seus próprios SaaS de chat com modelos de IA generativa.
+- ChatGPT
+- Gemini Chat
+- Claude Chat
+- Grok
+- Perplexity
+etc...
+
+**Soluções para engenharia de software:**
+Já está completamente saturado de grandes concorrentes com soluções extremamente poderosas como:
+- Claude Code
+- Cursor
+- GitHub Copilot
+Novamente, praticamente todos os provedores de modelos de IA generativa possuem seus próprios SaaS de engenharia de software.
+
 ## Projetos de software envolvidos
 
 **Nexus Core:**
