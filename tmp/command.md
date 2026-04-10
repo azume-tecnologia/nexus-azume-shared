@@ -153,6 +153,7 @@ Importante considerar:
 - Estamos buscando (mas não limitados a) usar IA Generativa na solução (algo quente no marcado brasileiro). O Nexus já é uma solução AI powered que precisa ser expandida e melhorada para ter diferencial competitivo. O potencial da IA em SaaS é enorme e deve ser explorado.
 - Estamos buscando (mas não limitados a) ofertar um SaaS (Software as a Service) como principal oferta de valor. Pode ser incrementado com cursos/treinamentos/consultorias/etc.
 - Estamos buscando um público B2B e um produto de ticket médio mais alto que o Azume CRM atual (idealmente acima de R$ 12.000,00 por ano). Inclusive para conseguir fornecer aos clientes os melhores modelos de IA, precisamos de um produto de ticket médio mais alto pois o custo com inferência de IA é alto. A ideia é não depender tanto de volume de clientes.
+- Temos recursos limitados para investir em marketing e vendas (por isso considerar canais de distribuição é importante).
 
 Com todas essas considerações, podemos explorar algumas oportunidades que foram identificadas preliminarmente (precisa ser validado se é uma oportunidade real e viável).
 
