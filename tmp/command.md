@@ -49,7 +49,7 @@ Sou Paulo Castagnari, um dos sócios da empresa Azume. Quem terá acesso a este 
 - Diógenes Rocha: Agente de suporte ao cliente.
 - Letícia: vendedora (novas assinaturas).
 
-## Estrutura hierárquica da empresa
+## Estrutura organizacional
 
 **Diretoria:**
 - Paulo Castagnari + Victor Zani + Thúlio Nascimento (mesmo nível hierárquico)
@@ -113,9 +113,20 @@ São vários fatores que compõem a ameaça ao setor de energia solar fotovoltai
 - Saturação da rede elétrica brasileira (ou pelo menos o que as distribuidoras brasileiras estão afirmando). Cada vez mais projetos são rejeitados por distribuidoras brasileiras por causa da saturação da rede elétrica, afirmando problemas de reversão de fluxo de energia.
 - Distribuidores de equipamentos de energia solar "atrevessando" o integrador de energia solar, vendendo diretamente para o consumidor final com o serviçi de instalação incluso. É um movimento que tem sido cada vez mais presente no mercado brasileiro.
 
+Esta ameaça é algo que já vem sendo observado (empírico), o número de empresas integradoras e a quantidade de projetos de GD de energia solar instalados estão em queda.
+
 ## Empresa de educação
 
+Existe um outro negócio que nós (Paulo, Thúlio e Victor) possuímos com outra sócia (Bárbara Rubim): A E4.0 Educação. Juntos (Paulo, Thúlio e Victor) possuímos 50% da empresa E4.0 Educação. Bárbara Rubim possuí 50% da empresa E4.0 Educação.
+
+**Bárbara Rubim:**
+- Advogada, sócia da E4.0 Educação.
+- Provavelmente a maior autoridade do Brasil para o público de integradores de energia solar fotovoltaica.
+- Presidente da ABSOLAR (associação brasileira de energia solar fotovoltaica)
+
 ## Análise prévia de oportunidades
+
+É muito claro a necessidade de pivotar a Azume para atuar em outro(s) nicho(s) de mercado. É muito provável que o négócio não irá se sustentar atuando apenas com empresas integradoras de GD de energia solar fotovoltaica.
 
 
 ## Projetos de software envolvidos
