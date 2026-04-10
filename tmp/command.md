@@ -158,19 +158,27 @@ Importante considerar:
 Com todas essas considerações, podemos explorar algumas oportunidades que foram identificadas preliminarmente (precisa ser validado se é uma oportunidade real e viável).
 
 **Expansão para Mercado de Instalação de Sistemas Fotovoltaicos Off-Grid e Híbridos (com armazenamento de energia):**
-1. Prós Identicados:
+1. Contexto:
+Expandir o Azume CRM (e Nexus) para gerar dimensionar e gerar propostas para sistemas off-grid e híbridos. Para sucesso, o uso de IA para auxiliar na engenharia é essencial (público pouco capacitado para engenharia de sistemas off-grid e híbridos).
+2. Prós Identicados:
 - É a oportunidade com a maior sinergia possível com os clientes atuais da Azume.
 - Azume CRM pode ser facilmente adaptado para gerar propostas para sistemas off-grid e híbridos (com armazenamento de energia).
+- Solução já nasce integrada ao CRM e software financeiro.
 - Nexus pode ser integrado (e a IA pode ser instruída) para auxiliar na engenharia de sistemas off-grid e híbridos (com armazenamento de energia).
 - Observa-se que mercados com maior maturidade no setor de energia solar fora do Brasil (EUA, Europa, Austrália, etc.) possuem cada vez mais sistemas off-grid e híbridos (com armazenamento de energia).
 - Com a saturação da rede elétrica brasileira, o mercado de sistemas off-grid e híbridos (com armazenamento de energia) deverá aumentar.
-2. Contras Identificados:
+3. Contras Identificados:
 - A engenharia de sistemas off-grid e híbridos (com armazenamento de energia) é muito mais complexa que a engenharia de sistemas on-grid (conectados à rede elétrica).
 - Apesar de nosso público atuar com um serviço similar, a maioria dos integradores de energia solar fotovoltaica não possuem conhecimento/capacidade técnico(a) para engenharia de sistemas off-grid e híbridos (com armazenamento de energia).
 - O tamanho do mercado de sistemas off-grid e híbridos (com armazenamento de energia) é pequeno (atualmente) em comparação ao mercado de sistemas on-grid (conectados à rede elétrica).
 - Não se sabe se o preço de baterias no Brasil será competitivo para ROI de sistemas off-grid e híbridos (com armazenamento de energia).
 - Atualmente não há volume o suficiente de sistemas off-grid e híbridos (com armazenamento de energia) para manter a empresa sustentável com um ticket médio baixo. O módulo de baterias precisaria ter um ticket médio muito mais alto. Nosso público atual, no geral, possui recursos extremamente limitados para investir em sistemas off-grid e híbridos (com armazenamento de energia).
 - Incerteza de como a IA generativa performaria em projetos de engenharia (engenharia em geral, exceto engenharia de software em que a capacidade de IA generativa já foi comprovada).
+
+**Expansão para Solução Comercial ponta-a-ponta powered by IA:**
+1. Prós Identicados:
+- 
+2. Contras Identificados:
 
 ## Concorrência
 
