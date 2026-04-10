@@ -164,9 +164,10 @@ Com todas essas considerações, podemos explorar algumas oportunidades que fora
 - Observa-se que mercados com maior maturidade no setor de energia solar fora do Brasil (EUA, Europa, Austrália, etc.) possuem cada vez mais sistemas off-grid e híbridos (com armazenamento de energia).
 2. Contras Identificados:
 - A engenharia de sistemas off-grid e híbridos (com armazenamento de energia) é muito mais complexa que a engenharia de sistemas on-grid (conectados à rede elétrica).
-- Apesar de nosso público atuar com um serviço similar, a maioria dos integradores de energia solar fotovoltaica não possuem conhecimento técnico para engenharia de sistemas off-grid e híbridos (com armazenamento de energia).
+- Apesar de nosso público atuar com um serviço similar, a maioria dos integradores de energia solar fotovoltaica não possuem conhecimento/capacidade técnico(a) para engenharia de sistemas off-grid e híbridos (com armazenamento de energia).
 - O tamanho do mercado de sistemas off-grid e híbridos (com armazenamento de energia) é pequeno (atualmente) em comparação ao mercado de sistemas on-grid (conectados à rede elétrica).
 - Não se sabe se o preço de baterias no Brasil será competitivo para ROI de sistemas off-grid e híbridos (com armazenamento de energia).
+- Atualmente não há volume o suficiente de sistemas off-grid e híbridos (com armazenamento de energia) para manter a empresa sustentável com um ticket médio baixo. O módulo de baterias precisaria ter um ticket médio muito mais alto. Nosso público atual, no geral, possui recursos extremamente limitados para investir em sistemas off-grid e híbridos (com armazenamento de energia).
 
 ## Projetos de software envolvidos
 
