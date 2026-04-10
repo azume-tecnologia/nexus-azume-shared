@@ -210,7 +210,7 @@ Soluções genéricas e óbvias powered by IA devem ser evitadas. O aumento da f
 - Solução de IA para geração de código (já mencionado anteriormente).
 - Solução de IA para qualificação de leads.
 - Solução de IA para planejamento estratégico.
-OBS: Pode ser que a otimização de tudo isso para um setor de mercado específico possa ser uma boa oportunidade, mas de forma "genérica" é uma má ideia.
+OBS: Pode ser que a otimização de tudo isso para setores específicos possa ser uma boa oportunidade, mas de forma "genérica" é uma má ideia.
 
 ## Projetos de software envolvidos
 
