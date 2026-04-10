@@ -262,3 +262,14 @@ Nota para agente: leia os repositórios locais do Nexus e do Azume CRM para ente
 
 ## Ideias preliminares de como direcionar o Nexus
 
+Como mencionado, hoje o Nexus é um addon para o Azume CRM. Consiste de um chat multiprovedor (GPT, Claude, Gemini, etc...) e multi-usuários com IA generativa + um leitor smart de faturas de energia integrado diretamento ao Azume CRM (para extrair dados relevantes e facilitar o processo de geração de propostas).
+
+A ideia é construir uma base sólida para o Nexus crescer para outro(s) nicho(s) de mercado implementando a seguinte feature: /home/paulo/projects/nexus/nexus-core/docs/specs/pending/multi_level_context_builder.md
+
+Com o que está sendo chamado de "Context Builder", o Nexus pode "moldado" (LLMs podem ser instruídas) para ser especializado em diferentes nichos de mercado.
+
+Além do context builder, pode ser interessante implementar a possibilidade de também fornecer diferentes ferramentas para os modelos por trṕas do Nexus, de forma que diferentes usuários possam ter diferentes ferramentas disponíveis para serem usadas.
+
+Isso pode ser aliado a uma consultoria de implantação de tecnologias em pequenos e médios negócios dos nichos que forem ser atendidos pelo Nexus.
+
+Após isso
