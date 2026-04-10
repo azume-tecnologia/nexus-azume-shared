@@ -185,7 +185,7 @@ A solução se tornaria ponta-a-ponta, mas nasceria com a qualificação de lead
 - Um software que se rodar bem, de fato pode solucionar dores muito latentes com gestão de equipe comercial, algo notavelmente difícil. 
 3. Contras Identificados:
 - Só com essa ideia inicial não existe diferencial competitivo com os milhares de outras soluções com IA sendo desenvolvidas para a área comercial. Cai no problema de ser "óbvio" e "genérico". Precisaria ter um diferencial de valor ao longo da trajetória para ser especializado em algo.
-- No papel essa gestão comercial ponta-a-ponta é bela de se falar, mas chegar nisso é muito difícil.
+- No papel essa gestão comercial ponta-a-ponta é bela de se falar, mas chegar nisso é muito difícil. Tempo de desenvolvimento longo para chegar a um produto de valor real.
 - Custo operacional alto. ao menos com os melhores modelos de IA generativa, envolve alto consumo de tokens de IA generativa (bastante texto e conversação em tempo real com IA)
 
 ## Concorrência
