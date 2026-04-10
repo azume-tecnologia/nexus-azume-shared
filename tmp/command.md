@@ -111,6 +111,7 @@ Sou Paulo Castagnari, um dos sócios da empresa Azume. Quem terá acesso a este 
 São vários fatores que compõem a ameaça ao setor de energia solar fotovoltaica no Brasil:
 - Mercado fortemente regulado, lobby forte de empresas distribuidoras de energia contra. Isso trás pouca segurança jurídica para os integradores de energia solar fotovoltaica.
 - Saturação da rede elétrica brasileira (ou pelo menos o que as distribuidoras brasileiras estão afirmando). Cada vez mais projetos são rejeitados por distribuidoras brasileiras por causa da saturação da rede elétrica, afirmando problemas de reversão de fluxo de energia.
+- Distribuidores de equipamentos de energia solar "atrevessando" o integrador de energia solar, vendendo diretamente para o consumidor final com o serviçi de instalação incluso. É um movimento que tem sido cada vez mais presente no mercado brasileiro.
 
 ## Empresa de educação
 
