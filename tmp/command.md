@@ -233,6 +233,10 @@ Soluções genéricas e óbvias powered by IA devem ser evitadas. O aumento da f
 - Sotware financeiro com IA.
 OBS: Pode ser que a otimização de tudo isso para setores específicos possa ser uma boa oportunidade, mas de forma "genérica" é uma má ideia.
 
+Em suma, as 2 principais ideias de onde expandir o Nexus são:
+- Foco em engenharia
+- Foco em comercial
+
 ## Produtos da Azume
 
 **Nexus:**
