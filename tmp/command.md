@@ -103,12 +103,13 @@ Sou Paulo Castagnari, um dos sócios da empresa Azume. Quem terá acesso a este 
 - O perfil de afinidade com tecnologia é baixo, clientes com muita dificuldade em utilizar qualquer software, mesmo que simples.
 - O número de empresas integradoras no Brasil está em queda, o que deve continuar no futuro próximo (o que se reflete em 80% do nosso faturamento de renovação de assinaturas anuais).
 - As empresas integradoras de energia solar fotovoltaica atuam principalmente com sistemas de microgeração de energia solar (até 75kWp). São sistemas de pequeno porte, instalados em residências e empresas. Existem, entretanto, alguns clientes que executam projetos de minigeração (até 1MWp).
+- As empresas integradoras de energia solar fotovoltaica atuam principalmente com sistemas de energia solar on-grid (conectados à rede elétrica). Inclusive hoje o Azume é totalmente orientado para geração de propostas para sistemas on-grid (e principalmente microgeração). Qualquer sistema on-grid depende de aprovação da distribuidora de energia local para ser conectado à rede elétrica.
 
 **A grande ameaça:**
 
 São vários fatores que compõem a ameaça ao setor de energia solar fotovoltaica no Brasil:
 - Mercado fortemente regulado, lobby forte de empresas distribuidoras de energia contra. Isso trás pouca segurança jurídica para os integradores de energia solar fotovoltaica.
-- Saturação da rede elétrica
+- Saturação da rede elétrica brasileira (ou pelo menos o que as distribuidoras brasileiras estão afirmando). 
 
 Projetos de software que estão envolvidos:
 
