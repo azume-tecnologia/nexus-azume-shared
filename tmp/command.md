@@ -257,10 +257,8 @@ CRM/Gerador de Propostas/Gerenciador de Empresas de Energia Solar Fotovoltaica. 
 
 **Azume Financeiro:**
 Software financeiro simples, integrado ao Azume CRM. O desenvolvimento do Azume Financeiro é terceirizado (desenvolvido por um desenvolvedor freelancer externo). Mudanças são mais lentas e custosas. Não é um produto que por si só dá ROI, ele vem para complementar o Azume CRM (acrescendo valor ao Azume CRM). É um addon opcional de ticket médio baixo (cerca de R$ 600,00 por ano).
-- Repositório local: /home/paulo/projects/azume/azume-financeiro
-- Repositório online: https://github.com/azume-tecnologia/azume-financeiro
 
-Nota para agente: leia os repositórios locais de todos os produtos para entender mais sobre os projetos.
+Nota para agente: leia os repositórios locais do Nexus e do Azume CRM para entender mais sobre os projetos.
 
 ## Ideias preliminares de como direcionar o Nexus
 
