@@ -252,7 +252,7 @@ CRM/Gerador de Propostas/Gerenciador de Empresas de Energia Solar Fotovoltaica.
 - Repositório online: https://github.com/azume-tecnologia/azume-frontend-crm
 
 **Azume Financeiro:**
-Software financeiro simples, integrado ao Azume CRM. O desenvolvimento do Azume Financeiro é terceirizado (desenvolvido por um desenvolvedor freelancer externo). Mudanças são mais lentas e custosas. Não é um produto que por si só dá ROI, ele vem para complementar o Azume CRM (acrescendo valor ao Azume CRM). É um addon opcional
+Software financeiro simples, integrado ao Azume CRM. O desenvolvimento do Azume Financeiro é terceirizado (desenvolvido por um desenvolvedor freelancer externo). Mudanças são mais lentas e custosas. Não é um produto que por si só dá ROI, ele vem para complementar o Azume CRM (acrescendo valor ao Azume CRM). É um addon opcional de ticket médio baixo (cerca de R$ 600,00 por ano).
 - Repositório local: /home/paulo/projects/azume/azume-financeiro
 - Repositório online: https://github.com/azume-tecnologia/azume-financeiro
 
