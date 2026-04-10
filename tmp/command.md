@@ -169,7 +169,7 @@ Com todas essas considerações, podemos explorar algumas oportunidades que fora
 - O tamanho do mercado de sistemas off-grid e híbridos (com armazenamento de energia) é pequeno (atualmente) em comparação ao mercado de sistemas on-grid (conectados à rede elétrica).
 - Não se sabe se o preço de baterias no Brasil será competitivo para ROI de sistemas off-grid e híbridos (com armazenamento de energia).
 - Atualmente não há volume o suficiente de sistemas off-grid e híbridos (com armazenamento de energia) para manter a empresa sustentável com um ticket médio baixo. O módulo de baterias precisaria ter um ticket médio muito mais alto. Nosso público atual, no geral, possui recursos extremamente limitados para investir em sistemas off-grid e híbridos (com armazenamento de energia).
-- Incerteza de como a IA generativa performa em engenharia (engenharia em geral, exceto engenharia de software em que a capacidade de IA generativa já foi comprovada).
+- Incerteza de como a IA generativa performaria em projetos de engenharia (engenharia em geral, exceto engenharia de software em que a capacidade de IA generativa já foi comprovada).
 
 ## Projetos de software envolvidos
 
