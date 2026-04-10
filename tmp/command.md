@@ -133,6 +133,11 @@ Existe um outro negócio que nós (Paulo, Thúlio e Victor) possuímos com outra
 - É um forte canal de vendas e de branding para a Azume.
 - Fortalece autoridade e credibilidade da Azume (por meio do envolvimento do Victor Zani e Thúlio Nascimento no canal da E4.0 Educação).
 
+**Produto da E4.0 Educação:**
+- Academia do Setor Elétrico, uma plataforma de cursos online voltado principalmente para o público de integradores de energia solar fotovoltaica.
+
+É importante manter a E4.0 Educação no contexto do planejamento estratégico da Azume.
+
 ## Análise prévia de oportunidades
 
 É muito claro a necessidade de pivotar a Azume para atuar em outro(s) nicho(s) de mercado. É muito provável que o négócio não irá se sustentar atuando apenas com empresas integradoras de GD de energia solar fotovoltaica.
