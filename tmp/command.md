@@ -154,9 +154,10 @@ Importante considerar:
 - Estamos buscando (mas não limitados a) ofertar um SaaS (Software as a Service) como principal oferta de valor. Pode ser incrementado com cursos/treinamentos/consultorias/etc.
 - Estamos buscando um público B2B e um produto de ticket médio mais alto que o Azume CRM atual (idealmente acima de R$ 12.000,00 por ano). Inclusive para conseguir fornecer aos clientes os melhores modelos de IA, precisamos de um produto de ticket médio mais alto pois o custo com inferência de IA é alto. A ideia é não depender tanto de volume de clientes.
 
+Com todas essas considerações, podemos explorar algumas oportunidades que foram identificadas preliminarmente (precisa ser validado se é uma oportunidade real e viável).
 
-**
-
+**Expansão para Mercado de Instalação de Sistemas Fotovoltaicos Off-Geid e Híbridos (com armazenamento de energia):**
+- É a oportunidade com a maior sinergia possível com os clientes atuais da Azume.
 
 ## Projetos de software envolvidos
 
@@ -167,7 +168,7 @@ Importante considerar:
 **Azume Backend:**
 **Azume Frontend:**
 
-
+## Ideias preliminares de como direcionar o Nexus
 
 
 
