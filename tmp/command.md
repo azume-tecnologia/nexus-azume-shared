@@ -156,7 +156,7 @@ Importante considerar:
 
 Com todas essas considerações, podemos explorar algumas oportunidades que foram identificadas preliminarmente (precisa ser validado se é uma oportunidade real e viável).
 
-**Expansão para Mercado de Instalação de Sistemas Fotovoltaicos Off-Geid e Híbridos (com armazenamento de energia):**
+**Expansão para Mercado de Instalação de Sistemas Fotovoltaicos Off-Grid e Híbridos (com armazenamento de energia):**
 1. Prós Identicados:
 - É a oportunidade com a maior sinergia possível com os clientes atuais da Azume.
 - Azume CRM pode ser facilmente adaptado para gerar propostas para sistemas off-grid e híbridos (com armazenamento de energia).
