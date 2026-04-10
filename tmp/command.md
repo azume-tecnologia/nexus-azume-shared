@@ -272,4 +272,6 @@ Além do context builder, pode ser interessante implementar a possibilidade de t
 
 Isso pode ser aliado a uma consultoria de implantação de tecnologias em pequenos e médios negócios dos nichos que forem ser atendidos pelo Nexus.
 
-Após isso
+Após isso, o futuro do Nexus é incerto.
+
+Dependendo da demanda do Nexus para a própria base do Azume CRM, o Nexus também pode se tornar cada vez mais conecato ao Azume CRM. Isso pode ser feito a partir do fornecimento de novas ferramentas para as IAs do Nexus de forma que o Nexus tenha cada vez mais acesso direto ao API do Azume CRM. Pode ser dada a capacidade de os agentes do Nexus interagirem com o Azume por meio de automação de navegadores também (playwright).
