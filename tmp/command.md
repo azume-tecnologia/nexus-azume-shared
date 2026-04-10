@@ -176,9 +176,15 @@ Expandir o Azume CRM (e Nexus) para gerar dimensionar e gerar propostas para sis
 - Incerteza de como a IA generativa performaria em projetos de engenharia (engenharia em geral, exceto engenharia de software em que a capacidade de IA generativa já foi comprovada).
 
 **Expansão para Solução Comercial ponta-a-ponta powered by IA:**
-1. Prós Identicados:
-- 
-2. Contras Identificados:
+1. Contexto:
+Criar uma solução ponta-a-ponta (qualificação de leads, geração de propostas, negociação, venda, ambientação com produto, pós-venda, renovação) com IA generativa. A IA viria para reduzir equipe comercial (SDRs e closers) e até mesmo reduzir equipe de suporte ao cliente. Nasceria para rodar o piloto com os maiores clientes da Azume, mas há a necessidade de expandir para novos mercados promissores e mais amplos para se sustentar. É um produto de ticket médio alto, até porque o custo com inferência de IA é alto.
+A solução se tornaria ponta-a-ponta, mas nasceria com a qualificação de leads, passando por todos os processos comerciais, até finalmente fechar o círculo com o pós-venda e renovação (quando aplicável).
+2. Prós Identicados:
+- Existe uma sinergia inicial com o Azume CRM e Nexus.
+- Um software que reduz o custo operacional da empresa, reduzindo a necessidade de equipe comercial e suporte ao cliente. A proposta de valor é clara e fácil de medir.
+- Um software que se rodar bem, de fato pode solucionar dores muito latentes com gestão de equipe comercial, algo notavelmente difícil. 
+3. Contras Identificados:
+- Só a com essa ideia inicial não existe diferencial competitivo com os milhares de outras soluções com IA sendo desenvolvidas para a área comercial. Cai no problema de ser "óbvio" e "genérico". Precisaria ter um diferencial de valor ao longo da trajetória para ser especializado em algo.
 
 ## Concorrência
 
