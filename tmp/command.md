@@ -235,7 +235,8 @@ OBS: Pode ser que a otimização de tudo isso para setores específicos possa se
 
 ## Projetos de software envolvidos
 
-**Nexus Core:**
+**Nexus:**
+Software AI powered. Hoje consiste em um chat multiprovedor (GPT, Claude, Gemini, etc...) com IA generativa + um leitor smart de faturas de energia integrado diretamento ao Azume CRM (para extrair dados relevantes e facilitar o processo de geração de propostas).
 - Repositório local: /home/paulo/projects/nexus/nexus-core
 - Repositório
 **Nexus Portal:**
