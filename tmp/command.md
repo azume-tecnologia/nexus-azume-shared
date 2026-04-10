@@ -162,6 +162,7 @@ Com todas essas considerações, podemos explorar algumas oportunidades que fora
 - Azume CRM pode ser facilmente adaptado para gerar propostas para sistemas off-grid e híbridos (com armazenamento de energia).
 - Nexus pode ser integrado (e a IA pode ser instruída) para auxiliar na engenharia de sistemas off-grid e híbridos (com armazenamento de energia).
 - Observa-se que mercados com maior maturidade no setor de energia solar fora do Brasil (EUA, Europa, Austrália, etc.) possuem cada vez mais sistemas off-grid e híbridos (com armazenamento de energia).
+- Com a saturação da rede elétrica brasileira, o mercado de sistemas off-grid e híbridos (com armazenamento de energia) deverá aumentar.
 2. Contras Identificados:
 - A engenharia de sistemas off-grid e híbridos (com armazenamento de energia) é muito mais complexa que a engenharia de sistemas on-grid (conectados à rede elétrica).
 - Apesar de nosso público atuar com um serviço similar, a maioria dos integradores de energia solar fotovoltaica não possuem conhecimento/capacidade técnico(a) para engenharia de sistemas off-grid e híbridos (com armazenamento de energia).
