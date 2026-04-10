@@ -92,6 +92,7 @@ Sou Paulo Castagnari, um dos sócios da empresa Azume. Quem terá acesso a este 
 - Nossa estratégia atual é maximizar lucro e distribuir o maior lucro possível para os sócios, mantendo um caixa saudável.
 - Porque não estamos focando em crescimento: o mercado de energia solar no Brasil está em queda, o que deve continuar no futuro próximo.
 - Azume CRM é, segundo pesquisas da empresa Greener, o maior CRM/Gerador de Propostas/Gerenciador de Empresas de Energia Solar Fotovoltaica do Brasil (o mais popular).
+- Nosso ticket médio atual (assinaturas e renovações) é baixo: R$ 1.160,00 por ano. Dependemos de volume alto de clientes para manter a empresa sustentável.
 
 ## Nosso cliente
 
@@ -151,7 +152,7 @@ Importante considerar:
 - Estratégia de distribuição de software (como vai ser divulgado? existem influencers do nicho que podem ajudar a distribuir a solução? esses influencers já vendem alguma solução similar?)
 - Estamos buscando (mas não limitados a) usar IA Generativa na solução (algo quente no marcado brasileiro). O Nexus já é uma solução AI powered que precisa ser expandida e melhorada para ter diferencial competitivo. O potencial da IA em SaaS é enorme e deve ser explorado.
 - Estamos buscando (mas não limitados a) ofertar um SaaS (Software as a Service) como principal oferta de valor. Pode ser incrementado com cursos/treinamentos/consultorias/etc.
-- Estamos buscando um público B2B e um produto de ticket médio alto.
+- Estamos buscando um público B2B e um produto de ticket médio alto. A ideia é não depender tanto de volume de clientes.
 
 
 **
