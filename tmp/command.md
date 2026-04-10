@@ -91,6 +91,7 @@ Sou Paulo Castagnari, um dos sócios da empresa Azume. Quem terá acesso a este 
 - Estamos operando no Azul
 - Nossa estratégia atual é maximizar lucro e distribuir o maior lucro possível para os sócios, mantendo um caixa saudável.
 - Porque não estamos focando em crescimento: o mercado de energia solar no Brasil está em queda, o que deve continuar no futuro próximo.
+- Azume CRM é, segundo pesquisas da empresa Greener, o maior CRM/Gerador de Propostas/Gerenciador de Empresas de Energia Solar Fotovoltaica do Brasil (o mais popular).
 
 ## Nosso cliente
 
@@ -123,6 +124,14 @@ Existe um outro negócio que nós (Paulo, Thúlio e Victor) possuímos com outra
 - Advogada, sócia da E4.0 Educação.
 - Provavelmente a maior autoridade do Brasil para o público de integradores de energia solar fotovoltaica.
 - Presidente da ABSOLAR (associação brasileira de energia solar fotovoltaica)
+- Influencer digital, junto com o Thúlio Nascimento e Victor Zani. Grava conteúdo para o Instagram e Youtube (cara da empresa junto com o Thúlio Nascimento e Victor Zani).
+
+**Importância da E4.0 Educação para a Azume:**
+- A E4.0 Educação possui o maior canal (sério) do Brasil para o público de integradores de energia solar fotovoltaica: https://www.youtube.com/@E4EnergiasRenovaveis
+- Possui 372k inscritos no Youtube.
+- Possui 178k inscritos no Instagram.
+- É um forte canal de vendas e de branding para a Azume.
+- Fortalece autoridade e credibilidade da Azume (por meio do envolvimento do Victor Zani e Thúlio Nascimento no canal da E4.0 Educação).
 
 ## Análise prévia de oportunidades
 
