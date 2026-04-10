@@ -206,7 +206,7 @@ Já está completamente saturado de grandes concorrentes com soluções extremam
 - Claude Code
 - Cursor
 - GitHub Copilot
-Novamente, praticamente todos os provedores de modelos de IA generativa possuem seus próprios SaaS de engenharia de software.
+Novamente, praticamente todos os provedores de modelos de IA generativa possuem seus próprios SaaS de engenharia de software (geração de código).
 
 **NotebookLM e produtos similares:**
 NotebookLM é uma solução excelente e com um tier gratuito extramamente generoso (porém, não é uma solução ideal para empresas). É algo que somente provedores de modelos de IA generativa podem oferecer devido ao custo alto do consumo de tokens.
