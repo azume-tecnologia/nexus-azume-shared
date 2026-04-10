@@ -1,10 +1,81 @@
 # Planejamento para a empresa Azume
 
-## Cenário atual
+## Propósito deste documento
 
 Esse é um repositório de planejamento para a empresa Azume.
 
 Azume é uma empresa que desenvolve software para a indústria de energia, mais especificamente para integradores de energia solar fotovoltaica (atualmente).
+
+Este documento será usado para fornecer contexto ao Claude Code, para gerar o CLAUDE.md, README.md e auxiliar no planejamento estratégico da empresa.
+
+## Pessoas envolvidas neste planejamento estratégico
+
+Sou Paulo Castagnari, um dos sócios da empresa Azume. Quem terá acesso a este repositório e os documentos de planejamento estratégico sou eu e meus 2 outros sócios: Victor Zani e Thúlio Nascimento.
+
+**Papel do Paulo Castagnari:**
+- Desenvolver os softwares Azume CRM e Nexus (full stack + devops). Única pessoa interna da área de TI. Desenvolvimento e operação dos softwares é de total responsabilidade do Paulo Castagnari.
+- Foco total no produto.
+- Pouco envolvido com o dia a dia da empresa, em geral. Pouco envolvido com a equipe do Azume.
+
+**Papel do Victor Zani:**
+- Gerenciar o financeiro (conta com um colaborador para delegação de tarefas).
+- Gerenciar a equipe de suporte ao cliente (conta com 2 colaboradores para delegação de tarefas, em 2 níveis hierárquicos).
+- Gerenciar a equipe de sucesso do cliente + renovação (conta com 2 colaboradores para delegação de tarefas).
+- Influencer digital, junto com o Thúlio Nascimento. Grava conteúdo para o Instagram e Youtube (cara da empresa junto com o Thúlio Nascimento).
+
+**Papel do Thúlio Nascimento:**
+- Gerenciar a equipe de marketing (conta com 2 colaboradores para delegação de tarefas, em 2 níveis hierárquicos).
+- Gerenciar a equipe comercial (conta com 2 colaboradores para delegação de tarefas, em 2 níveis hierárquicos).
+- Mais envolvido com o dia a dia da empresa, em geral.
+- Influencer digital, junto com o Victor Zani. Grava conteúdo para o Instagram e Youtube (cara da empresa junto com o Victor Zani).
+
+**Cláudia Costa:**
+- Talvez não esteja envolvida desde o início no planejamento estratégico, entretanto é uma colaboradora importante na empresa.
+- Atua como braço direito do Thúlio Nascimento e Victor Zani.
+- Está envolvida principalmente com o comercial (1 vendedora), suporte ao cliente (1 agente de suporte ao cliente), sucesso do cliente + renovação (1 agente de sucesso do cliente + renovação).
+- Atualmente, a pessoa mais envolvida com a equipe.
+- Meio que uma gerente de operações da empresa.
+
+## Equipe do Azume
+
+- Paulo Castagnari: Sócio fundador, desenvolvedor full stack + devops.
+- Victor Zani: Sócio fundador, gerente de financeiro, suporte ao cliente e sucesso do cliente + renovação.
+- Thúlio Nascimento: Sócio fundador, gerente de marketing e comercial.
+- Claudia Costa: Colaboradora, "gerente de operações" da empresa, braço direito do dia a dia da empresa.
+- Pedro Magalhães: Analista financeiro.
+- Lucas Volotão: Analista de marketing (acima do Rodolfo).
+- Rodolfo Cortez: Analista de marketing (abaixo do Lucas).
+- Juliana Freitas: Agente de sucesso do cliente + renovação.
+- Diógenes Rocha: Agente de suporte ao cliente.
+- Letícia: vendedora (novas assinaturas).
+
+## Estrutura hierárquica da empresa
+
+**Diretoria:**
+- Paulo Castagnari + Victor Zani + Thúlio Nascimento (mesmo nível hierárquico)
+
+**Operações:**
+- Victor Zani + Thúlio Nascimento > Claudia Costa > Demais colaboradores
+
+**TI:**
+- Paulo Castagnari
+
+**Financeiro:**
+- Victor Zani > Pedro Magalhães
+
+**Marketing:**
+- Thúlio Nascimento > Lucas Volotão > Rodolfo Cortez
+
+**Comercial:**
+- Thúlio Nascimento > Claudia Costa > Letícia
+
+**Suporte ao cliente:**
+- Victor Zani > Claudia Costa > Diógenes Rocha
+
+**Sucesso do cliente + renovação:**
+- Victor Zani > Claudia Costa > Juliana Freitas
+
+## Cenário atual
 
 **Cenário atual:**
 
@@ -36,9 +107,15 @@ Azume é uma empresa que desenvolve software para a indústria de energia, mais 
 **A grande ameaça:**
 
 São vários fatores que compõem a ameaça ao setor de energia solar fotovoltaica no Brasil:
-- Mercado fortemente regulado, lobby forte de empresas distribuidoras de energia contra
+- Mercado fortemente regulado, lobby forte de empresas distribuidoras de energia contra. Isso trás pouca segurança jurídica para os integradores de energia solar fotovoltaica.
+- Saturação da rede elétrica
 
 Projetos de software que estão envolvidos:
+
+**Empresa de educação:**
+
+**Análise prévia de oportunidades:**
+
 
 ## Projetos de software envolvidos
 
