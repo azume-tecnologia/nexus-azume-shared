@@ -233,16 +233,21 @@ Soluções genéricas e óbvias powered by IA devem ser evitadas. O aumento da f
 - Sotware financeiro com IA.
 OBS: Pode ser que a otimização de tudo isso para setores específicos possa ser uma boa oportunidade, mas de forma "genérica" é uma má ideia.
 
-## Projetos de software envolvidos
+## Produtos da Azume
 
 **Nexus:**
 Software AI powered. Hoje consiste em um chat multiprovedor (GPT, Claude, Gemini, etc...) com IA generativa + um leitor smart de faturas de energia integrado diretamento ao Azume CRM (para extrair dados relevantes e facilitar o processo de geração de propostas). Além de multiprovedor, o Nexus também é multi-usuários (diferentemente do ChatGPT, Claude Chat, etc...), ou seja, tal como o Azume CRM o Nexus possui contas para múltiplos usuários (colaboradores). E cada colaborador pode ser associado a um ou múltiplos setores da empresa (comercial, financeiro, etc...). Porém possui menos recursos do que ChatGPT, Claude Chat, etc. Apenas aceita mensagens de texto e leitura de arquivos.
 - Repositório local backend: /home/paulo/projects/nexus/nexus-core
 - Repositório local frontend: /home/paulo/projects/nexus/nexus-portal
-- Repositório online: https://github.com/azume-crm/nexus
-**Nexus Portal:**
-**Azume Backend:**
+- Repositório online backend: https://github.com/azume-tecnologia/nexus-core
+- Repositório online frontend: https://github.com/azume-tecnologia/nexus-portal
+
+**Azume CRM:**
+CRM/Gerador de Propostas/Gerenciador de Empresas de Energia Solar Fotovoltaica.
+
 **Azume Frontend:**
+
+Nota para agente: leia os repositórios locais de todos os produtos para entender mais sobre os projetos.
 
 ## Ideias preliminares de como direcionar o Nexus
 
