@@ -42,7 +42,7 @@ docs/01-planejamento-estrategico/
 
 | Etapa | Quem conduz | Participação da diretoria |
 |-------|-------------|---------------------------|
-| 1 | Consultor (IA) + Paulo | Revisão e validação. Victor e Thúlio complementam se necessário. |
+| 1 | Consultor (IA) + Paulo | Revisão e validação pelos 3 diretores. Victor e Thúlio devem validar especialmente forças/fraquezas operacionais (comercial, CS, marketing) e ameaças de mercado. |
 | 2 | Consultor (IA) + Paulo | Revisão e validação. Pesquisa de mercado pode demandar inputs dos 3 diretores. |
 | 3 | Consultor (IA) + Paulo | Revisão e validação. Mesma lógica da etapa 2. |
 | 4 | Consultor (IA) + 3 diretores | **Participação ativa dos 3 diretores.** Definição de pesos e discussão de trade-offs. |
@@ -67,6 +67,8 @@ docs/01-planejamento-estrategico/
 - **Implicações estratégicas** — o que a SWOT implica para a decisão de direção
 
 **Dependências:** nenhuma.
+
+**Critério de saída:** SWOT revisada e validada pelos 3 diretores. Nenhum quadrante (forças, fraquezas, oportunidades, ameaças) pode ter menos de 3 itens — se tiver, indica análise superficial.
 
 **Estimativa de tempo:** 1-2 dias.
 
@@ -94,9 +96,11 @@ docs/01-planejamento-estrategico/
    - Premissas críticas (listar e avaliar probabilidade de cada uma)
    - Cenário de fracasso — o que acontece se der errado? Qual a perda?
    - Aposta mínima viável — qual o menor investimento para testar a tese?
-6. **Scoring preliminar** — avaliação contra os 9 critérios de scoring da matriz de decisão (ver `01-metodologia.md`)
+6. **Scoring preliminar (rascunho)** — proposta de notas contra os 9 critérios de scoring da matriz de decisão (ver `01-metodologia.md`). **Atenção:** este scoring é rascunho — o scoring oficial é o da etapa 4, com pesos definidos pela diretoria. As notas preliminares servem para antecipar discussões, não para ancorar a decisão.
 
 **Dependências:** etapa 1 (SWOT geral como contexto).
+
+**Critério de saída:** TAM/SAM/SOM com premissas documentadas (mesmo que baseado em proxies), mapeamento competitivo com pelo menos 3 concorrentes avaliados por categoria, e SWOT específica com implicações claras.
 
 **Estimativa de tempo:** 1-2 semanas (pesquisa de mercado e concorrência demanda tempo).
 
@@ -123,9 +127,11 @@ docs/01-planejamento-estrategico/
    - Premissas críticas (listar e avaliar probabilidade de cada uma)
    - Cenário de fracasso — o que acontece se der errado? Qual a perda?
    - Aposta mínima viável — qual o menor investimento para testar a tese?
-6. **Scoring preliminar** — avaliação contra os 9 critérios de scoring da matriz de decisão (ver `01-metodologia.md`)
+6. **Scoring preliminar (rascunho)** — proposta de notas contra os 9 critérios de scoring da matriz de decisão (ver `01-metodologia.md`). **Atenção:** este scoring é rascunho — o scoring oficial é o da etapa 4, com pesos definidos pela diretoria. As notas preliminares servem para antecipar discussões, não para ancorar a decisão.
 
 **Dependências:** etapa 1 (SWOT geral como contexto).
+
+**Critério de saída:** mesmos critérios da etapa 2 — TAM/SAM/SOM com premissas documentadas, mapeamento competitivo com pelo menos 3 concorrentes por categoria, SWOT específica com implicações claras. Atenção especial à validação contra as 4 categorias de concorrência a evitar (seção 11 do contexto).
 
 **Estimativa de tempo:** 1-2 semanas (em paralelo com etapa 2).
 
@@ -162,6 +168,8 @@ docs/01-planejamento-estrategico/
 
 **Dependências:** etapas 2 e 3.
 
+**Critério de saída:** pesos definidos e registrados com racional, scores preenchidos com justificativa por nota, e análise qualitativa documentada. Os 3 diretores devem ter participado da definição de pesos.
+
 **Estimativa de tempo:** 2-3 dias (inclui reunião de alinhamento de pesos com diretoria).
 
 ---
@@ -176,11 +184,12 @@ docs/01-planejamento-estrategico/
 2. **Racional** — resumo dos dados e análises que sustentam a decisão
 3. **Riscos aceitos** — quais riscos a diretoria está conscientemente assumindo
 4. **Premissas críticas** — o que precisa ser verdade para a decisão funcionar
-5. **Próximos passos** — ações concretas com responsável e prazo
+5. **Estimativa de investimento e payback** — quantificação do investimento necessário (tempo do Paulo, contratações, infra, marketing), retorno esperado, prazo de payback, e comparação com a alternativa de não investir (manter operação atual e distribuir lucro)
+6. **Próximos passos** — ações concretas com responsável e prazo
    - Quem faz o que
    - Quando
    - Qual é o primeiro marco (milestone) para validar se a direção está funcionando
-6. **Critérios de abandono** — em que condições a diretoria deve reconsiderar a decisão
+7. **Critérios de abandono** — em que condições a diretoria deve reconsiderar a decisão
 
 **Contingência: se nenhuma oportunidade for viável.** Se a análise revelar que ambas as oportunidades são ruins (score muito baixo, risco inaceitável, mercado insuficiente), o documento deve registrar essa conclusão e definir os próximos passos alternativos: brainstorming de novas direções, aprofundamento do mercado atual (GD solar), ou revisão dos critérios de avaliação.
 
@@ -201,6 +210,7 @@ docs/01-planejamento-estrategico/
 
 **Observações:**
 
+- **Este cronograma é referência, não compromisso.** Qualidade dos dados e das análises prevalece sobre prazo. Decisão estratégica mal fundamentada por pressa é pior que decisão atrasada.
 - O item mais demorado é a pesquisa de mercado (TAM/SAM/SOM) nas etapas 2 e 3. Se os dados forem difíceis de encontrar, pode estender o cronograma.
 - A etapa 4 exige participação ativa dos 3 diretores para definir pesos e discutir trade-offs.
 - Se novas oportunidades surgirem durante o processo, basta adicionar uma nova etapa com o mesmo template de análise e incluí-la na matriz de decisão.

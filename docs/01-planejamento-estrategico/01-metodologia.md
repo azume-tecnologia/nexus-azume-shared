@@ -120,9 +120,12 @@ Critérios graduáveis que permitem comparação numérica entre as oportunidade
 
 **Diferença entre "nichagem" (3) e "intensidade competitiva" (6):** nichagem avalia se a proposta de valor é específica o suficiente para não cair em categoria genérica; intensidade competitiva avalia quantos players já existem no nicho específico e qual o nível de competição real, mesmo que nichado.
 
-- Cada critério recebe um peso (definido pela diretoria) e cada oportunidade recebe uma nota por critério.
+- Cada critério recebe um peso de 1 a 5 (definido pela diretoria, onde 5 = máxima importância) e cada oportunidade recebe uma nota por critério.
 - Score final = soma ponderada.
+- **Limiar mínimo:** se todas as oportunidades ficarem com score abaixo de 50% do máximo possível, a diretoria deve considerar que nenhuma é suficientemente atrativa e acionar o plano de contingência descrito na etapa 5 do passo a passo (`02-passo-a-passo.md`).
 - **A matriz não decide sozinha** — é insumo para a discussão da diretoria. O documento de direção estratégica registra a decisão final.
+
+**Nota sobre timing de mercado:** janela de oportunidade, maturidade do mercado e momento regulatório são fatores relevantes, mas difíceis de pontuar numa escala 1-5 com rigor. Serão avaliados na **análise qualitativa** da etapa 4 (ver `02-passo-a-passo.md`), não como critério de scoring.
 
 **Produto:** ranking das oportunidades com scoring transparente. Inclui recomendação de sequenciamento (pode ser "A primeiro, depois B" ao invés de "A ou B").
 
@@ -142,4 +145,4 @@ As metodologias abaixo **não serão aplicadas agora**, mas estão no radar para
 
 ## Critérios de avaliação — referência
 
-Os 6 critérios base para avaliar um novo nicho estão definidos na **seção 9 do documento de contexto** (`00-contexto-atual.md`). As 4 categorias de concorrência a evitar estão na **seção 11** do mesmo documento. A matriz de decisão (metodologia 4) incorpora ambos, reorganizados em filtros (pré-requisitos) e critérios de scoring (graduáveis).
+Os 6 critérios base para avaliar um novo nicho estão definidos na subseção **"Critérios para avaliar um novo nicho"** da **seção 9 (Direção estratégica)** do documento de contexto (`00-contexto-atual.md`). As 4 categorias de concorrência a evitar estão na **seção 11** do mesmo documento. A matriz de decisão (metodologia 4) incorpora ambos, reorganizados em filtros (pré-requisitos) e critérios de scoring (graduáveis).
