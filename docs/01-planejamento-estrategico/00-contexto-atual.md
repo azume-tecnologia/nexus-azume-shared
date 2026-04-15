@@ -1,14 +1,14 @@
 # Contexto Atual — Azume
 
-> Documento de contexto consolidado sobre a Azume, seus produtos, sua equipe, seu mercado e sua direção estratégica. Fonte única de verdade para planejamento. Última atualização: 2026-04-11.
+> Documento de contexto consolidado sobre a Azume, seus produtos, sua equipe, seu mercado e sua direção estratégica. Fonte única de verdade para planejamento. Última atualização: 2026-04-15.
 
 ## 1. A empresa
 
 Azume - AZUME TECNOLOGIA LTDA - é uma empresa brasileira que desenvolve software para a indústria de energia solar fotovoltaica, atendendo integradores de geração distribuída (GD).
 
 - **Modelo de negócio:** B2B, SaaS por assinatura anual.
-- **Produto principal:** Azume CRM — maior CRM/gerador de propostas para integradores de energia solar do Brasil segundo pesquisa da Greener.
-- **Operação:** enxuta, poucos funcionários, custos fixos controlados, operando no azul.
+- **Produto principal:** Azume CRM — maior CRM/gerador de propostas para integradores de energia solar do Brasil segundo pesquisa da Greener [PREENCHER: ano da pesquisa].
+- **Operação:** enxuta, ~10 colaboradores (incluindo diretores), custos fixos controlados, operando no azul.
 - **Estratégia financeira atual:** maximizar lucro e distribuir aos sócios, mantendo caixa saudável. Não focamos em crescimento porque o mercado brasileiro de energia solar está em contração.
 
 ## 2. Glossário técnico do domínio
@@ -42,7 +42,7 @@ CRM, gerador de propostas e gerenciador para integradores de energia solar. **Su
 ### 3.2. Nexus (em piloto)
 
 Software AI powered. Hoje consiste em:
-- **Chat multiprovedor** (GPT, Claude, Gemini, etc.) e **multi-usuários** com IA generativa. Diferente de ChatGPT/Claude Chat/etc., possui contas com múltiplos colaboradores, cada um associável a um ou múltiplos setores da empresa. Aceita apenas texto e leitura de arquivos.
+- **Chat multiprovedor** (GPT, Claude, Gemini, etc.) e **multi-usuários** com IA generativa. Diferente de ChatGPT/Claude Chat/etc., possui contas com múltiplos colaboradores, cada um associável a um ou múltiplos setores da empresa. Atualmente aceita apenas texto e leitura de arquivos (limitação da fase atual do piloto).
 - **Leitor smart de faturas de energia** integrado ao Azume CRM, que extrai dados de consumo e cobrança para agilizar a geração de propostas.
 
 **Trajetória de produto:**
@@ -68,19 +68,35 @@ Spec: `/home/paulo/projects/nexus/nexus-core/docs/specs/pending/multi_level_cont
 
 ### 3.3. Azume Financeiro
 
-Software financeiro simples, addon do Azume CRM. Ticket médio ~R$ 600,00/ano. **Não dá ROI isolado** — existe para agregar valor ao CRM e reduzir churn. Desenvolvimento terceirizado (freelancer externo), o que torna mudanças mais lentas e custosas que nos outros produtos.
+Software financeiro simples, addon do Azume CRM. Ticket médio ~R$ 600,00/ano por conta que utiliza o módulo. **Não dá ROI isolado** — existe para agregar valor ao CRM e reduzir churn. Desenvolvimento terceirizado (freelancer externo), o que torna mudanças mais lentas e custosas que nos outros produtos.
+
+- **Clientes ativos no módulo:** [PREENCHER: quantas contas do CRM usam o Financeiro — necessário para avaliar se o módulo cumpre a função de reter clientes]
+- **Receita anual do módulo:** [PREENCHER: receita gerada pelo Financeiro isoladamente — necessário para avaliar se vale manter o investimento no módulo]
 
 ## 4. Cenário atual (abr/2026)
 
+### Receita e clientes
+
+- **Contas ativas:** [PREENCHER: número de contas ativas no CRM]
 - **Faturamento jan-mar/2026:** R$ 931.820,00
+- **Faturamento jan-mar/2025:** [PREENCHER: valor para comparativo ano contra ano — essencial para quantificar impacto da contração do mercado]
 - **Composição da receita:**
   - 80% renovação de assinaturas anuais
   - 17% novas assinaturas
   - ~3% upgrades de planos e módulos adicionais
+- **Natureza dos upgrades:** [PREENCHER: esses upgrades geram receita recorrente (aumento permanente de plano) ou são pagamentos pontuais?]
 - **Ticket médio (assinaturas e renovações):** R$ 1.160,00/ano — **baixo**. A empresa depende de alto volume de clientes para se sustentar.
+- **Estrutura de planos:** [PREENCHER: quais planos existem e faixa de preço de cada um — importante para avaliar potencial de upsell]
+- **Taxa de churn anual:** [PREENCHER: percentual de contas que não renovam — dado crítico para projeções de receita]
+
+### Custos e margem
+
+- **Operando no azul.** Margem de lucro aproximada: [PREENCHER: margem percentual ou faixa de custos fixos mensais — necessário para avaliar capacidade de investimento em novos produtos]
 - **Fluxo de caixa:** `docs/00-referencias/img/fluxo-caixa-2026-04-10.png`
-- **Operando no azul.**
-- **Mercado em queda:** número de empresas integradoras e quantidade de projetos de GD em queda no Brasil. Tendência deve continuar no futuro próximo, o que ameaça diretamente os 80% de receita de renovação.
+
+### Mercado
+
+- **Mercado em queda:** número de empresas integradoras e quantidade de projetos de GD em queda no Brasil. [PREENCHER: dados quantitativos — ex: queda de X% no número de integradores entre 2024-2026, fonte: ABSOLAR/Greener/ANEEL]. Tendência deve continuar no futuro próximo, o que ameaça diretamente os 80% de receita de renovação.
 
 ## 5. Perfil do cliente
 
@@ -154,6 +170,8 @@ Empresa de educação dos mesmos sócios (Paulo + Victor + Thúlio = 50%) em soc
 - Fortalece autoridade e credibilidade da Azume via envolvimento dos sócios no canal
 - **Qualquer discussão de distribuição de novo produto deve considerar se o nicho escolhido é adjacente ao público da E4.0** (integradores, setor elétrico) ou se exige construir canal novo do zero.
 
+**Relação financeira E4.0 ↔ Azume:** [PREENCHER: a E4.0 gera receita relevante para os sócios? Há custos compartilhados entre as empresas? O canal da E4.0 é usado como marketing gratuito para a Azume ou há algum arranjo formal?]
+
 ## 9. Direção estratégica
 
 ### Tese central
@@ -176,6 +194,16 @@ O mercado atual de integradores de GD solar não sustenta a empresa no médio/lo
 4. **B2B.** Mantém o perfil, aproveita a experiência acumulada da empresa.
 5. **Nichado.** Evitar soluções "abertas/genéricas" que competem com big techs.
 6. **Viável com recursos limitados** para construção, operação, marketing e vendas.
+
+### Nexus como plataforma de expansão
+
+Independente da direção escolhida, o **Nexus é a plataforma que carrega a expansão**. Com o Context Builder + ferramentas customizáveis por usuário, é possível moldar o Nexus para qualquer nicho. Pode também crescer em profundidade integrando cada vez mais com o Azume CRM, incluindo:
+
+- Novas ferramentas para que os agentes do Nexus interajam diretamente com a API do Azume CRM
+- Automação de navegador via Playwright para capacidades mais amplas de interação
+- Consultoria de implantação de tecnologias em pequenos e médios negócios do nicho atendido
+
+Após essa base, o futuro do Nexus é incerto e depende do caminho de nicho escolhido.
 
 ## 10. Oportunidades em avaliação
 
@@ -218,16 +246,6 @@ Nenhuma validada ainda. Precisam de validação real antes de qualquer investime
 - **Sem diferencial, cai em "óbvio/genérico"** — milhares de soluções com IA sendo desenvolvidas para a área comercial. Precisaria encontrar um diferencial de nicho ao longo do caminho
 - Gestão comercial ponta-a-ponta é linda no papel mas muito difícil de entregar. Tempo longo até produto de valor real
 - Custo operacional alto (alto consumo de tokens de IA generativa + custos de API do WhatsApp)
-
-### 10.3. Nexus como base de qualquer expansão
-
-Independente da direção escolhida, o **Nexus é a plataforma que carrega a expansão**. Com o Context Builder + ferramentas customizáveis por usuário, é possível moldar o Nexus para qualquer nicho. Pode também crescer em profundidade integrando cada vez mais com o Azume CRM, incluindo:
-
-- Novas ferramentas para que os agentes do Nexus interajam diretamente com a API do Azume CRM
-- Automação de navegador via Playwright para capacidades mais amplas de interação
-- Consultoria de implantação de tecnologias em pequenos e médios negócios do nicho atendido
-
-Após essa base, o futuro do Nexus é incerto e depende do caminho de nicho escolhido.
 
 ## 11. Concorrência a evitar
 
@@ -272,7 +290,10 @@ Sem nichagem forte e clara, a solução cai em uma dessas 4 categorias. Toda pro
 ```
 docs/
   00-referencias/              # Materiais de referência (imagens, dados externos, benchmarks)
-  01-planejamento-estrategico/ # Documentos de planejamento estratégico (este doc incluso)
+  01-planejamento-estrategico/ # Documentos de planejamento estratégico
+    00-contexto-atual.md       #   Este documento
+    01-metodologia.md          #   Metodologias selecionadas para o planejamento
+    02-passo-a-passo.md        #   Sequência de execução do planejamento
   02-to-do/                    # Lista de tarefas e ações (TODO.md)
 tmp/                           # Arquivos temporários e rascunhos
 ```
