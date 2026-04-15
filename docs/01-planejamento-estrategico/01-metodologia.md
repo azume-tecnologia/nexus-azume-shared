@@ -29,13 +29,63 @@ Decidir **para onde direcionar a estratégia da Azume** diante de um mercado pri
 
 ### 2. TAM/SAM/SOM (Dimensionamento de mercado)
 
-**O que é:** framework para estimar o tamanho de um mercado em três níveis:
+**O que é:** framework para estimar o tamanho de um mercado em três camadas progressivamente menores — como fatiar um bolo: primeiro você olha o bolo inteiro, depois identifica a parte que consegue alcançar, e por fim estima a fatia que de fato vai parar no seu prato.
 
-- **TAM (Total Addressable Market):** mercado total endereçável — o universo completo de receita possível se não houvesse concorrência.
-- **SAM (Serviceable Addressable Market):** fatia do TAM que a empresa consegue atingir com seu modelo de negócio, distribuição e posicionamento.
-- **SOM (Serviceable Obtainable Market):** fatia do SAM que a empresa pode realisticamente capturar no curto/médio prazo, dado recursos, concorrência e capacidade de execução.
+- **TAM (Total Addressable Market — Mercado Total Endereçável):** o universo completo de receita possível se não houvesse limitação alguma — sem concorrência, sem restrição de vendas, sem limite geográfico. É o bolo inteiro.
+- **SAM (Serviceable Addressable Market — Mercado Endereçável Acessível):** a fatia do TAM que a empresa *consegue atingir* dado seu modelo de negócio, tipo de produto, canais de distribuição e posicionamento. É a parte do bolo que está ao alcance da mão.
+- **SOM (Serviceable Obtainable Market — Mercado Conquistável):** a fatia do SAM que a empresa pode *realisticamente capturar* num horizonte de 12-24 meses, considerando concorrência real, tamanho da equipe, capacidade de vendas e velocidade de crescimento. É a fatia que de fato vai parar no prato.
 
 **Por que:** sem dados de tamanho de mercado, qualquer decisão de investimento é chute. Precisamos saber se cada mercado-alvo é grande o suficiente para justificar a aposta — especialmente considerando que a Azume precisa de ticket médio alto (acima de R$ 12.000/ano) para viabilizar novos produtos.
+
+#### Exemplo concreto (Azume CRM — mercado atual)
+
+Para tornar tangível, veja como seria o raciocínio para o CRM solar que já vendemos:
+
+| Nível | Pergunta | Exemplo |
+|-------|----------|---------|
+| **TAM** | "Se TODAS as integradoras de GD solar do Brasil usassem nosso CRM, quanto seria?" | Ex: 30.000 integradoras × R$ 1.160/ano (ticket médio atual) = R$ 34,8M/ano |
+| **SAM** | "Dessas, quantas têm perfil para usar nosso produto?" | Filtrar: só empresas ativas que usam software, com porte compatível. Ex: 10.000 integradoras × R$ 1.160/ano = R$ 11,6M/ano |
+| **SOM** | "Dessas, quantas vamos conseguir converter nos próximos 12-24 meses?" | Considerar: capacidade do time comercial, concorrência, canal da E4.0, churn. Ex: 500 novos clientes × R$ 1.160/ano = R$ 580K/ano |
+
+**Atenção:** os números acima são ilustrativos — o objetivo é mostrar a lógica do funil, não dimensionar o mercado atual do CRM.
+
+#### Duas abordagens de cálculo
+
+Existem dois caminhos para chegar nos números. O ideal é usar os dois e comparar.
+
+**Top-down (de cima para baixo):**
+- Parte de um número macro — geralmente de relatórios setoriais, associações de classe, órgãos do governo.
+- Aplica filtros sucessivos (percentuais) para reduzir até o endereçável.
+- **Vantagem:** rápido, usa dados de fontes reconhecidas.
+- **Risco:** se o número macro estiver errado ou desatualizado, tudo que vem depois herda o erro. Tende a gerar estimativas infladas.
+
+**Bottom-up (de baixo para cima):**
+- Parte de dados granulares: conta o número de empresas-alvo por segmento e multiplica pelo ticket médio.
+- **Vantagem:** mais realista, porque força você a pensar empresa por empresa.
+- **Risco:** mais trabalhoso e depende de conseguir dados granulares.
+
+**Recomendação:** usar ambas as abordagens e comparar os resultados. Se divergirem por mais de 2-3x, alguma premissa está errada — as causas mais comuns são: (1) o dado macro do top-down inclui segmentos fora do mercado-alvo; (2) o bottom-up conta empresas que não existem mais; (3) o ticket médio estimado difere entre as abordagens. Investigar antes de seguir.
+
+#### Quando dados precisos não existem (uso de proxies)
+
+Raramente vamos encontrar um relatório que diga exatamente "o mercado de software para integradores off-grid no Brasil vale R$ X". Nesses casos, usamos **proxies** — dados indiretos que permitem uma estimativa razoável:
+
+- **Extrapolar de mercados adjacentes:** "se o mercado on-grid tem X integradores, e off-grid representa Y% dos projetos segundo a ANEEL, então há aproximadamente Z integradores atuando com off-grid."
+- **Usar dados internacionais ajustados:** "nos EUA, X% dos integradores solares trabalham com armazenamento de energia. Ajustando pelo estágio de maturidade do mercado brasileiro..."
+- **Triangular fontes:** usar 2-3 fontes diferentes e ver se convergem para uma faixa similar.
+
+**Regra:** todo proxy deve ter a premissa documentada explicitamente. "Assumimos que..." é obrigatório. Sem isso, o número parece mais confiável do que é.
+
+#### Armadilhas comuns
+
+Erros típicos de quem faz dimensionamento de mercado pela primeira vez:
+
+1. **TAM inflado ("o mercado de energia solar no mundo vale US$ 300 bilhões")** — um TAM enorme e genérico não ajuda em nada. O TAM precisa ser específico ao produto que estamos considerando, não ao setor inteiro.
+2. **Confundir TAM com SAM** — dizer "nosso mercado é de R$ 50M" quando na verdade só R$ 5M é acessível com nosso modelo de negócio.
+3. **SOM otimista demais** — ignorar que existe concorrência, que vendas demoram, que churn acontece. O SOM deve ser conservador.
+4. **Não documentar premissas** — sem saber de onde veio cada número, é impossível questionar ou atualizar a análise depois.
+5. **Usar dados desatualizados sem sinalizar** — um relatório de 2022 pode estar completamente defasado em 2026. Sempre registrar a data do dado.
+6. **Não fazer análise de sensibilidade** — se o dimensionamento inteiro depende de uma premissa (ex: "o mercado off-grid vai triplicar em 3 anos"), testar o que acontece se essa premissa for metade do estimado. Se a conclusão muda radicalmente, o dimensionamento é frágil demais para basear uma decisão.
 
 **Como será aplicada:**
 
@@ -43,7 +93,8 @@ Decidir **para onde direcionar a estratégia da Azume** diante de um mercado pri
 - Fontes de pesquisa variam por oportunidade:
   - Off-grid/híbridos: ABSOLAR, EPE (Empresa de Pesquisa Energética), ANEEL, Greener, relatórios internacionais (IEA, BloombergNEF)
   - Solução comercial IA: pesquisas de mercado SaaS Brasil, relatórios de IA aplicada a vendas, dados de adoção de ferramentas comerciais por PMEs
-- Quando dados precisos não existirem, usaremos proxies razoáveis com premissas explícitas.
+- Quando dados precisos não existirem, usaremos proxies razoáveis com premissas explícitas (ver seção acima).
+- O passo a passo operacional de como conduzir o dimensionamento está no documento `02-passo-a-passo.md`, dentro das etapas 2 e 3.
 
 **Produto:** estimativa de tamanho de mercado para cada oportunidade, com premissas documentadas. Alimenta a matriz de decisão.
 

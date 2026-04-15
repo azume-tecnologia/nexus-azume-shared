@@ -82,11 +82,55 @@ docs/01-planejamento-estrategico/
 
 1. **Descrição da oportunidade** — o que seria feito, para quem, como se conecta aos produtos atuais
 2. **SWOT específica** — forças, fraquezas, oportunidades e ameaças desta direção
-3. **TAM/SAM/SOM** — dimensionamento do mercado de off-grid/híbridos no Brasil
-   - Fontes: ABSOLAR, EPE, ANEEL, Greener, relatórios internacionais (IEA, BloombergNEF)
-   - Estimativa de número de integradores atuando com off-grid/híbridos
-   - Estimativa de volume de projetos e tendência
-   - Projeção de mercado endereçável para software
+3. **TAM/SAM/SOM** — dimensionamento do mercado de off-grid/híbridos no Brasil (ver definições e conceitos em `01-metodologia.md`, seção 2)
+
+   **Fontes prioritárias:** ABSOLAR, EPE, ANEEL, Greener, relatórios internacionais (IEA, BloombergNEF)
+
+   **Passo a passo para conduzir o dimensionamento:**
+
+   **Passo 1 — Definir o mercado em uma frase.** Escrever com clareza: "nosso mercado é [tipo de empresa] que [faz X] no [país/região]". Ex: "integradoras de energia solar que instalam sistemas off-grid e/ou híbridos com armazenamento de energia no Brasil". Se não conseguir definir em uma frase, o escopo está vago demais — refinar antes de continuar.
+
+   **Passo 2 — Calcular o TAM (abordagem top-down).**
+   - Buscar nas fontes acima: quantas empresas integradoras atuam (ou poderiam atuar) com off-grid/híbridos no Brasil?
+   - Qual o volume total de projetos off-grid/híbridos instalados por ano? Qual a tendência (crescimento ou contração)?
+   - Multiplicar o número total de empresas-alvo pelo ticket médio anual estimado do produto.
+   - Registrar: fonte de cada dado, data de publicação, e se o número é dado real ou estimativa.
+
+   **Passo 3 — Calcular o TAM (abordagem bottom-up) para validação cruzada.**
+   - Listar os segmentos dentro desse mercado (ex: off-grid rural, off-grid industrial, híbridos residenciais, minigeração com armazenamento).
+   - Estimar número de empresas por segmento.
+   - Multiplicar por ticket médio estimado para cada segmento.
+   - Somar tudo. Comparar com o top-down — se a diferença for maior que 2-3x, alguma premissa está errada em um dos dois cálculos. Causas comuns de divergência: (1) o dado macro do top-down inclui segmentos que não fazem parte do mercado-alvo; (2) o bottom-up está contando empresas que não existem mais ou duplicando segmentos; (3) o ticket médio estimado está muito diferente entre as abordagens. Cheque essas três hipóteses antes de seguir.
+
+   **Passo 4 — Filtrar para o SAM.**
+   - Do TAM, remover quem está fora do alcance real do produto:
+     - Empresas de porte incompatível (muito grandes para nosso produto ou muito pequenas para pagar)
+     - Empresas que não usam software (operam 100% manual/planilha e não vão mudar)
+     - Regiões ou segmentos com barreiras de entrada específicas
+   - Para cada filtro, registrar o percentual estimado de remoção e a justificativa.
+
+   **Passo 5 — Estimar o SOM (horizonte: 12-24 meses).**
+   - Do SAM, aplicar restrições de capacidade de execução da Azume:
+     - Quantos clientes o time comercial consegue abordar por mês?
+     - Qual a taxa de conversão realista? (benchmark SaaS B2B: 2-5% de leads viram clientes, mas varia muito — venda consultiva com ticket alto tende a converter menos leads porém com valor maior; canal de influencer/indicação tende a converter mais que outbound frio)
+     - Qual a velocidade de ramp-up? (meses 1-6 vs. meses 6-18)
+     - Quanto da base já está com concorrentes estabelecidos?
+   - **Exemplo concreto da conta:** se o time comercial consegue abordar 100 leads/mês via E4.0 e outbound, com taxa de conversão de 3%, isso resulta em ~3 novos clientes/mês ou ~36/ano. Com ticket de R$ 12.000/ano, o SOM seria ~R$ 432K/ano em receita recorrente nova.
+   - O SOM é o número que vai para o business case — deve ser conservador, não otimista.
+
+   **Passo 6 — Documentar premissas.**
+   - Cada número deve ter: fonte, data, e nível de confiança:
+     - **Dado real:** número publicado por fonte confiável (ex: relatório ABSOLAR 2025)
+     - **Estimativa informada:** cálculo baseado em dados reais com ajustes (ex: "X% do total de integradores segundo proporção de projetos off-grid na ANEEL")
+     - **Proxy:** dado indireto usado na falta de dado direto (ex: "baseado em proporções do mercado norte-americano, ajustado por maturidade")
+   - Listar as premissas críticas separadamente — se qualquer uma delas cair, o dimensionamento muda significativamente.
+
+   **Passo 7 — Teste de sanidade.**
+   - O SOM justifica o investimento necessário? (SOM × margem estimada > custo de desenvolvimento + operação)
+   - O SOM comporta o ticket médio alvo de R$ 12.000+/ano? Ou o mercado é grande em volume mas com ticket muito baixo?
+   - O TAM tem tendência de crescimento ou contração? Um mercado em contração exige captura mais rápida.
+   - **Análise de sensibilidade:** e se as premissas principais estiverem erradas? Testar pelo menos: "e se o TAM for metade do estimado?" e "e se a taxa de conversão for 1% em vez de 3%?". Se a conclusão muda completamente, o dimensionamento depende demais de premissas frágeis — sinalizar isso.
+
 4. **Mapeamento de concorrentes**
    - Concorrentes diretos (softwares de dimensionamento off-grid/híbrido)
    - Concorrentes indiretos (ferramentas de engenharia genéricas, calculadoras de fabricantes)
@@ -114,10 +158,57 @@ docs/01-planejamento-estrategico/
 
 1. **Descrição da oportunidade** — o que seria feito, para quem, como se conecta aos produtos atuais, qual o diferencial de nicho (se houver)
 2. **SWOT específica** — forças, fraquezas, oportunidades e ameaças desta direção
-3. **TAM/SAM/SOM** — dimensionamento do mercado de automação comercial com IA no Brasil
-   - Fontes: pesquisas de mercado SaaS Brasil, relatórios de IA aplicada a vendas, dados de adoção de ferramentas comerciais por PMEs
-   - Segmentação por porte de empresa e setor
-   - Diferenciação entre mercado genérico (a evitar) e oportunidades nichadas
+3. **TAM/SAM/SOM** — dimensionamento do mercado de automação comercial com IA no Brasil (ver definições e conceitos em `01-metodologia.md`, seção 2)
+
+   **Fontes prioritárias:** pesquisas de mercado SaaS Brasil, relatórios de IA aplicada a vendas, dados de adoção de ferramentas comerciais por PMEs
+
+   **Passo a passo para conduzir o dimensionamento:**
+
+   **Passo 1 — Definir o mercado em uma frase.** Ex: "PMEs brasileiras do setor [X] que precisam de automação do processo comercial ponta-a-ponta". **Atenção especial aqui:** se a definição ficar genérica demais ("empresas que vendem coisas"), o TAM vai ser enorme e inútil. A definição precisa incluir o nicho — qual setor, qual porte, qual dor específica.
+
+   **Passo 2 — Calcular o TAM (abordagem top-down).**
+   - Buscar nas fontes acima: qual o tamanho do mercado de SaaS de automação comercial/vendas no Brasil?
+   - Segmentar por porte de empresa e por setor.
+   - Diferenciar entre o mercado genérico (CRMs, ferramentas de outbound — que devemos evitar) e oportunidades nichadas.
+   - Multiplicar o número total de empresas-alvo pelo ticket médio anual estimado.
+   - Registrar: fonte de cada dado, data de publicação, e se o número é dado real ou estimativa.
+
+   **Passo 3 — Calcular o TAM (abordagem bottom-up) para validação cruzada.**
+   - Listar os segmentos-alvo (ex: por setor, por porte, por tipo de venda — consultiva vs. transacional).
+   - Estimar número de empresas por segmento.
+   - Multiplicar por ticket médio estimado para cada segmento.
+   - Somar tudo. Comparar com o top-down — se a diferença for maior que 2-3x, alguma premissa está errada em um dos dois cálculos. Causas comuns de divergência: (1) o dado macro do top-down inclui segmentos que não fazem parte do mercado-alvo; (2) o bottom-up está contando empresas que não existem mais ou duplicando segmentos; (3) o ticket médio estimado está muito diferente entre as abordagens. Cheque essas três hipóteses antes de seguir.
+
+   **Passo 4 — Filtrar para o SAM.**
+   - Do TAM, remover quem está fora do alcance real do produto:
+     - Empresas de porte incompatível
+     - Setores onde a solução não se aplica ou onde já há dominância de big techs (validar contra as 4 categorias de concorrência a evitar — seção 11 do contexto)
+     - Empresas que não investem em software comercial
+   - Para cada filtro, registrar o percentual estimado de remoção e a justificativa.
+
+   **Passo 5 — Estimar o SOM (horizonte: 12-24 meses).**
+   - Do SAM, aplicar restrições de capacidade de execução da Azume:
+     - Quantos clientes o time comercial consegue abordar por mês?
+     - Qual a taxa de conversão realista? (benchmark SaaS B2B: 2-5% de leads viram clientes, mas varia muito — venda consultiva com ticket alto tende a converter menos leads porém com valor maior; canal de influencer/indicação tende a converter mais que outbound frio)
+     - Qual a velocidade de ramp-up? (meses 1-6 vs. meses 6-18)
+     - Quanto da base já está com concorrentes estabelecidos?
+   - **Exemplo concreto da conta:** se o time comercial consegue abordar 80 leads/mês, com taxa de conversão de 4%, isso resulta em ~3 novos clientes/mês ou ~38/ano. Com ticket de R$ 15.000/ano, o SOM seria ~R$ 570K/ano em receita recorrente nova.
+   - O SOM é o número que vai para o business case — deve ser conservador, não otimista.
+
+   **Passo 6 — Documentar premissas.**
+   - Cada número deve ter: fonte, data, e nível de confiança:
+     - **Dado real:** número publicado por fonte confiável
+     - **Estimativa informada:** cálculo baseado em dados reais com ajustes
+     - **Proxy:** dado indireto usado na falta de dado direto
+   - Listar as premissas críticas separadamente — se qualquer uma delas cair, o dimensionamento muda significativamente.
+
+   **Passo 7 — Teste de sanidade.**
+   - O SOM justifica o investimento necessário? (SOM × margem estimada > custo de desenvolvimento + operação)
+   - O SOM comporta o ticket médio alvo de R$ 12.000+/ano?
+   - O TAM tem tendência de crescimento ou contração?
+   - **Análise de sensibilidade:** e se as premissas principais estiverem erradas? Testar pelo menos: "e se o TAM for metade do estimado?" e "e se a taxa de conversão for 1% em vez de 4%?". Se a conclusão muda completamente, o dimensionamento depende demais de premissas frágeis — sinalizar isso.
+   - **Validação extra para esta oportunidade:** o mercado identificado é realmente nichado, ou estamos dimensionando um mercado genérico onde competiríamos com Salesforce, HubSpot, Pipedrive? Se o TAM parecer enorme, provavelmente estamos olhando para o mercado errado.
+
 4. **Mapeamento de concorrentes**
    - Concorrentes diretos (SaaS de automação comercial com IA)
    - Concorrentes indiretos (CRMs com funcionalidades de IA, ferramentas de outbound)
