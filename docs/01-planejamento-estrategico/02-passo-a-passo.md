@@ -1,6 +1,20 @@
 # Passo a Passo do Planejamento Estratégico
 
-> Sequência de execução do planejamento estratégico da Azume. Define a ordem das atividades, os documentos que serão gerados em cada etapa, quem conduz, e o cronograma estimado. Criado em: 2026-04-15.
+> Sequência de execução do planejamento estratégico da Azume. Define a ordem das atividades, os documentos que serão gerados em cada etapa, quem conduz, e o cronograma estimado. Criado em: 2026-04-15. Última nota editorial: 2026-05-19.
+
+> **NOTA EDITORIAL — 2026-05-19**
+>
+> Parte das premissas deste plano mudou com a decisão estratégica tomada em mai/2026: **AI Apps** como feature central do Nexus (ver `00-contexto-atual.md` §3.2.1 e `tmp/ai_apps_apresentacao.md`).
+>
+> Impactos nas etapas previstas neste documento:
+>
+> - **Etapa 1 (SWOT):** continua válida, mas a SWOT precisa incluir AI Apps explicitamente entre as forças/oportunidades (não só "Nexus como plataforma de expansão" genérico). Ver `00-contexto-atual.md` §9 — "Nexus como plataforma de expansão — operacionalizado via AI Apps".
+> - **Etapa 2 (Off-grid/Híbridos):** essa oportunidade **deixou de ser uma direção de produto isolada**. Virou um AI App específico dentro da Suite Azume CRM Smart (`00-contexto-atual.md` §10.1, `tmp/features.md` §1.1). Análise dedicada de TAM/SAM/SOM perde sentido. Substituir esta etapa por: análise de viabilidade técnica e de demanda do AI App de proposta off-grid/híbrido dentro da Suite — questão mais estreita.
+> - **Etapa 3 (Solução Comercial IA):** virou a Suite Nexus Comercial (`00-contexto-atual.md` §10.2). A pergunta deixou de ser "vale fazer ou não?" (já está no roadmap) e passou a ser **"qual nicho atacar primeiro com a Suite Nexus Comercial?"**. A análise mantém valor mas a pergunta-chave mudou.
+> - **Etapa 4 (Matriz de Decisão):** a decisão "Off-grid vs. Comercial IA" deixou de ser excludente — ambas estão no plano, em momentos diferentes. A matriz pode ser refeita para escolher entre **possíveis nichos da Suite Nexus Comercial** (energia/setor elétrico via E4.0 vs. outros).
+> - **Etapa 5 (Direção Estratégica):** parte da decisão já foi tomada em mai/2026 (AI Apps como direção central, sequência de Suites). O documento `07-direcao-estrategica.md` original vira **registro formal dessa decisão** + escolha do primeiro nicho da Suite Nexus Comercial.
+>
+> **Recomendação:** antes de executar as etapas, revisar este documento em conjunto com `00-contexto-atual.md` §3.2.1, §9 e §10 atualizados, e com `tmp/ai_apps_apresentacao.md`. O fluxo abaixo permanece como referência histórica do que foi planejado em abril/2026.
 
 ## Visão geral
 
@@ -60,7 +74,7 @@ docs/01-planejamento-estrategico/
 
 **Conteúdo do documento `03-swot-azume.md`:**
 
-- **Forças** — o que a Azume faz bem e que a diferencia (ex: liderança no CRM solar, canal E4.0, operação enxuta no azul, Nexus como plataforma de expansão)
+- **Forças** — o que a Azume faz bem e que a diferencia (ex: liderança no CRM solar, canal E4.0, operação enxuta no azul, Nexus + framework AI Apps como plataforma de expansão multi-tenant — ver `00-contexto-atual.md` §3.2.1)
 - **Fraquezas** — limitações internas (ex: 1 dev, ticket médio baixo, dependência de mercado único, afinidade tecnológica baixa dos clientes)
 - **Oportunidades** — fatores externos favoráveis (ex: tendência global de armazenamento de energia, IA generativa como habilitador, autoridade da Bárbara/ABSOLAR)
 - **Ameaças** — fatores externos desfavoráveis (ex: contração do mercado de GD, regulação desfavorável, distribuidores "atravessando" integradores)
@@ -75,6 +89,8 @@ docs/01-planejamento-estrategico/
 ---
 
 ### Etapa 2: Análise da oportunidade — Off-grid/Híbridos
+
+> **AVISO 2026-05-19:** ver Nota Editorial no topo deste documento. Off-grid/Híbridos deixou de ser direção de produto isolada — virou um AI App específico dentro da Suite Azume CRM Smart (`00-contexto-atual.md` §10.1). O conteúdo abaixo permanece como referência histórica; antes de executar esta etapa, reposicioná-la como **análise de viabilidade do AI App de proposta off-grid/híbrido** (questão mais estreita) e descartar a parte de TAM/SAM/SOM dedicada.
 
 **Objetivo:** avaliar a viabilidade e atratividade da expansão do Azume CRM/Nexus para sistemas off-grid e híbridos com armazenamento de energia.
 
@@ -151,6 +167,8 @@ docs/01-planejamento-estrategico/
 ---
 
 ### Etapa 3: Análise da oportunidade — Solução comercial ponta-a-ponta powered by IA
+
+> **AVISO 2026-05-19:** ver Nota Editorial no topo deste documento. A Solução Comercial IA virou a **Suite Nexus Comercial** (`00-contexto-atual.md` §10.2), já incluída no roadmap pós-AI Apps. A pergunta deixou de ser "fazer ou não?" e passou a ser **"qual nicho atacar primeiro com a Suite?"**. Reposicionar esta etapa como análise comparativa entre 2-3 nichos-candidato (energia/setor elétrico via E4.0 vs. outros) antes de executá-la.
 
 **Objetivo:** avaliar a viabilidade e atratividade de uma solução comercial ponta-a-ponta com IA generativa.
 

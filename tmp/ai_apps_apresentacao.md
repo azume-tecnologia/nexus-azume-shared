@@ -260,7 +260,7 @@ Para tornar tangível, três Suites que pretendemos construir ao longo dos próx
 **Público-alvo:** base atual do Azume CRM (integradores de energia solar).
 **Valor de negócio:** defesa da vaca leiteira. Aumenta valor percebido, justifica preço, reduz churn, abre espaço para upsell.
 **Como o cliente acessa:** disponível em qualquer plano pago da assinatura Nexus (PRO_PLUS ou PRO_MAX). Detalhes do modelo comercial em §5.4.
-**Amarração com o backlog atual:** os AI Apps abaixo materializam diretamente as features 1.2 a 1.6 do `tmp/features.md`, mais a feature 1.1 (proposta híbrido/off-grid) e 3.1 (Nexus no WhatsApp) como interface principal.
+**Amarração com o backlog atual:** os AI Apps abaixo materializam diretamente as features 1.1 a 1.6 da Suite 1 no `tmp/features.md` (gerador de propostas híbridas/off-grid, consulta ao CRM, relatórios, propostas on-grid, gestão de funis, contratos). A interface principal é o WhatsApp, tratado como primitivo do framework no `tmp/features.md` §5.1.
 
 | AI App | O que faz | Como o cliente usa | Feature |
 |--------|-----------|--------------------|---------|
@@ -270,7 +270,7 @@ Para tornar tangível, três Suites que pretendemos construir ao longo dos próx
 | Gerador de Contratos | Monta e envia contrato para assinatura | "Manda contrato para o José" via WhatsApp | 1.6 |
 | Gestão de Funis e Quadros | Movimenta leads/negócios/obras no funil | "Move o lead da Maria para 'proposta enviada'" via WhatsApp | 1.5 |
 
-**Interface principal:** WhatsApp (feature 3.1 do `features.md`). Web continua disponível, mas a aposta de UX é WhatsApp.
+**Interface principal:** WhatsApp (tratado como primitivo da plataforma — `tmp/features.md` §5.1). Web continua disponível, mas a aposta de UX é WhatsApp.
 
 **A tese que une essa Suite:** o cliente integrador roda **o Azume CRM inteiro por dentro do WhatsApp**. Tira o atrito de "tem que abrir o software" e troca por algo que ele já usa o dia todo. Para nosso público de baixa afinidade tech, isso é diferencial gigantesco.
 
@@ -696,7 +696,7 @@ Cronograma estica para 8-9 meses, Suite 1 não engaja externamente como esperado
 
 ### "E se decidirmos NÃO fazer?"
 
-Mantemos o status quo: cada feature nova de IA leva semanas/meses do Paulo. A lista de features do `tmp/features.md` (1.1 a 3.2) seria atendida, no mesmo ritmo de hoje, em **3-5 anos** se mantida prioridade. A base atual do CRM continua sem o salto de UX que diferenciaria a Azume. Concorrentes (incluindo big tech via GPTs e Skills) ganham espaço enquanto esperamos.
+Mantemos o status quo: cada feature nova de IA leva semanas/meses do Paulo. A lista completa de features e AI Apps no `tmp/features.md` seria atendida, no mesmo ritmo de hoje, em **3-5 anos** se mantida prioridade. A base atual do CRM continua sem o salto de UX que diferenciaria a Azume. Concorrentes (incluindo big tech via GPTs e Skills) ganham espaço enquanto esperamos.
 
 ### "Quem revisa o que Lucas e Rodolfo constroem?"
 

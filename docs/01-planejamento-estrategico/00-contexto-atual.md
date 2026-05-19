@@ -1,6 +1,6 @@
 # Contexto Atual — Azume
 
-> Documento de contexto consolidado sobre a Azume, seus produtos, sua equipe, seu mercado e sua direção estratégica. Fonte única de verdade para planejamento. Última atualização: 2026-04-15.
+> Documento de contexto consolidado sobre a Azume, seus produtos, sua equipe, seu mercado e sua direção estratégica. Fonte única de verdade para planejamento. Última atualização: 2026-05-19.
 
 ## 1. A empresa
 
@@ -47,16 +47,42 @@ Software AI powered. Hoje consiste em:
 
 **Trajetória de produto:**
 1. **Hoje (piloto):** base seleta de usuários para entender custos operacionais reais de inferência de IA.
-2. **Próximo passo:** addon com assinatura mensal para os usuários do Azume CRM.
-3. **Futuro:** quando "andar com as próprias pernas", vira produto standalone de ticket médio alto, disponível também fora da base do CRM.
+2. **Próximo passo:** assinatura própria do Nexus, comercializada primeiro para a base do Azume CRM (não é addon do plano do CRM — é uma assinatura paralela do Nexus, ver §3.2.2).
+3. **Futuro:** produto standalone, disponível também fora da base do CRM, dimensionado para nichos com ticket médio alto.
 
-**Feature estratégica em desenvolvimento: Multi-Level Context Builder**
+#### 3.2.1. Feature estratégica central em desenvolvimento: AI Apps
 
-Sistema de contexto multi-nível (global > source > account > scope > user) com policies e knowledge — RAG com busca híbrida BM25 + Vector + RRF.
+**O que é:** uma plataforma interna multi-tenant que permite a Azume **configurar (em vez de programar)** novas automações com IA generativa. A unidade que o cliente vê é um **AI App** — automação que combina um Trigger (evento que aciona — manual / WhatsApp / webhook / agendado / evento interno), um Hive (1+ agentes de IA com instruções, conhecimento e ferramentas) e um ou mais Outputs (chat / WhatsApp / arquivo / relatório / webhook / banco / outro App).
 
-**Por que é estratégico:** é o habilitador para "moldar" o Nexus para diferentes nichos de mercado — instruções de LLMs, policies e bases de conhecimento específicas por segmento. Pode vir acompanhado de ferramentas customizáveis por usuário. É a base para o Nexus se especializar em qualquer nicho novo que a Azume venha a atacar.
+**Por que é estratégico:** resolve a restrição fundamental de capacidade (1 engenheiro) movendo a construção de features de IA de **engenharia** para **configuração**. Após o framework ficar pronto, não-engenheiros do time (Lucas e Rodolfo, supervisionados por Victor e Thúlio) constroem novos AI Apps. Cada nicho novo vira uma Suite de AI Apps clonáveis, drasticamente reduzindo o custo de testar mercados.
 
-Spec: `/home/paulo/projects/nexus/nexus-core/docs/specs/pending/multi_level_context_builder.md`
+**Substitui:** a antiga feature estratégica "Multi-Level Context Builder" (spec `multi_level_context_builder.md`) — agora absorvida como subconjunto das fundações de AI Apps (KnowledgeBase + Context + AccessPolicy + RAG).
+
+**Suites planejadas (12-18 meses):**
+1. **Suite Azume CRM Smart** — defesa da vaca leiteira. Conjunto de AI Apps que permite operar o Azume CRM por linguagem natural via WhatsApp (geração de propostas on-grid e off-grid/híbrido, relatórios dinâmicos, contratos, gestão de funis).
+2. **Suite Nexus Comercial** — produto standalone de ticket mais alto, clonável e adaptável por nicho (prospecção, qualificação, fechamento, pós-venda).
+3. **Suite Sucesso do Cliente** — uso interno primeiro (Azume reduz custo operacional de suporte/CS/renovação), depois ofertada como produto.
+
+**Cronograma:** 5-7 meses para o MVP do framework no cenário operacional recomendado (Paulo dividido entre framework e manutenção CRM); 4-6 meses no cenário full-time (CRM congelado). Detalhes em `tmp/ai_apps_apresentacao.md`.
+
+**Documentos de referência:**
+- Blueprint técnico: `/home/paulo/projects/nexus/nexus-core-2/docs/blueprints/ai_apps.md`
+- Apresentação executiva: `tmp/ai_apps_apresentacao.md`
+- Backlog de features que descem dele: `tmp/features.md`
+
+#### 3.2.2. Modelo de monetização do Nexus
+
+**Assinatura única do Nexus**, paga em BRL via Pagar.me, dá acesso a toda a biblioteca de AI Apps presente e futura. Diferenciação de planos é por **capacidade de inferência de IA reservada por usuário/mês**, não por escopo de funcionalidade.
+
+| Tier | Posicionamento | Capacidade de IA por usuário |
+|------|---------------|------------------------------:|
+| **PRO** | Tier gratuito de entrada; mantém a base atual sem migração forçada | Capacidade compartilhada do orçamento gratuito da Azume |
+| **PRO_PLUS** | Pago; uso regular | 10× capacidade do PRO |
+| **PRO_MAX** | Pago; uso intenso ou equipes maiores | 20× capacidade do PRO |
+
+Fórmula de cobrança: `preço_mensal = price_per_user_brl × user_count`. Cliente migra de tier conforme consumo cresce — upsell natural sem renegociação. Spec autoritativa: `/home/paulo/projects/nexus/nexus-core-2/docs/specs/subscription_management.md` (Pagar.me + budget reservado por tier; sistema de budget já em produção desde commit `26a4ffa5`).
+
+**Linha de serviço adjacente (futura, requer expansão de equipe):** consultoria de adaptação de AI Apps/Suites ao negócio específico do cliente. Cobrável à parte (projeto / hora / pacote), não inclusa na assinatura.
 
 **Stack:**
 - Backend: Python 3.12+, FastAPI, MongoDB Atlas (com Vector Search), OpenAI Agents SDK, GCP (Cloud Run, Cloud Functions, Cloud Tasks)
@@ -65,6 +91,7 @@ Spec: `/home/paulo/projects/nexus/nexus-core/docs/specs/pending/multi_level_cont
 **Repositórios:**
 - Backend: `/home/paulo/projects/nexus/nexus-core` — `azume-tecnologia/nexus-core`
 - Frontend: `/home/paulo/projects/nexus/nexus-portal` — `azume-tecnologia/nexus-portal`
+- Próxima geração do backend (em construção, recebe o framework AI Apps): `/home/paulo/projects/nexus/nexus-core-2` — `azume-tecnologia/nexus-core-2`
 
 ### 3.3. Azume Financeiro
 
@@ -195,57 +222,84 @@ O mercado atual de integradores de GD solar não sustenta a empresa no médio/lo
 5. **Nichado.** Evitar soluções "abertas/genéricas" que competem com big techs.
 6. **Viável com recursos limitados** para construção, operação, marketing e vendas.
 
-### Nexus como plataforma de expansão
+### Nexus como plataforma de expansão — operacionalizado via AI Apps
 
-Independente da direção escolhida, o **Nexus é a plataforma que carrega a expansão**. Com o Context Builder + ferramentas customizáveis por usuário, é possível moldar o Nexus para qualquer nicho. Pode também crescer em profundidade integrando cada vez mais com o Azume CRM, incluindo:
+Independente da direção escolhida, o **Nexus é a plataforma que carrega a expansão**, e a feature **AI Apps** (§3.2.1) é o como — é o que torna essa expansão **operacionalmente viável** com uma equipe de TI de uma pessoa.
 
-- Novas ferramentas para que os agentes do Nexus interajam diretamente com a API do Azume CRM
-- Automação de navegador via Playwright para capacidades mais amplas de interação
-- Consultoria de implantação de tecnologias em pequenos e médios negócios do nicho atendido
+O mecanismo: cada nicho novo é atacado por uma **Suite de AI Apps** clonada e adaptada da Suite Nexus Comercial. Construir o ataque a um nicho deixa de ser projeto de engenharia (meses) e vira projeto de configuração (dias a semanas), executado pelos próprios membros do time operacional (Lucas e Rodolfo na construção, Victor e Thúlio na supervisão). O Paulo é gargalo apenas na construção e manutenção do framework, não em cada produto novo.
 
-Após essa base, o futuro do Nexus é incerto e depende do caminho de nicho escolhido.
+Capacidades que o framework habilita ao longo do tempo:
+
+- Ferramentas que os agentes do Nexus invocam para interagir com a API do Azume CRM (consultar clientes, gerar propostas, mover funis, gerar contratos).
+- Triggers que conectam o Nexus aos canais que os clientes já usam, em especial **WhatsApp** (interface principal para nosso público de baixa afinidade tech) — primitivo de primeira classe do framework.
+- Outputs estruturados (arquivos, relatórios interativos, mensagens em múltiplos canais).
+- Eventual automação de navegador (Playwright) e tools de código sandboxado em fases posteriores.
+- Consultoria de adaptação como linha de serviço adicional conforme expandirmos equipe.
+
+Após essa base, o futuro do Nexus deixa de ser incerto — vira função do nicho que conseguirmos validar primeiro. Detalhes técnicos completos em `/home/paulo/projects/nexus/nexus-core-2/docs/blueprints/ai_apps.md`; visão executiva em `tmp/ai_apps_apresentacao.md`.
 
 ## 10. Oportunidades em avaliação
 
-Nenhuma validada ainda. Precisam de validação real antes de qualquer investimento significativo.
+Decisão estrutural tomada (mai/2026): todas as oportunidades abaixo serão atacadas via **AI Apps** (§3.2.1), agrupadas em Suites. Isso muda o perfil de cada oportunidade — custo de tentar cada uma cai drasticamente, e várias podem ser exploradas em paralelo após o framework estar pronto.
 
-### 10.1. Expansão para sistemas off-grid e híbridos (com armazenamento)
+### 10.1. Suite Azume CRM Smart — defesa da base atual (prioridade alta)
 
-**Contexto:** expandir o Azume CRM (e Nexus) para dimensionar e gerar propostas de sistemas off-grid e híbridos com baterias. Para sucesso, o uso de IA para auxiliar na engenharia é essencial, já que o público atual é pouco capacitado tecnicamente nessa área.
+**Contexto:** conjunto de AI Apps que permite operar o Azume CRM por linguagem natural, com **WhatsApp como interface principal**. Endereça as features 1.1 a 1.6 da Suite 1 no `tmp/features.md` (com WhatsApp como primitivo do framework, `features.md` §5.1). AI Apps planejados: gerador de proposta on-grid, gerador de proposta híbrido/off-grid, gerador de relatórios dinâmicos, gerador de contratos, gestão de funis/quadros via comando.
 
-**Prós identificados:**
-- Maior sinergia possível com os clientes atuais da Azume
-- Azume CRM pode ser adaptado com relativa facilidade
-- Solução já nasce integrada ao CRM e ao software financeiro
-- Nexus pode ser integrado para auxiliar na engenharia via IA
-- Mercados mais maduros (EUA, Europa, China) têm tendência crescente a off-grid/híbridos — sinal de direção
-- Saturação da rede elétrica brasileira tende a aumentar a demanda por off-grid/híbridos
-- Pode ser expandido para soluções mais amplas de energia (mercado livre, etc.)
-- Sem concorrente direto identificado — chance de pioneirismo
-- Pode abrir portas para consultorias e treinamentos de engenharia
+**Tese central:** o cliente integrador roda o Azume CRM inteiro por dentro do WhatsApp. Tira o atrito de "tem que abrir o software". Para nosso público de baixa afinidade tech, é o maior salto de UX possível.
 
-**Contras identificados:**
-- Engenharia de off-grid/híbridos é muito mais complexa que on-grid
-- Público atual, na média, não tem conhecimento técnico para isso
-- Mercado brasileiro de off-grid/híbridos é pequeno hoje em relação ao on-grid
-- Incerteza sobre preço de baterias no Brasil e ROI para o cliente final
-- Não há volume atual suficiente para manter a empresa com ticket baixo — o módulo de baterias precisaria ter ticket médio muito mais alto
-- Público atual tem recursos muito limitados para investir em sistemas com baterias
-- Incerteza sobre performance da IA generativa em projetos de engenharia (fora engenharia de software, onde já está comprovada)
+**Inclui a oportunidade antes listada como 10.1 (off-grid / híbrido)** — agora vira um AI App específico dentro da Suite, não mais uma direção de produto isolada que exigiria investimento dedicado.
 
-### 10.2. Solução comercial ponta-a-ponta powered by IA
+**Prós:**
+- Maior sinergia com clientes atuais (mesmo público, distribuição direta).
+- WhatsApp como interface principal — diferencial competitivo real para nosso público.
+- Defende a vaca leiteira contra contração do mercado (aumenta valor percebido, reduz churn).
+- Dimensionamento financeiro indica payback de 3-4 meses no cenário realista (detalhes em `tmp/ai_apps_apresentacao.md` §6.7).
+- Off-grid/híbrido entra como AI App marginal dentro da Suite, sem precisar dimensionar como produto separado.
 
-**Contexto:** criar uma solução ponta-a-ponta (qualificação de leads → geração de propostas → negociação → venda → onboarding do produto → pós-venda → renovação) com IA generativa. A IA reduziria a necessidade de equipe comercial (SDRs e closers) e suporte ao cliente. Nasceria como piloto com os maiores clientes da Azume, mas precisa expandir para mercados mais amplos para se sustentar. Produto de ticket alto, até porque o custo com inferência de IA é alto.
+**Contras / riscos:**
+- Demanda específica das features 1.x ainda não validada com a base — validação prevista para meses 2-4 do desenvolvimento via entrevistas com 10-15 clientes.
+- Adoção depende de mudança de hábito (do CRM web para WhatsApp).
+- IA aplicada à engenharia de off-grid/híbridos ainda tem performance incerta — começamos com casos mais simples.
 
-**Prós identificados:**
-- Sinergia inicial com Azume CRM e Nexus
-- Software que reduz custo operacional do cliente (equipe comercial e suporte) — proposta de valor clara e mensurável
-- Se rodar bem, resolve dores muito latentes de gestão comercial, algo notoriamente difícil
+### 10.2. Suite Nexus Comercial — produto standalone, expansível por nicho (prioridade média)
 
-**Contras identificados:**
-- **Sem diferencial, cai em "óbvio/genérico"** — milhares de soluções com IA sendo desenvolvidas para a área comercial. Precisaria encontrar um diferencial de nicho ao longo do caminho
-- Gestão comercial ponta-a-ponta é linda no papel mas muito difícil de entregar. Tempo longo até produto de valor real
-- Custo operacional alto (alto consumo de tokens de IA generativa + custos de API do WhatsApp)
+**Contexto:** solução ponta-a-ponta de gestão comercial powered by IA (prospecção → qualificação → fechamento → pós-venda). Conjunto de AI Apps clonável e adaptável por nicho. Antes listada como direção isolada (10.2), agora vira uma Suite construída sobre o mesmo framework AI Apps.
+
+**Tese central:** após o framework, atacar nichos novos deixa de ser "construir produto custom" e vira "clonar a Suite Comercial e adaptar para o nicho". Custo de cada experimento cai de meses para semanas — viabiliza atacar 5-10 nichos no tempo que hoje gastamos atacando 1.
+
+**Prós:**
+- Sinergia inicial com Azume CRM e Nexus.
+- Reduz custo operacional do cliente (proposta de valor mensurável).
+- Clonagem por nicho é o mecanismo principal de expansão da Azume daqui em diante.
+- Equipes comerciais maiores → contas maiores → naturalmente migram para tier PRO_MAX, atingindo o alvo de ticket >R$ 12k/ano para contas com 10+ usuários.
+
+**Contras / riscos:**
+- "Sem diferencial, cai em óbvio/genérico" (§11.4) — mitigação: nichagem em cada clone, nunca lançar a Suite Comercial sem amarração a um nicho específico com canal de distribuição mapeado.
+- Tempo longo até produto de valor real em cada nicho — primeiro nicho atacado deve ser adjacente (energia / setor elétrico, via canal E4.0) para minimizar risco de distribuição.
+
+### 10.3. Suite Sucesso do Cliente — uso interno primeiro, produto depois (prioridade alta para uso interno)
+
+**Contexto:** AI Apps para atendimento, relacionamento e renovação. **Para a própria Azume primeiro**, reduzindo trabalho operacional de Diógenes, Juliana e Cláudia. Depois, ofertado como produto a qualquer PME com base de clientes recorrente.
+
+**Por que essa Suite é estratégica para nós internamente:** reduzir 30-40% do trabalho operacional do nosso time de CS/suporte/renovação libera R$ 100-170k/ano de capacidade. Permite crescer base sem crescer equipe. Funciona simultaneamente como (a) economia direta, (b) validação interna do framework antes de expor cliente externo, (c) demonstração prática para usar em vendas da Suite como produto.
+
+**Prós:**
+- Cliente piloto somos nós mesmos — risco externo zero, feedback instantâneo.
+- Resultado mensurável (horas de trabalho economizadas).
+- Validação do framework em condições reais antes de uso externo.
+
+**Contras:**
+- Genérica demais se vendida sem nicho — mesmo princípio de §10.2: nunca lançar como produto sem nichagem específica.
+
+### 10.4. Outras direções, agora viáveis
+
+Com AI Apps pronto, qualquer das categorias hoje classificadas como "soluções óbvias com IA" (§11.4) pode ser **revisitada com nichagem específica**, transformando-as em produtos defensáveis. Em particular:
+
+- Software financeiro com IA, nichado em integradores solar (relacionado ao módulo Azume Financeiro). **Atenção:** o Azume Financeiro hoje é desenvolvido por freelancer externo (§3.3). Avançar nesta direção exige decisão prévia sobre internalizar o desenvolvimento ou reorganizar a relação com o freelancer — não é "só configurar uma Suite".
+- Solução de atendimento ao cliente nichada em segmentos específicos (extensão natural da Suite Sucesso do Cliente).
+
+Estas só serão atacadas após validar Suites 1 e 3.
 
 ## 11. Concorrência a evitar
 
