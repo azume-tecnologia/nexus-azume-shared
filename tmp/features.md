@@ -1,10 +1,10 @@
 # Ideias de features
 
-> **Contexto (atualizado em 2026-05-19):** todas as features abaixo serão construídas como **AI Apps** sobre o framework descrito em `/home/paulo/projects/nexus/nexus-core-2/docs/blueprints/ai_apps.md`. A apresentação executiva para a diretoria está em `tmp/ai_apps_apresentacao.md` e o contexto estratégico em `docs/01-planejamento-estrategico/00-contexto-atual.md` §3.2.1.
+> **Contexto (atualizado em 2026-05-19):** todas as features abaixo serão construídas como **AI Apps** sobre o framework descrito em `/home/paulo/projects/nexus/nexus-core-2/docs/blueprints/ai_apps.md`. A direção estratégica está registrada em `docs/01-planejamento-estrategico/04-ai-apps.md` e o contexto estratégico em `docs/01-planejamento-estrategico/00-contexto-atual.md` §3.2.1.
 >
-> **Sequência de execução pós-framework (mês 5-7):** Suite Sucesso do Cliente (uso interno) → Suite Azume CRM Smart (base CRM) → Suite Nexus Comercial (nicho a definir). Justificativa em `ai_apps_apresentacao.md` §5 "Por que essa ordem".
+> **Sequência de execução pós-framework (mês 5-7):** Suite Sucesso do Cliente (uso interno) → Suite Azume CRM Smart (base CRM) → Suite Nexus Comercial (nicho a definir). Justificativa em `04-ai-apps.md` §5 "Por que essa ordem".
 >
-> **Modelo de monetização:** assinatura única Nexus, 3 tiers (PRO grátis / PRO_PLUS / PRO_MAX), cobrança `price_per_user_brl × user_count`. Toda a biblioteca de AI Apps disponível em qualquer tier pago. Detalhes em `tmp/ai_apps_apresentacao.md` §5.4.
+> **Modelo de monetização:** assinatura única Nexus, 3 tiers (PRO grátis / PRO_PLUS / PRO_MAX), cobrança `price_per_user_brl × user_count`. Toda a biblioteca de AI Apps disponível em qualquer tier pago. Detalhes em `docs/01-planejamento-estrategico/04-ai-apps.md` §5.4.
 
 ---
 
@@ -157,5 +157,5 @@ São features de plataforma, não AI Apps. Construídas pelo Paulo como parte do
 ## Notas finais
 
 - **Esforço / Valor / Custo Operacional** foram preenchidos qualitativamente. Quantificação precisa por feature pode ser feita conforme cada uma entrar no planejamento de execução.
-- **Sequência de implementação** segue o roadmap em `tmp/ai_apps_apresentacao.md` §9.3 (Suite 3 antes da Suite 1 antes da Suite 2; framework é pré-requisito de tudo).
-- **Decisões pendentes que afetam essa lista:** preço por usuário dos tiers PRO_PLUS e PRO_MAX (ver `ai_apps_apresentacao.md` §6.7); número de contas ativas do CRM (campo `[PREENCHER]` em `00-contexto-atual.md` §4); validação de demanda das features 1.x via entrevistas meses 2-4.
+- **Sequência de implementação** segue o roadmap em `docs/01-planejamento-estrategico/04-ai-apps.md` §9.3 (Suite 3 antes da Suite 1 antes da Suite 2; framework é pré-requisito de tudo).
+- **Decisões pendentes que afetam essa lista:** preço por usuário dos tiers PRO_PLUS e PRO_MAX (ver `04-ai-apps.md` §6.7); número de contas ativas do CRM (campo `[PREENCHER]` em `00-contexto-atual.md` §4); validação de demanda das features 1.x via entrevistas meses 2-4.

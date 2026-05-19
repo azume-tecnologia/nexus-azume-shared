@@ -1,6 +1,6 @@
-# AI Apps — Apresentação para a diretoria
+# AI Apps — Direção Estratégica
 
-> Documento de apresentação para Victor e Thúlio. Foco em valor de negócio e entendimento do produto, não em detalhes técnicos. Última atualização: 2026-05-19.
+> Direção estratégica de plataforma e produto. Fonte de verdade da decisão de construir o framework AI Apps e do modelo de negócio que roda sobre ele. Originalmente preparado como apresentação executiva para Victor e Thúlio (mai/2026); promovido a documento estratégico permanente. Foco em valor de negócio e nas decisões que moldam o produto, não em detalhes técnicos — esses estão no blueprint em `/home/paulo/projects/nexus/nexus-core-2/docs/blueprints/ai_apps.md`. Última atualização: 2026-05-19.
 
 ---
 
@@ -20,13 +20,13 @@
 3. **Capacidade de testar nichos novos com custo de dias** — quando identificarmos o próximo mercado, o tempo de "ir ao mercado" cai de meses para semanas.
 4. **Redução de custo operacional interno** — Suite Sucesso do Cliente reduz 30-40% do trabalho manual de Diógenes / Juliana / Cláudia, liberando R$ 100-170k/ano de capacidade.
 
-**A decisão na mesa:** comprometer 5-7 meses de engenharia em construir o framework (cenário recomendado) ou continuar codando feature por feature, mantendo o gargalo do dev único.
+**Decisão tomada em mai/2026:** comprometer 5-7 meses de engenharia em construir o framework (cenário recomendado), em vez de continuar codando feature por feature e manter o gargalo do dev único. Racional registrado abaixo; este documento serve de referência para checkpoints durante a execução.
 
 ---
 
 ## Glossário rápido (5 termos que aparecem ao longo do documento)
 
-Para acompanhar a apresentação sem se prender a jargão:
+Para acompanhar este documento sem se prender a jargão:
 
 - **AI App** — uma automação inteligente pronta para uso (ex.: "App Gerador de Propostas"). É o **produto** que o cliente vê.
 - **Suite** — agrupamento de AI Apps com objetivo comum (ex.: "Suite Azume CRM Smart" reúne 5 AI Apps).
@@ -184,15 +184,22 @@ A plataforma tem alguns blocos. Para a apresentação, cobrimos só os que impor
 
 **Capacidade que fornece:** **entrega o valor onde o cliente espera consumir**. Mesmo resultado pode ir para múltiplos lugares ao mesmo tempo (PDF + WhatsApp + chat).
 
-### 3.8 WhatsApp Channel
+### 3.8 Channel (WhatsApp e WebChat)
 
-**O que é:** um número de WhatsApp registrado e configurado para conversar via Nexus. É um bloco de construção próprio porque WhatsApp é estratégico demais para ficar escondido como detalhe.
+**O que é:** o canal externo através do qual um AI App conversa com o mundo. É a abstração que une WhatsApp, WebChat e potencialmente outros providers futuros (Telegram, voz) sob um contrato único — mesmo evento de entrada, mesma execução de App, mesma forma de saída.
 
-**Capacidade que fornece:** **a interface mais familiar para o público brasileiro**. Nosso cliente típico (integrador solar) tem alta familiaridade com WhatsApp e baixa familiaridade com praticamente qualquer outro software. Trazer o Nexus para dentro do WhatsApp é potencialmente o desbloqueio de UX mais importante que conseguimos fazer.
+**Capacidade que fornece:** **leva o produto até a interface que o usuário já usa**. WhatsApp é estratégico demais para nosso público brasileiro de baixa afinidade tech para ficar escondido como detalhe. WebChat embeddable é alternativa instantânea para quem não quer ou não pode usar WhatsApp.
+
+**Providers de Channel disponíveis no MVP:**
+- **WhatsApp** — via Twilio inicialmente (a Zoe já está aprovada e online). Candidatos a substituição pós-MVP: Meta Cloud API direto, 360dialog. Soluções não-oficiais (Z-API, Evolution API, Baileys) **excluídas por política**. Detalhamento em §12.
+- **WebChat** — widget JS embeddable em sites de cliente + página standalone com branding por tenant. Funciona contra o mesmo App sem código provider-específico.
 
 **Exemplos:**
-- Número do "Atendimento Azume" — vários AI Apps escutam (suporte, comercial, financeiro).
-- Número próprio do cliente — o cliente registra o WhatsApp dele, AI App de pós-venda da empresa dele responde.
+- Channel "Zoe" (Azume) — número WhatsApp da Azume; vários AI Apps internos escutam (suporte, comercial, atendimento a integradores).
+- Channel BYO (cliente) — integrador registra o próprio número WhatsApp; AI App de pós-venda da empresa dele responde aos clientes finais dele (Suites externas; pós-MVP).
+- Channel WebChat embeddable — chat no site do cliente final com tema do integrador.
+
+**Arquitetura completa de Channel** (quem pertence a quem, regras Zoe vs. BYO por Suite, multi-tenancy, decisões em aberto) está detalhada em §11.
 
 ### 3.9 Suite (conjunto de AI Apps)
 
@@ -380,9 +387,13 @@ A receita de renovação anual do CRM é 80% da nossa receita. Mercado em contra
 - Cria barreira de saída (o cliente acostuma com produtividade nova).
 - Reduz churn.
 
-### 6.4 Diferencial competitivo real
+### 6.4 Diferencial competitivo no nicho
 
-WhatsApp como interface principal do Nexus + automação de tarefas via linguagem natural é algo que **nenhum concorrente nosso direto faz hoje**. Para um público com baixa afinidade tech, isso é diferencial muito mais relevante do que features visuais sofisticadas.
+WhatsApp como interface principal + automação de tarefas via linguagem natural **não é feito hoje por nenhum concorrente direto no nicho de integradores solar BR**. Para um público com baixa afinidade tech, isso é diferencial muito mais relevante do que features visuais sofisticadas.
+
+**Qualificação importante:** existem players brasileiros fortes na camada WhatsApp+IA generalista (Take Blip, Zenvia, WATI) e plataformas de agentes no-code (Lindy, Relevance AI) — eles não atendem o nicho solar hoje, mas podem entrar em 12-24 meses. Nossa defesa não é tecnológica (a tecnologia comoditiza); é **conhecimento de domínio + canal ABSOLAR/E4.0 + integração nativa com Azume CRM**.
+
+A janela de diferenciação é temporal. Quanto mais cedo entregarmos a Suite 1 e firmarmos posição, melhor. Mapa competitivo completo em `03-concorrentes.md`.
 
 ### 6.5 Habilita o Nexus como produto standalone no futuro
 
@@ -594,7 +605,29 @@ Sendo honesto com a diretoria, há quatro riscos relevantes que precisamos olhar
 
 **O risco:** WhatsApp é canal regulado pela Meta. Mudanças de política, ban de número, falha do provedor (Twilio inicialmente) podem derrubar AI Apps inteiros.
 
-**Mitigação:** arquitetura prevê troca de provedor (Twilio → Meta direto / 360dialog) sem reescrita. Status do canal é exposto na interface. AI Apps críticos sempre devem ter caminho alternativo de uso (web/chat) — WhatsApp é interface preferida, não obrigatória.
+**Mitigação:** arquitetura prevê troca de provedor (Twilio → Meta direto / 360dialog) sem reescrita. Status do canal é exposto na interface. AI Apps críticos sempre devem ter caminho alternativo de uso (web/chat) — WhatsApp é interface preferida, não obrigatória. **WebChat entra no MVP justamente como plano B arquitetural** (ver §3.8 e §11).
+
+### 8.5 Risco de segurança em agentes multi-tenant
+
+**O risco:** AI Apps recebem inputs de usuários finais (WhatsApp, WebChat) e executam Tools que tocam dados sensíveis — CRM, propostas, contratos, financeiro. Prompt injection é vetor de ataque crítico nessa classe de produto. Quatro vetores principais:
+
+- **Direta** — input do usuário inclui instrução maliciosa.
+- **Indireta** — dado retornado de uma Tool (ex.: campo "observações" do CRM preenchido por terceiro) contém instrução que o agente obedece.
+- **Via RAG** — documento da KnowledgeBase contém payload adversarial.
+- **Cross-tenant** — payload crafted em uma conta vaza para outra através de templates ou bases compartilhadas.
+
+Em produto multi-tenant que toca dados financeiros e contratos, isso é problema sério, não acadêmico.
+
+**Mitigação:** segurança contra prompt injection é tratada como cidadã de primeira classe da arquitetura no blueprint técnico em `/home/paulo/projects/nexus/nexus-core-2/docs/blueprints/ai_apps.md`, não como hardening tardio. Princípios principais:
+
+- **Least privilege por Agent** — cada Agent declara Tools permitidas; runner valida no servidor, não no prompt.
+- **Separação read vs. write** — Tools com side effect têm autorização mais estrita que Tools de leitura.
+- **Tenant context imutável** — `tenant_id` injetado pelo runtime, nunca extraído do contexto do agente.
+- **Validação de argumentos antes de side effect** — schema, ranges, whitelists no servidor.
+- **Human-in-the-loop para operações irreversíveis** — envio de contrato, mudança de preço, e-mail para cliente final exigem confirmação humana por padrão.
+- **Suite de testes adversariais em CI** — nenhuma Tool nova com side effect entra em produção sem caso de teste adversarial.
+
+**Política de produto:** o item anterior (testes adversariais obrigatórios) é **bloqueador de release**, não recomendação. Detalhes operacionais (lista de Tools que exigem confirmação humana, procedimento de resposta a incidente, capability scopes) vivem no blueprint.
 
 ---
 
@@ -667,6 +700,17 @@ Eles já lançaram. Mas:
 
 Nosso valor competitivo está na **especialização para nosso público**, não na tecnologia genérica. GPTs competem com nós no mercado em que **decidimos não competir** (categoria §11.4 do plano estratégico — "soluções óbvias powered by IA").
 
+### "E os concorrentes brasileiros de WhatsApp+IA (Take Blip, Zenvia, WATI)?"
+
+Eles existem e são fortes. Take Blip atende milhares de PMEs brasileiras, é bem capitalizado e tem distribuição massiva. **Hoje não atacam o nicho solar**, mas tecnicamente podem em 12-24 meses.
+
+A defesa segue a mesma lógica que aplicamos para big techs: **conhecimento de domínio que eles não têm**. Especificamente:
+- Fluxos do Azume CRM solar (geração de proposta on-grid/híbrido/off-grid, regras tarifárias por distribuidora, contratos do setor).
+- Parceria E4.0 + autoridade ABSOLAR (Bárbara Rubim) — barreira de marca difícil de replicar.
+- Integração nativa com o Azume CRM — ativo único que dá vantagem operacional concreta.
+
+A janela é temporal, não permanente. Análise competitiva detalhada por camada em `03-concorrentes.md` §3.1.
+
 ### "Quanto isso custa para nós em IA por mês?"
 
 A spec de assinatura (`subscription_management.md`) já trata isso pelo desenho: cada tier reserva um orçamento em USD de inferência **por usuário/mês**, definido em env vars (`RESERVED_PER_USER_PRO_PLUS_*_USD`, `RESERVED_PER_USER_PRO_MAX_*_USD`). O preço cobrado em BRL é dimensionado pelos sócios para deixar margem positiva sobre essa reserva.
@@ -718,7 +762,120 @@ No MVP, a Azume mantém os templates centralizados; clientes consomem os AI Apps
 
 ---
 
-## 11. Em resumo
+## 11. Arquitetura de canal — Zoe, BYO WhatsApp e WebChat
+
+Esta seção registra decisões de arquitetura que afetam o produto e a estratégia comercial. O detalhamento técnico vive no blueprint em `/home/paulo/projects/nexus/nexus-core-2/docs/blueprints/ai_apps.md`; aqui registramos as decisões e o racional.
+
+### 11.1. Regra fundamental — a quem pertence o canal
+
+**Um Channel pertence ao "outro lado" da conversa**, não a quem usa o AI App.
+
+| Lado oposto da conversa | Channel a usar |
+|---|---|
+| Cliente da Azume (integrador) falando com a Azume | **Zoe** (número Azume) |
+| Azume falando consigo mesma (operação interna — Suite Sucesso do Cliente uso interno, Suite Comercial uso interno) | **Zoe** |
+| Cliente final do nosso cliente falando com a empresa dele | **BYO** — número registrado pelo próprio tenant |
+
+Aplicação concreta nas Suites planejadas:
+
+| Suite | Versão | Channel |
+|---|---|---|
+| Azume CRM Smart | Integrador opera o CRM dele via comando | **Zoe** — o integrador é cliente da Azume falando com a Azume |
+| Nexus Comercial | Uso interno (Azume vendendo Nexus) | **Zoe** |
+| Nexus Comercial | Externa (cliente da Azume operando comercial dele) | **BYO** |
+| Sucesso do Cliente | Uso interno (Azume reduzindo custo de CS/suporte) | **Zoe** |
+| Sucesso do Cliente | Externa (cliente da Azume atendendo clientes finais) | **BYO** |
+
+Implicação prática: **a maior parte do MVP roda com a Zoe que já está aprovada na Twilio**. BYO entra como requisito do pós-MVP para as versões externas das Suites 2 e 3.
+
+### 11.2. Channel como primitivo por-tenant (desde o dia 1)
+
+Mesmo que o MVP rode com um único Channel em produção (Zoe), o modelo de dados precisa suportar N channels por tenant **desde o início**. Refatorar isso depois custa caro porque toca AccessPolicy, roteamento de webhooks, billing e UI.
+
+Princípios não-negociáveis registrados no blueprint:
+- Channel tem `owner_tenant_id`. Zoe pertence ao tenant interno da Azume.
+- Channel é compartilhável entre tenants sob `AccessPolicy` explícita (permite que múltiplos AI Apps internos escutem a Zoe).
+- Channel é desacoplado de Trigger — múltiplos Triggers (de Apps diferentes) podem apontar para o mesmo Channel; o runtime faz o roteamento.
+
+### 11.3. WebChat como gêmeo arquitetural do WhatsApp
+
+Decisão: tratar `webchat` como provider de Channel com **o mesmo contrato** que `whatsapp_twilio`. Mesmo evento de entrada, mesmo App Run, mesma saída.
+
+No MVP entrega:
+- Widget JS embeddable para sites de clientes.
+- Página standalone em subdomínio/path branded por tenant.
+- Customização de tema (logo, cores, nome) por tenant.
+
+**Por que está no MVP, não no pós:**
+- Onboarding instantâneo para clientes que não querem ou não podem usar WhatsApp.
+- Plano B se um WhatsApp do cliente cair (ban Meta).
+- Custo marginal pequeno — Outputs `chat_message` já existem para o canal Nexus interno; reutilização direta.
+- Resiliência arquitetural — força o framework a ser provider-agnóstico desde o início.
+
+### 11.4. BYO WhatsApp — onboarding pós-MVP, data model day-1
+
+O fluxo de provisionamento de WhatsApp por tenant **não é MVP**. Mas o modelo de dados, a roteamento de webhooks e a `AccessPolicy` precisam acomodar BYO desde a primeira linha — caso contrário, paga-se em refatoração no momento do lançamento das Suites externas.
+
+Caminho preferido para BYO documentado no blueprint: **Meta Embedded Signup** (Cloud API direto) como default; Twilio Sender Flow como fallback. Justificativa em §12 abaixo.
+
+### 11.5. Decisões em aberto (registradas para resolução futura)
+
+1. **Billing de mensagens em BYO** — Azume cobra do tenant com markup ou tenant paga direto o provider? Trade-off comercial pendente. Discutir com Victor antes do lançamento da Suite 2 externa.
+2. **Roteamento entre Apps no mesmo Channel** — matcher por regex, intent classifier, fallback. Quais estratégias entram no MVP, quais no pós.
+3. **Modelo de sessão do WebChat** — anônimo, autenticado, token emitido pelo tenant. Decisão de UX a tomar no design das Suites externas.
+
+---
+
+## 12. Estratégia de provider WhatsApp
+
+### 12.1. Decisão consolidada
+
+| Fase | Provider | Justificativa |
+|---|---|---|
+| **MVP (meses 1-7)** | Twilio | Zoe já aprovada e online (sender ativo, 80 MPS). Refatorar agora é distração. Arquitetura prevê troca sem reescrita |
+| **Pré-lançamento Suite 1 (mês 5-6)** | Revisar entre **Meta Cloud API direto** e **360dialog** | Twilio cobra markup gordo sobre tarifa Meta. Em escala, economia projetada de R$ 4-12k/mês com 400 tenants × 200 msg/mês |
+| **BYO pós-MVP (Suites 2/3 externas)** | **Meta Embedded Signup** (Cloud API direto) como default; Twilio Sender Flow como fallback para tenants já na Twilio | Embedded Signup tem UX bem mais limpa para onboarding do cliente |
+
+### 12.2. Candidatos avaliados
+
+| Provider | Posicionamento | Custo relativo | Quando faz sentido |
+|---|---|---|---|
+| **Meta Cloud API direto** | Acesso direto, sem intermediário. Mais engenharia (webhooks, templates, media), zero markup | Mínimo | Operação em escala; BYO |
+| **360dialog** | BSP alemão "near-cost". Assinatura por número + tarifa Meta sem markup. Popular em SaaS BR sério | Quase Meta-direto | Alternativa de menor esforço de engenharia que Meta direto |
+| **Gupshup** | BSP global competitivo | Médio | Backup |
+| **Twilio** | BSP confortável, caro | Alta | MVP (já aprovado) |
+
+### 12.3. Exclusão explícita — soluções não-oficiais
+
+**Z-API, Evolution API, Baileys, Waha, Chat-API, UnoAPI e similares estão FORA da mesa.** Operam via WhatsApp Web protocol ou emulação Android, violam TOS da Meta, e a Meta bane números sem aviso.
+
+Razões da exclusão:
+1. **Risco de ban sem aviso.** Volume sobe, padrão fica visível, número cai. Imprevisível e irreversível.
+2. **Quando o cliente do integrador toma ban, o culpado é a Azume.** Reclamação chega no nosso suporte, não na Z-API. Esse tipo de incidente quebra confiança que comunicado não conserta.
+3. **Conflita com a posição de marca.** ABSOLAR + E4.0 + posicionamento de "software sério para o setor" não comporta solução cinza para economizar R$ 5/cliente.
+4. **Risco legal.** Cláusulas de compliance e certificações de segurança em contratos B2B sérios não passam.
+5. **Pior efeito justamente nos clientes que mais queremos manter** — contas com 10+ usuários (PRO_MAX) têm o maior dano se o WhatsApp comercial cair de repente.
+
+**Esta decisão é política de produto, não preferência técnica.** Revisitar exigiria mudança de posicionamento de marca. Quando aparecer como "alternativa para baratear" em conversa futura, a resposta é a mesma: não.
+
+### 12.4. Critérios para reavaliar a decisão de provider
+
+Revisão programada do provider de produção: **mês 5 de desenvolvimento**, durante a fase de testes da Suite 3 interna. Critérios objetivos para decidir migrar do Twilio:
+
+- Economia mensal projetada × custo de migração (engenharia + risco).
+- Maturidade do provider em PT-BR (suporte, documentação, casos de sucesso).
+- Compatibilidade com o modelo BYO (importante para o pós-MVP).
+- Disponibilidade de Meta Embedded Signup (decisivo para BYO).
+
+Trigger para revisão fora desse calendário: incidente operacional relevante com Twilio (qualidade, custo, indisponibilidade) ou mudança comercial significativa em algum dos candidatos.
+
+### 12.5. Referência cruzada
+
+Detalhes técnicos de implementação do `Channel` provider e da troca entre providers vivem no blueprint em `/home/paulo/projects/nexus/nexus-core-2/docs/blueprints/ai_apps.md`. Este documento registra **a decisão**; o blueprint registra **a implementação**.
+
+---
+
+## 13. Em resumo
 
 **AI Apps não é uma feature. É uma decisão de arquitetura sobre como a Azume vai produzir produtos pelos próximos anos.**
 
@@ -733,6 +890,6 @@ A escolha que está na mesa:
 | WhatsApp seria feature isolada e cara | WhatsApp vira primitiva da plataforma |
 | Lista do `features.md` levaria 3-5 anos | Lista do `features.md` viável em 12-18 meses |
 
-A recomendação é o **caminho B**, com a disciplina operacional descrita acima.
+A recomendação foi o **caminho B**, com a disciplina operacional descrita acima.
 
-A pergunta que fica para a reunião é: **estamos alinhados para comprometer os próximos 5-7 meses nessa direção?**
+**Decisão tomada em mai/2026.** Este documento registra o racional e serve de referência para os checkpoints previstos em §7.4 ao longo dos próximos 5-7 meses de execução. Atualizações de escopo, prazo ou trade-off material devem ser refletidas aqui — não em conversas paralelas.

@@ -63,12 +63,26 @@ Software AI powered. Hoje consiste em:
 2. **Suite Nexus Comercial** — produto standalone de ticket mais alto, clonável e adaptável por nicho (prospecção, qualificação, fechamento, pós-venda).
 3. **Suite Sucesso do Cliente** — uso interno primeiro (Azume reduz custo operacional de suporte/CS/renovação), depois ofertada como produto.
 
-**Cronograma:** 5-7 meses para o MVP do framework no cenário operacional recomendado (Paulo dividido entre framework e manutenção CRM); 4-6 meses no cenário full-time (CRM congelado). Detalhes em `tmp/ai_apps_apresentacao.md`.
+**Cronograma:** 5-7 meses para o MVP do framework no cenário operacional recomendado (Paulo dividido entre framework e manutenção CRM); 4-6 meses no cenário full-time (CRM congelado). Detalhes em `docs/01-planejamento-estrategico/04-ai-apps.md`.
 
 **Documentos de referência:**
 - Blueprint técnico: `/home/paulo/projects/nexus/nexus-core-2/docs/blueprints/ai_apps.md`
-- Apresentação executiva: `tmp/ai_apps_apresentacao.md`
+- Direção estratégica: `docs/01-planejamento-estrategico/04-ai-apps.md`
 - Backlog de features que descem dele: `tmp/features.md`
+
+**Decisões em aberto sobre AI Apps** (consolidadas para não se perderem dentro do `04-ai-apps.md`; resolução esperada antes do mês 5 de desenvolvimento, salvo onde indicado):
+
+| # | Decisão | Quem decide | Prazo |
+|---|---------|-------------|-------|
+| 1 | `price_per_user_brl` dos tiers PRO_PLUS e PRO_MAX (faixas sugeridas: 30-50 e 60-100) | Victor (lead), com input de Thúlio | Antes do piloto comercial da Suite 1 (mês 5-6) |
+| 2 | Provider WhatsApp pós-MVP: Meta Cloud API direto vs. 360dialog | Paulo, com referendo dos sócios | Mês 5 (revisão programada) |
+| 3 | Billing de mensagens WhatsApp em BYO: Azume cobra com markup vs. tenant paga direto o provider | Victor + Paulo | Antes do lançamento da Suite 2 externa (pós-MVP) |
+| 4 | Estratégia de roteamento entre Apps no mesmo Channel (matcher / intent classifier / fallback) | Paulo | Durante construção do framework, decisão técnica |
+| 5 | Modelo de sessão do WebChat (anônimo / autenticado / token emitido pelo tenant) | Paulo + Thúlio (UX) | Durante design das Suites externas |
+| 6 | Validação de demanda da Suite 1 (entrevistar 10-15 clientes da base) | Cláudia ou Juliana, acompanhada por Thúlio | Meses 2-4 |
+| 7 | Número de contas ativas reais do CRM (campo `[PREENCHER]` em §4) | Victor | O quanto antes — bloqueia recálculo do dimensionamento financeiro |
+
+Detalhes de cada decisão, alternativas avaliadas e trade-offs em `04-ai-apps.md` §6.7, §11.5 e §12.
 
 #### 3.2.2. Modelo de monetização do Nexus
 
@@ -236,7 +250,7 @@ Capacidades que o framework habilita ao longo do tempo:
 - Eventual automação de navegador (Playwright) e tools de código sandboxado em fases posteriores.
 - Consultoria de adaptação como linha de serviço adicional conforme expandirmos equipe.
 
-Após essa base, o futuro do Nexus deixa de ser incerto — vira função do nicho que conseguirmos validar primeiro. Detalhes técnicos completos em `/home/paulo/projects/nexus/nexus-core-2/docs/blueprints/ai_apps.md`; visão executiva em `tmp/ai_apps_apresentacao.md`.
+Após essa base, o futuro do Nexus deixa de ser incerto — vira função do nicho que conseguirmos validar primeiro. Detalhes técnicos completos em `/home/paulo/projects/nexus/nexus-core-2/docs/blueprints/ai_apps.md`; direção estratégica em `docs/01-planejamento-estrategico/04-ai-apps.md`.
 
 ## 10. Oportunidades em avaliação
 
@@ -254,7 +268,7 @@ Decisão estrutural tomada (mai/2026): todas as oportunidades abaixo serão atac
 - Maior sinergia com clientes atuais (mesmo público, distribuição direta).
 - WhatsApp como interface principal — diferencial competitivo real para nosso público.
 - Defende a vaca leiteira contra contração do mercado (aumenta valor percebido, reduz churn).
-- Dimensionamento financeiro indica payback de 3-4 meses no cenário realista (detalhes em `tmp/ai_apps_apresentacao.md` §6.7).
+- Dimensionamento financeiro indica payback de 3-4 meses no cenário realista (detalhes em `docs/01-planejamento-estrategico/04-ai-apps.md` §6.7).
 - Off-grid/híbrido entra como AI App marginal dentro da Suite, sem precisar dimensionar como produto separado.
 
 **Contras / riscos:**

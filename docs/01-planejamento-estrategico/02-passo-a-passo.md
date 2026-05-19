@@ -4,7 +4,7 @@
 
 > **NOTA EDITORIAL — 2026-05-19**
 >
-> Parte das premissas deste plano mudou com a decisão estratégica tomada em mai/2026: **AI Apps** como feature central do Nexus (ver `00-contexto-atual.md` §3.2.1 e `tmp/ai_apps_apresentacao.md`).
+> Parte das premissas deste plano mudou com a decisão estratégica tomada em mai/2026: **AI Apps** como feature central do Nexus (ver `00-contexto-atual.md` §3.2.1 e `docs/01-planejamento-estrategico/04-ai-apps.md`).
 >
 > Impactos nas etapas previstas neste documento:
 >
@@ -12,9 +12,9 @@
 > - **Etapa 2 (Off-grid/Híbridos):** essa oportunidade **deixou de ser uma direção de produto isolada**. Virou um AI App específico dentro da Suite Azume CRM Smart (`00-contexto-atual.md` §10.1, `tmp/features.md` §1.1). Análise dedicada de TAM/SAM/SOM perde sentido. Substituir esta etapa por: análise de viabilidade técnica e de demanda do AI App de proposta off-grid/híbrido dentro da Suite — questão mais estreita.
 > - **Etapa 3 (Solução Comercial IA):** virou a Suite Nexus Comercial (`00-contexto-atual.md` §10.2). A pergunta deixou de ser "vale fazer ou não?" (já está no roadmap) e passou a ser **"qual nicho atacar primeiro com a Suite Nexus Comercial?"**. A análise mantém valor mas a pergunta-chave mudou.
 > - **Etapa 4 (Matriz de Decisão):** a decisão "Off-grid vs. Comercial IA" deixou de ser excludente — ambas estão no plano, em momentos diferentes. A matriz pode ser refeita para escolher entre **possíveis nichos da Suite Nexus Comercial** (energia/setor elétrico via E4.0 vs. outros).
-> - **Etapa 5 (Direção Estratégica):** parte da decisão já foi tomada em mai/2026 (AI Apps como direção central, sequência de Suites). O documento `07-direcao-estrategica.md` original vira **registro formal dessa decisão** + escolha do primeiro nicho da Suite Nexus Comercial.
+> - **Etapa 5 (Direção Estratégica):** parte da decisão já foi tomada em mai/2026 (AI Apps como direção central, sequência de Suites). O documento `08-direcao-estrategica.md` (originalmente previsto como `07-direcao-estrategica.md` — ver renumeração abaixo) vira **registro formal dessa decisão** + escolha do primeiro nicho da Suite Nexus Comercial.
 >
-> **Recomendação:** antes de executar as etapas, revisar este documento em conjunto com `00-contexto-atual.md` §3.2.1, §9 e §10 atualizados, e com `tmp/ai_apps_apresentacao.md`. O fluxo abaixo permanece como referência histórica do que foi planejado em abril/2026.
+> **Recomendação:** antes de executar as etapas, revisar este documento em conjunto com `00-contexto-atual.md` §3.2.1, §9 e §10 atualizados, e com `docs/01-planejamento-estrategico/04-ai-apps.md`. O fluxo abaixo permanece como referência histórica do que foi planejado em abril/2026.
 
 ## Visão geral
 
@@ -30,13 +30,15 @@ Etapa 1: SWOT Azume
 
 ## Documentos que serão gerados
 
-| Etapa | Documento | Descrição |
-|-------|-----------|-----------|
-| 1 | `03-swot-azume.md` | SWOT do estado atual da Azume |
-| 2 | `04-oportunidade-off-grid-hibridos.md` | Análise completa da oportunidade off-grid/híbridos |
-| 3 | `05-oportunidade-solucao-comercial-ia.md` | Análise completa da oportunidade de solução comercial IA |
-| 4 | `06-matriz-decisao.md` | Matriz comparativa com scoring ponderado |
-| 5 | `07-direcao-estrategica.md` | Decisão final, racional e próximos passos |
+> Numeração atualizada em 2026-05-19: os documentos planejados originalmente nos slots 03-07 foram remanejados para 05-08 porque os slots 03 e 04 foram ocupados por dois documentos que entraram fora do plano original — `03-concorrentes.md` (mai/2026) e `04-ai-apps.md` (mai/2026, promovido de `tmp/`). A etapa 2 (Off-grid/Híbridos) deixou de ter doc próprio porque virou um AI App específico dentro da Suite 1 (ver nota editorial acima e `04-ai-apps.md`).
+
+| Etapa | Documento | Descrição | Status |
+|-------|-----------|-----------|--------|
+| 1 | `05-swot-azume.md` | SWOT do estado atual da Azume. Deve incluir AI Apps entre forças/oportunidades | Pendente |
+| 2 | ~~Análise Off-grid/Híbridos~~ | Substituída — virou AI App específico dentro da Suite 1. Sem doc próprio | Obsoleto |
+| 3 | `06-oportunidade-solucao-comercial-ia.md` | Análise da Suite Nexus Comercial, focada em **qual nicho atacar primeiro** | Pendente |
+| 4 | `07-matriz-decisao.md` | Matriz comparativa entre nichos candidatos para a Suite Nexus Comercial | Pendente |
+| 5 | `08-direcao-estrategica.md` | Registro formal da direção. Parte da decisão já foi tomada em mai/2026 (AI Apps + sequência de Suites) | Parcialmente tomada |
 
 **Estrutura final do diretório após conclusão:**
 
@@ -45,11 +47,12 @@ docs/01-planejamento-estrategico/
   00-contexto-atual.md
   01-metodologia.md
   02-passo-a-passo.md
-  03-swot-azume.md
-  04-oportunidade-off-grid-hibridos.md
-  05-oportunidade-solucao-comercial-ia.md
-  06-matriz-decisao.md
-  07-direcao-estrategica.md
+  03-concorrentes.md                         # mai/2026, fora do plano original
+  04-ai-apps.md                              # mai/2026, fora do plano original
+  05-swot-azume.md                           # etapa 1
+  06-oportunidade-solucao-comercial-ia.md    # etapa 3 (etapa 2 obsoleta)
+  07-matriz-decisao.md                       # etapa 4
+  08-direcao-estrategica.md                  # etapa 5
 ```
 
 ## Condução das etapas
@@ -72,7 +75,7 @@ docs/01-planejamento-estrategico/
 
 **Fonte principal:** `00-contexto-atual.md`
 
-**Conteúdo do documento `03-swot-azume.md`:**
+**Conteúdo do documento `05-swot-azume.md`:**
 
 - **Forças** — o que a Azume faz bem e que a diferencia (ex: liderança no CRM solar, canal E4.0, operação enxuta no azul, Nexus + framework AI Apps como plataforma de expansão multi-tenant — ver `00-contexto-atual.md` §3.2.1)
 - **Fraquezas** — limitações internas (ex: 1 dev, ticket médio baixo, dependência de mercado único, afinidade tecnológica baixa dos clientes)
@@ -94,7 +97,7 @@ docs/01-planejamento-estrategico/
 
 **Objetivo:** avaliar a viabilidade e atratividade da expansão do Azume CRM/Nexus para sistemas off-grid e híbridos com armazenamento de energia.
 
-**Conteúdo do documento `04-oportunidade-off-grid-hibridos.md`:**
+**Conteúdo do documento ~~`04-oportunidade-off-grid-hibridos.md`~~ (obsoleto — etapa substituída pelo AI App correspondente dentro da Suite 1; ver `04-ai-apps.md`. Conteúdo abaixo mantido como referência histórica):**
 
 1. **Descrição da oportunidade** — o que seria feito, para quem, como se conecta aos produtos atuais
 2. **SWOT específica** — forças, fraquezas, oportunidades e ameaças desta direção
@@ -172,7 +175,7 @@ docs/01-planejamento-estrategico/
 
 **Objetivo:** avaliar a viabilidade e atratividade de uma solução comercial ponta-a-ponta com IA generativa.
 
-**Conteúdo do documento `05-oportunidade-solucao-comercial-ia.md`:**
+**Conteúdo do documento `06-oportunidade-solucao-comercial-ia.md`:**
 
 1. **Descrição da oportunidade** — o que seria feito, para quem, como se conecta aos produtos atuais, qual o diferencial de nicho (se houver)
 2. **SWOT específica** — forças, fraquezas, oportunidades e ameaças desta direção
@@ -252,7 +255,7 @@ docs/01-planejamento-estrategico/
 
 **Pré-atividade:** reunião dos 3 diretores para definir o peso de cada critério (escala de 1 a 5). Sem alinhamento sobre o que importa mais, a matriz perde valor.
 
-**Conteúdo do documento `06-matriz-decisao.md`:**
+**Conteúdo do documento `07-matriz-decisao.md`:**
 
 1. **Validação de pré-requisitos** — confirmar que todas as oportunidades atendem os filtros B2B e SaaS
 2. **Pesos definidos pela diretoria** — registro dos pesos e racional por trás de cada um
@@ -287,7 +290,7 @@ docs/01-planejamento-estrategico/
 
 **Objetivo:** registrar a decisão final da diretoria, com racional, riscos aceitos e próximos passos concretos.
 
-**Conteúdo do documento `07-direcao-estrategica.md`:**
+**Conteúdo do documento `08-direcao-estrategica.md`:**
 
 1. **Decisão** — qual direção foi escolhida e por que
 2. **Racional** — resumo dos dados e análises que sustentam a decisão
