@@ -12,13 +12,15 @@
 
 **Investimento:** 4 a 6 meses do Paulo focado no framework (cenário base). Sob o cenário operacional recomendado, em que o Paulo divide tempo entre framework e CRM, o cronograma vai a 5-7 meses. Lucas e Rodolfo entram em treinamento desde o mês 1 e começam a construir AI Apps reais conforme cada fase do framework é entregue.
 
-**Retorno esperado em 12 meses (estimativas conservadoras):**
-1. **Suite Azume CRM Smart** — defesa da vaca leiteira. Potencial de gerar 15-40% de receita nova adicional sobre a base atual via addon mensal, e reduzir churn.
+**Modelo de monetização:** assinatura única Nexus que dá acesso a **toda a biblioteca de AI Apps**. Diferenciação de planos é por **volume de consumo de tokens de IA**, não por funcionalidades. Cliente paga proporcional ao uso real; cresce de tier conforme adota mais.
+
+**Retorno esperado em 12 meses (cenário realista, dimensionado em §6.7):**
+1. **Suite Azume CRM Smart** — defesa da vaca leiteira. Potencial de +25% de receita nova sobre a base atual no cenário realista (faixa de +8% pessimista a +58% otimista). Payback do investimento em 3-4 meses no cenário realista.
 2. **Nexus no WhatsApp** — interface familiar para um público com baixa afinidade tech. Primeira vez que um concorrente direto no Brasil oferece isso para integradores solar.
 3. **Capacidade de testar nichos novos com custo de dias** — quando identificarmos o próximo mercado, o tempo de "ir ao mercado" cai de meses para semanas.
-4. **Redução de custo operacional interno** — Suite Sucesso do Cliente reduz 30-40% do trabalho manual de Diógenes / Juliana / Cláudia, criando espaço para crescer base sem crescer equipe.
+4. **Redução de custo operacional interno** — Suite Sucesso do Cliente reduz 30-40% do trabalho manual de Diógenes / Juliana / Cláudia, liberando R$ 100-170k/ano de capacidade.
 
-**A decisão na mesa:** comprometer 4-7 meses de engenharia em construir o framework ou continuar codando feature por feature, mantendo o gargalo do dev único.
+**A decisão na mesa:** comprometer 5-7 meses de engenharia em construir o framework (cenário recomendado) ou continuar codando feature por feature, mantendo o gargalo do dev único.
 
 ---
 
@@ -194,24 +196,26 @@ A plataforma tem alguns blocos. Para a apresentação, cobrimos só os que impor
 
 ### 3.9 Suite (conjunto de AI Apps)
 
-**O que é:** um agrupamento de AI Apps com um objetivo comum.
+**O que é:** um agrupamento organizacional de AI Apps relacionados, com um objetivo comum.
 
-**Capacidade que fornece:** **empacotamento comercial e UX**. Em vez de vender 5 AI Apps isolados, vendemos a "Suite Azume CRM Smart" — produto único com identidade própria.
+**Capacidade que fornece:** **navegação e UX do catálogo**. Em vez de uma lista plana de 30 AI Apps, o cliente entra em "Sucesso do Cliente" e encontra os 3 Apps relevantes ali. Suites também são a unidade interna de planejamento — desenhamos uma Suite, depois construímos seus AI Apps.
 
-**Por que importa:** é a unidade de comercialização. Suites são o que clonamos para nichos novos.
+**Importante — o que Suite NÃO é:** Suite não é SKU. **Não vendemos "a Suite 1"** — vendemos uma assinatura única do Nexus que dá acesso a toda a biblioteca (§5.4). Suite é como organizamos o catálogo internamente e como o cliente navega; não é como cobramos.
 
-### 3.10 Templates (mencionar brevemente)
+### 3.10 Templates
 
-**O que é:** AI Apps e Suites criados pelo nosso time interno que ficam disponíveis para os clientes clonarem para a conta deles.
+**O que é:** AI Apps e Suites criados pelo nosso time interno e disponibilizados a todos os assinantes. Quem usa um Template está usando um AI App pronto da nossa biblioteca, sem precisar configurar nada.
 
-**Capacidade que fornece:** **escala**. Construímos uma vez, milhares de clientes usam.
+**Capacidade que fornece:** **escala**. Construímos uma vez (Lucas / Rodolfo configurando), milhares de clientes usam o mesmo AI App.
 
-### 3.11 Run, Report e observabilidade (mencionar brevemente)
+**Sobre clonagem:** no MVP, todos os Templates rodam centralizados pela Azume — o cliente consome, não clona. Cloning self-service pelo cliente (para customizar) é pós-MVP. Adaptação consultiva via equipe Azume vira linha de serviço cobrável à parte conforme expandirmos equipe (ver §5.4).
+
+### 3.11 Run, Report e observabilidade
 
 Cada execução de um AI App é uma "Run" — registramos tudo que aconteceu (qual agente fez o quê, quais ferramentas usou, quanto custou em IA). Isso garante:
 
 - **Auditoria:** podemos provar para o cliente o que o App fez.
-- **Custo:** sabemos exatamente quanto de IA cada cliente está consumindo (cobrança justa).
+- **Custo:** sabemos exatamente quanto de IA cada cliente está consumindo (consumo aplicado contra o orçamento do tier — base para upgrade natural de PRO_PLUS para PRO_MAX).
 - **Diagnóstico:** quando algo dá errado, conseguimos entender por quê e corrigir.
 
 ---
@@ -239,8 +243,8 @@ Voltando ao desenho do início, agora cada parte faz sentido:
    └─────────────────────────────────────────────────────────────┘
 
       Cada AI App vive dentro de uma conta (multi-tenant).
-      AI Apps podem ser agrupados em Suites.
-      Suites podem ser Templates clonáveis por clientes.
+      AI Apps podem ser agrupados em Suites (organização de catálogo).
+      AI Apps prontos da biblioteca Azume = Templates consumidos por todos os assinantes.
 ```
 
 Em uma frase: **AI Apps é uma fábrica de automações inteligentes** que a Azume opera internamente, com produtos que entregamos aos clientes via interfaces que eles já conhecem (WhatsApp principalmente, mas também web e via integrações).
@@ -249,13 +253,13 @@ Em uma frase: **AI Apps é uma fábrica de automações inteligentes** que a Azu
 
 ## 5. Casos de uso — três Suites concretas
 
-Para tornar tangível, três Suites que pretendemos construir nos primeiros 6-12 meses pós-framework:
+Para tornar tangível, três Suites que pretendemos construir ao longo dos próximos 12-18 meses, em paralelo com a entrega das fases finais do framework e logo após. Nomes "Suite 1 / 2 / 3" são provisórios — marca e nomenclatura comercial ficam para mais tarde.
 
 ### Suite 1 — Azume CRM Smart
 
 **Público-alvo:** base atual do Azume CRM (integradores de energia solar).
 **Valor de negócio:** defesa da vaca leiteira. Aumenta valor percebido, justifica preço, reduz churn, abre espaço para upsell.
-**Modelo de cobrança:** addon mensal do CRM. **Faixa estimada: R$ 99 a R$ 249/mês por conta**, dependendo dos AI Apps inclusos (compatível com o ticket atual de ~R$ 97/mês do CRM — vira essencialmente "dobrar o ticket" do cliente que adota).
+**Como o cliente acessa:** disponível em qualquer plano pago da assinatura Nexus (PRO_PLUS ou PRO_MAX). Detalhes do modelo comercial em §5.4.
 **Amarração com o backlog atual:** os AI Apps abaixo materializam diretamente as features 1.2 a 1.6 do `tmp/features.md`, mais a feature 1.1 (proposta híbrido/off-grid) e 3.1 (Nexus no WhatsApp) como interface principal.
 
 | AI App | O que faz | Como o cliente usa | Feature |
@@ -273,8 +277,8 @@ Para tornar tangível, três Suites que pretendemos construir nos primeiros 6-12
 ### Suite 2 — Nexus Comercial
 
 **Público-alvo:** qualquer PME B2B que tenha equipe comercial — começando pela própria Azume e pela base atual.
-**Valor de negócio:** produto de ticket mais alto, possivelmente o **primeiro produto Nexus standalone** (fora da base do CRM).
-**Modelo de cobrança:** SaaS por assinatura. **Faixa estimada: R$ 500 a R$ 2.500/mês por conta**, conforme volume e funcionalidades. Atinge o alvo de ticket >R$ 12k/ano que o planejamento estratégico definiu para novos nichos.
+**Valor de negócio:** produto de ticket mais alto, possivelmente o **primeiro produto Nexus standalone** (fora da base do CRM). Tende a atrair contas com mais usuários e maior consumo de IA, levando-as naturalmente ao tier PRO_MAX (ver §5.4).
+**Como o cliente acessa:** mesma assinatura única do Nexus. Equipes comerciais maiores tendem a consumir mais tokens, o que move o cliente do tier PRO_PLUS para PRO_MAX. É no PRO_MAX que atingimos o alvo de ticket >R$ 12k/ano definido pelo planejamento estratégico para novos nichos.
 **Alavanca de distribuição:** a E4.0 (canal de 372 mil inscritos no YouTube, presidida por Bárbara Rubim, ABSOLAR) é caminho natural para o lançamento desta Suite no nicho de integradores. Para nichos fora de energia, precisaremos identificar canal próprio.
 
 | AI App | O que faz |
@@ -292,7 +296,7 @@ Importante: o **mesmo framework AI Apps** que constrói a Suite 1 (interna) tamb
 
 **Público-alvo:** qualquer PME que tenha base de clientes recorrente — a própria Azume é cliente potencial óbvio aqui.
 **Valor de negócio:** reduz custo operacional de suporte/CS/renovação. Aplicável a nós mesmos imediatamente.
-**Modelo de cobrança:** SaaS por assinatura. **Faixa estimada: R$ 200 a R$ 800/mês por conta**, conforme volume de tickets/contatos. Para uso interno da Azume, é "custo evitado" em vez de receita.
+**Como o cliente acessa:** mesma assinatura única (ver §5.4). Para uso interno da Azume, é "custo evitado" em vez de receita — o orçamento de IA é consumido pela própria operação Azume.
 
 | AI App | O que faz |
 |--------|-----------|
@@ -301,6 +305,41 @@ Importante: o **mesmo framework AI Apps** que constrói a Suite 1 (interna) tamb
 | Renovação de Contratos | Conduz processo de renovação anual de forma proativa |
 
 **Por que essa Suite é estratégica para nós internamente:** Diógenes (suporte), Juliana (CS/renovação) e a Cláudia (operações) hoje fazem manualmente. Se a Suite 3 reduzir em 30-40% o trabalho operacional deles, conseguimos crescer base sem crescer equipe.
+
+### 5.4 Modelo comercial — único para toda a biblioteca
+
+**O modelo é uma assinatura única do Nexus.** Não há SKU por Suite nem por AI App — quem assina ganha acesso a toda a biblioteca, presente e futura.
+
+**Três tiers de plano** (definidos na spec `subscription_management.md`):
+
+| Tier | Acesso aos AI Apps | Capacidade de IA por usuário | Posicionamento |
+|------|--------------------|-----------------------------:|----------------|
+| **PRO** | Todos (com limites) | Capacidade gratuita (compartilhada do orçamento da Azume) | Tier gratuito de entrada; mantém a base atual sem migração forçada |
+| **PRO_PLUS** | Todos | 10× a capacidade do PRO | Conta com uso regular de IA |
+| **PRO_MAX** | Todos | 20× a capacidade do PRO | Conta com uso intenso ou equipes maiores |
+
+**Como funciona a cobrança:**
+- Mensal em BRL, processada pelo Pagar.me.
+- Preço calculado por **número de usuários da conta** × **valor por usuário no tier escolhido** (definido em YAML versionado, ajustável conforme estratégia).
+- Exemplo ilustrativo (números a definir pelos sócios): conta com 5 usuários no PRO_PLUS pode pagar 5 × R$ 40 = R$ 200/mês.
+
+**Como o cliente "cresce" no produto:**
+- Cliente adota o Nexus no PRO_PLUS, experimenta, consome.
+- Conforme adoção aumenta (mais AI Apps usados, com mais frequência), consumo de tokens cresce.
+- Quando o orçamento do PRO_PLUS começa a apertar, cliente migra para PRO_MAX (upsell natural por valor extraído, sem renegociação de contrato).
+- **Não há "venda de feature adicional"** — toda inovação que lançamos (cada AI App novo) é instantaneamente acessível em qualquer tier pago. Isso vira motor de retenção, não complica a régua de cobrança.
+
+**Linha de serviço adjacente (futura, requer expansão de equipe):**
+- Consultoria de adaptação: nossa equipe customiza Suites/AI Apps para o negócio específico da conta.
+- Cobrança à parte (projeto / hora / pacote), não inclusa na assinatura.
+- Ainda não é prioridade do MVP; abre quando tivermos demanda explícita e capacidade interna.
+
+**Por que esse modelo é estratégico para a Azume:**
+- **Decisão de compra simples:** uma porta de entrada, sem matriz "qual Suite preciso".
+- **Upsell sem atrito:** o cliente migra de tier conforme valor extraído, não por venda ativa de feature.
+- **Retenção composta:** cada AI App novo que lançamos beneficia toda a base instantaneamente.
+- **Cobrança proporcional ao valor:** quem usa pouco paga pouco; quem usa muito paga proporcional ao uso real (via consumo de tokens).
+- **Alinhado com a spec já em construção** (`subscription_management.md`) e com o sistema de budget de IA já em produção.
 
 ### Por que essa ordem (Suite 3 → Suite 1 → Suite 2)?
 
@@ -347,7 +386,7 @@ WhatsApp como interface principal do Nexus + automação de tarefas via linguage
 
 ### 6.5 Habilita o Nexus como produto standalone no futuro
 
-A trajetória do Nexus está definida no planejamento estratégico: hoje é piloto, depois addon do CRM, depois produto standalone. AI Apps é a tecnologia que faz a etapa "standalone" virar realidade — porque sem AI Apps, o Nexus precisaria ser custom-codado para cada nicho que atacar.
+A trajetória do Nexus está definida no planejamento estratégico: hoje é piloto, depois ofertado primeiro à base do Azume CRM (assinatura própria do Nexus, comercializada para clientes do CRM antes de qualquer outro público), depois produto standalone para nichos novos. AI Apps é a tecnologia que faz a etapa "standalone" virar realidade — porque sem AI Apps, o Nexus precisaria ser custom-codado para cada nicho que atacar.
 
 ### 6.6 Alinhamento com os critérios do planejamento estratégico
 
@@ -366,40 +405,77 @@ Sobre as 4 categorias de concorrência a evitar: o framework em si poderia cair 
 
 ### 6.7 Dimensionamento financeiro (back-of-envelope)
 
-Cálculos conservadores baseados nos dados disponíveis. Faixas usadas em vez de números exatos por causa dos campos `[PREENCHER]` ainda abertos em `00-contexto-atual.md`.
+Cálculos baseados no modelo da §5.4 (assinatura única, tiers PRO/PRO_PLUS/PRO_MAX, cobrança por usuário). Os números absolutos dependem de variáveis ainda em aberto (`[PREENCHER: número de contas ativas]` no `00-contexto-atual.md`), então usamos faixas e premissas explícitas.
 
 **Premissas:**
 - Faturamento jan-mar/2026: R$ 931.820 ≈ R$ 310k/mês.
 - 80% renovação → ~R$ 248k/mês recorrente do CRM.
-- Ticket atual ~R$ 97/mês por conta.
+- Ticket médio anual do CRM: R$ 1.160 (~R$ 97/mês por conta).
+- **Estimativa derivada de contas ativas:** ~R$ 248k de renovação ÷ R$ 97 ≈ **2.500-3.000 contas ativas**. Confirmar com Victor.
+- Usuários médios por conta: 3 (faixa típica 2-5 segundo o contexto).
+- **Preços ilustrativos** (sócios definem o número exato; usamos faixa razoável):
+  - PRO_PLUS: ~R$ 40/usuário/mês → conta típica de 3 usuários paga R$ 120/mês
+  - PRO_MAX: ~R$ 80/usuário/mês → conta típica de 3 usuários paga R$ 240/mês
 
-**Cenário conservador da Suite 1 (Azume CRM Smart):**
+#### Cenários de receita (Suite 1 — Azume CRM Smart na base atual)
 
-| Variável | Cenário pessimista | Cenário realista | Cenário otimista |
+| Variável | Pessimista | Realista | Otimista |
 |---|---|---|---|
-| Taxa de adoção da base | 10% | 25% | 40% |
-| Ticket addon mensal | R$ 99 | R$ 149 | R$ 249 |
-| Receita nova/mês | ~R$ 25k | ~R$ 92k | ~R$ 250k |
-| % sobre receita atual | +10% | +30% | +80% |
-| Payback do investimento | ~12-15 meses | ~5-7 meses | ~3 meses |
+| Adoção da base (% de contas que assinam plano pago) | 5% | 15% | 30% |
+| Mix entre tiers (PRO_PLUS / PRO_MAX) | 80% / 20% | 65% / 35% | 50% / 50% |
+| Ticket médio mensal por conta paga | ~R$ 144 | ~R$ 162 | ~R$ 180 |
+| Contas pagantes (base de 2.700 contas estimada) | ~135 | ~405 | ~810 |
+| Receita nova mensal | ~R$ 19k | ~R$ 66k | ~R$ 146k |
+| Receita nova anual | ~R$ 234k | ~R$ 787k | ~R$ 1,75M |
+| **% sobre receita atual de renovação (R$ 3M/ano)** | **+8%** | **+26%** | **+58%** |
+| **Payback do investimento de dev (≈ R$ 200k em tempo do Paulo)** | ~10-12 meses | ~3-4 meses | ~1-2 meses |
 
-**Cenário Suite 3 (uso interno Azume — custo evitado):**
-- Hoje: equipe de 3 pessoas em CS/suporte/renovação ≈ R$ 25-35k/mês de custo.
+#### Cenário Suite 3 (uso interno Azume — custo evitado)
+
+- Equipe atual de 3 pessoas em CS/suporte/renovação ≈ R$ 25-35k/mês de custo.
 - Suite 3 reduzindo 30-40% do trabalho operacional = ~R$ 8-14k/mês de capacidade liberada.
-- Anualizado: R$ 100-170k/ano de espaço para crescer base sem contratar.
+- **Anualizado: R$ 100-170k/ano de espaço para crescer base sem contratar.**
 
-**Cenário Suite 2 (Nexus Comercial standalone):**
-- 50 clientes × R$ 1.000/mês = R$ 600k/ano (cenário realista mínimo se a Suite encaixar em um nicho).
-- 200 clientes × R$ 1.500/mês = R$ 3.6M/ano (cenário otimista médio prazo).
-- Atinge alvo estratégico de ticket >R$ 12k/ano por cliente.
+#### Cenário Suite 2 (Nexus Comercial standalone — médio prazo)
 
-**Custos operacionais diretos esperados (pós-lançamento):**
-- Inferência de IA: estimativa de R$ 1-5/conta/mês por AI App ativo (Suite 1 com 5 Apps × R$ 3 médio × 100 contas = ~R$ 1.500/mês).
-- Twilio WhatsApp Business API: aproximadamente R$ 0,05 a R$ 0,30 por mensagem dependendo do tipo (sessão x template). Para 100 contas × 200 mensagens/mês = ~R$ 1.000-6.000/mês.
-- Infraestrutura adicional (GCP / Mongo / vetores): incremento estimado em R$ 500-2.000/mês conforme volume.
-- **Total operacional esperado: R$ 3-10k/mês em estado de regime** — coberto com folga pelos modelos de cobrança propostos.
+- 50 contas no PRO_PLUS × R$ 200/mês médio = R$ 120k/ano (cenário mínimo de entrada em um nicho).
+- 200 contas, sendo 40% no PRO_MAX × R$ 400/mês médio = R$ 720k/ano (cenário médio prazo).
+- Tickets nos PRO_MAX (R$ 400-600/mês = R$ 4.800-7.200/ano por conta) **atingem o alvo estratégico de ticket >R$ 12k/ano para contas maiores** com 10+ usuários, conforme planejamento.
 
-**O ponto importante:** mesmo no cenário pessimista da Suite 1 isolada, o investimento de 4-7 meses de dev se paga em 12-15 meses. O cenário realista paga em 5-7 meses. E as Suites 2 e 3 são upside adicional ainda não contabilizado nesse cálculo.
+#### Custos durante a construção (meses 1-7, pré-lançamento)
+
+- **Tokens de IA para desenvolvimento e testes**: ~R$ 500-1.500/mês durante testes de fluxos. Volume baixo (não há clientes pagantes ainda).
+- **Twilio sandbox + 1-2 números reais para piloto**: ~R$ 100-300/mês de uso interno + custo inicial de aprovação do número WhatsApp Business (taxa única ~R$ 0-500 dependendo do plano contratado).
+- **Infra adicional para dev/staging** (GCP / Mongo): ~R$ 200-800/mês.
+- **Total estimado de custo direto durante construção: R$ 800-2.600/mês × 7 meses = R$ 6-18k**. Pequeno em relação ao investimento de tempo do Paulo.
+
+#### Custos operacionais diretos esperados (pós-lançamento)
+
+- **Inferência de IA**: o orçamento por usuário/mês já está modelado nos env vars `RESERVED_PER_USER_*_USD`. A capacidade reservada por tier (10× ou 20× a do PRO) é dimensionada para casar com o ticket cobrado, com margem positiva.
+- **Twilio WhatsApp Business API**: ~R$ 0,05 a R$ 0,30 por mensagem. Para 400 contas × 200 mensagens/mês = ~R$ 4-24k/mês — coberto pela receita.
+- **Infraestrutura adicional** (GCP / Mongo / vetores): incremento estimado em R$ 500-2.000/mês conforme volume.
+
+#### Decisão pendente: definição dos preços por usuário
+
+Os números nas tabelas acima são **ilustrativos**. Os sócios precisam decidir antes do lançamento:
+
+- `price_per_user_brl` do PRO_PLUS — sugestão para discussão: R$ 30-50/usuário/mês.
+- `price_per_user_brl` do PRO_MAX — sugestão para discussão: R$ 60-100/usuário/mês.
+- Faixas de `min_users` / `max_users` se quisermos descontos por volume.
+
+Decisão pode ficar para o checkpoint do mês 3-5 (sem bloquear o desenvolvimento), mas precisa estar fechada antes do piloto comercial da Suite 1.
+
+#### Linha de receita adicional (futura): consultoria de adaptação
+
+- Após expansão da equipe, oferta de adaptação personalizada por projeto/hora.
+- Ticket típico estimado: R$ 5-30k por projeto, dependendo de escopo.
+- Não contabilizada nos cenários acima — é upside.
+
+#### O ponto importante
+
+**Mesmo no cenário pessimista da Suite 1**, o investimento se paga em ~12 meses. **No cenário realista** (15% de adoção, mix moderado dos tiers), o payback é de 3-4 meses e a receita anual nova é equivalente a 26% do que renovamos hoje. As Suites 2 e 3 e a consultoria são upside adicional não-contabilizado.
+
+**Observação importante:** todos esses números dependem da base de contas ativas reais. Pedimos a Victor confirmação do número (campo `[PREENCHER]` em `00-contexto-atual.md`) antes da decisão final.
 
 ---
 
@@ -486,7 +562,7 @@ Para que "deu certo" não seja uma sensação subjetiva, definimos métricas con
 | **Mês 3** | Fundações funcionais (KB + RAG + AccessPolicy + Context); Lucas/Rodolfo passaram pelo treinamento básico | Fundações incompletas ou Lucas/Rodolfo sem progresso no treinamento |
 | **Mês 5-6** | MVP rodando ponta a ponta com 1 AI App piloto interno (Suite 3); validação de demanda concluída com sinal positivo de ≥6 dos 10-15 clientes entrevistados | Apenas componentes isolados, sem App ponta-a-ponta; validação inconclusiva ou negativa |
 | **Mês 9** | 3+ AI Apps em produção (todos da Suite 3 + primeiros da Suite 1); piloto Suite 1 com 3-5 clientes pagantes ou em trial | Menos de 2 AI Apps em produção; nenhum cliente externo testando |
-| **Mês 12** | Suite 1 disponível para toda base; ≥10% de adoção na base (taxa pessimista do dimensionamento); receita nova mensurável | Adoção abaixo de 5%; necessidade de pivot na proposta de valor |
+| **Mês 12** | Suite 1 disponível para toda base; **≥5% de adoção** (cenário pessimista do §6.7) e curva ascendente; receita nova mensurável | Adoção abaixo de 3% sem sinal de crescimento; sinal forte de necessidade de pivot na proposta de valor |
 
 ---
 
@@ -542,12 +618,31 @@ Esta apresentação não é só informativa — há decisões concretas para Vic
 
 ### 9.3 Próximos passos sugeridos se aprovado
 
-1. **Semana 1-2:** Paulo inicia Fase 0 (fundações). Em paralelo, plano de treinamento Lucas/Rodolfo definido com Thúlio.
-2. **Mês 1-2:** entrevistas de validação com 10-15 clientes do CRM sobre o uso WhatsApp + linguagem natural. Cláudia e Juliana conduzem.
-3. **Mês 3:** checkpoint formal — escopo, cronograma, validação de demanda.
-4. **Mês 5-6:** primeiros AI Apps internos rodando em produção (Suite 3 — Sucesso do Cliente — para nós mesmos primeiro).
-5. **Mês 6-8:** primeiro AI App da Suite 1 (Azume CRM Smart) em piloto com 3-5 clientes selecionados.
-6. **Mês 9-12:** Suite 1 liberada para toda base. Início de planejamento da Suite 2 conforme nicho-alvo emergir.
+**Semana 0 (logo após aprovação):**
+- Kickoff de 1 hora entre os três sócios para alinhar a comunicação à equipe (CRM em modo conservador, expectativas de Lucas/Rodolfo, prioridade do framework).
+- Thúlio bloqueia 20-30% da agenda de Lucas e Rodolfo a partir da Semana 2.
+- Victor agenda checkpoint mensal recorrente para acompanhar progresso.
+- Paulo cria o repositório do framework e divide o backlog do MVP em fases entregáveis.
+
+**Semana 1-2:**
+- Paulo inicia Fase 0 (fundações: KnowledgeBase, Context, RAG, AccessPolicy).
+- Plano de treinamento Lucas/Rodolfo definido (conteúdo, tempo semanal, quem ministra).
+
+**Mês 1-2:**
+- **Entrevistas de validação de demanda.** Quem conduz: alguém da operação próximo dos clientes (sugestão: Cláudia ou Juliana, com Thúlio acompanhando 1-2 entrevistas iniciais para calibrar). Quem é entrevistado: 10-15 clientes da base atual, mix de portes e perfis de uso. Perguntas-chave: (a) "Hoje, em que parte do seu fluxo você gostaria de ter alguém te ajudando?", (b) "Imagine que você pudesse pedir 'gere proposta para João via WhatsApp' e a IA fizesse — quanto pagaria a mais por mês por isso?", (c) "Se eu disponibilizasse 5 automações desse tipo no WhatsApp, mudaria seu dia a dia?". Critério de sucesso: ≥6 dos 10-15 sinalizam disposição a pagar valor compatível com PRO_PLUS.
+
+**Mês 3:**
+- Checkpoint formal — fundações entregues, validação de demanda concluída, decisão "seguir / ajustar / pivotar".
+
+**Mês 5-6:**
+- Primeiros AI Apps internos rodando em produção (Suite 3 — Sucesso do Cliente — para nós mesmos primeiro).
+- Decisão sobre `price_per_user_brl` finalizada (Victor lidera, com input de Thúlio sobre percepção comercial).
+
+**Mês 6-8:**
+- Primeiro AI App da Suite 1 (Azume CRM Smart) em piloto com 3-5 clientes selecionados.
+
+**Mês 9-12:**
+- Suite 1 liberada para toda base. Início de planejamento da Suite 2 conforme nicho-alvo emergir.
 
 ---
 
@@ -557,7 +652,11 @@ Perguntas que provavelmente surgirão na reunião, com respostas curtas.
 
 ### "Por que não usar n8n, Zapier, Make ou similar?"
 
-n8n e similares são engines de workflow genéricos, **single-tenant por design** (uma instância por cliente, ou multi-tenant via gambiarra). Não conseguimos isolar dados de cliente A e cliente B com segurança nativa. Além disso, integrar n8n ao Azume CRM e ao Nexus de forma profunda exigiria tanto trabalho quanto construir o nosso. Avaliamos: o ganho de tempo seria de poucos meses; a perda de controle de IP seria permanente.
+Três razões:
+
+1. **Multi-tenancy.** n8n e similares são engines de workflow genéricos, single-tenant por design (uma instância por cliente, ou multi-tenant via gambiarra). Não conseguimos isolar dados de cliente A e cliente B com segurança nativa.
+2. **Integração profunda com o nosso stack.** Para acoplar n8n ao Azume CRM e ao Nexus de forma que faça sentido (APIs internas, base de conhecimento compartilhada, sistema de orçamento de IA, observabilidade), o esforço é comparável a construir o nosso. Ganharíamos poucos meses.
+3. **Onde mora o valor competitivo.** Nosso ativo não é a plataforma de configuração em si (n8n já tem isso comoditizado) — é a **biblioteca de AI Apps especializados para nosso público** (integrador solar com baixa afinidade tech, fluxos específicos do CRM solar, regras tarifárias brasileiras, contratos do setor). Essa biblioteca precisa de runtime, observabilidade e cobrança que casem com nossas regras de negócio. Plataforma terceira nos amarraria às decisões de produto de outra empresa.
 
 ### "E se OpenAI / Anthropic lançarem algo parecido (GPTs, Anthropic Skills, etc.)?"
 
@@ -570,12 +669,14 @@ Nosso valor competitivo está na **especialização para nosso público**, não 
 
 ### "Quanto isso custa para nós em IA por mês?"
 
-No regime de operação plena (estimativa, baseada em testes do piloto Nexus):
-- Inferência de IA: ~R$ 1-5 por conta por AI App ativo por mês.
-- Twilio WhatsApp: ~R$ 0,05-0,30 por mensagem (mais agressivo se uso de templates).
-- Infra adicional: ~R$ 500-2.000/mês de incremento.
+A spec de assinatura (`subscription_management.md`) já trata isso pelo desenho: cada tier reserva um orçamento em USD de inferência **por usuário/mês**, definido em env vars (`RESERVED_PER_USER_PRO_PLUS_*_USD`, `RESERVED_PER_USER_PRO_MAX_*_USD`). O preço cobrado em BRL é dimensionado pelos sócios para deixar margem positiva sobre essa reserva.
 
-**Total no cenário realista (100 contas, 5 AI Apps cada): R$ 3-10k/mês**, coberto pelos modelos de cobrança propostos. Estado pré-MVP, durante construção: custo direto baixo (testes), majoritariamente Claude para coding do Paulo.
+No regime de operação plena (cenário realista — ~400 contas pagantes):
+- Inferência de IA: limitada pela capacidade reservada que o cliente paga — não cresce além disso sem upgrade de tier.
+- Twilio WhatsApp Business API: ~R$ 4-24k/mês conforme volume.
+- Infraestrutura adicional: ~R$ 500-2.000/mês.
+
+**O custo de IA é estruturalmente coberto pelo preço por tier**, não é risco operacional fora de controle. Estado pré-MVP, durante construção: custo direto baixo (testes), majoritariamente o Claude para coding do Paulo.
 
 ### "Por que agora, e não daqui 1 ano?"
 
@@ -608,7 +709,12 @@ A plataforma tem audit trail completo de quem fez o quê em cada AI App, com ver
 
 ### "Templates clonáveis pelo cliente — quando?"
 
-Pós-MVP (após o mês 7). No MVP, a Azume mantém os templates centralizados; clientes consomem os AI Apps prontos via assinatura. O cloning pelo cliente é feature de Phase 5 do blueprint técnico — adicionada quando houver demanda explícita por personalização.
+Duas formas de "adaptação" do AI App ao negócio do cliente:
+
+1. **Self-service de cloning pelo cliente** (cliente clona e adapta sozinho via UI) — pós-MVP. Feature de Phase 5 do blueprint técnico, adicionada quando houver demanda explícita.
+2. **Adaptação consultiva pela equipe Azume** — disponível conforme expandirmos equipe. Modelo cobrável à parte (projeto/hora), não incluso na assinatura. Pode começar pequeno: o próprio time de operações/CS adapta para 1-2 clientes-piloto antes de virar oferta formal.
+
+No MVP, a Azume mantém os templates centralizados; clientes consomem os AI Apps prontos via assinatura única. Conforme o produto amadurece, abrem-se as duas opções de adaptação.
 
 ---
 
