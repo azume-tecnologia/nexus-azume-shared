@@ -605,7 +605,7 @@ Sendo honesto com a diretoria, há quatro riscos relevantes que precisamos olhar
 
 **O risco:** WhatsApp é canal regulado pela Meta. Mudanças de política, ban de número, falha do provedor (Twilio inicialmente) podem derrubar AI Apps inteiros.
 
-**Mitigação:** arquitetura prevê troca de provedor (Twilio → Meta direto / 360dialog) sem reescrita. Status do canal é exposto na interface. AI Apps críticos sempre devem ter caminho alternativo de uso (web/chat) — WhatsApp é interface preferida, não obrigatória. **WebChat entra no MVP justamente como plano B arquitetural** (ver §3.8 e §11).
+**Mitigação:** arquitetura prevê troca de provedor (Twilio → Meta direto / 360dialog) sem reescrita. Status do canal e `quality_rating` (verde/amarelo/vermelho, espelhado da API do Meta) são expostos na interface; transições de rating disparam alertas operacionais ao tenant dono do canal e à operação Azume quando o canal é Azume-interno — deterioração é detectada antes do ban, não depois. AI Apps críticos sempre devem ter caminho alternativo de uso (web/chat) — WhatsApp é interface preferida, não obrigatória. **WebChat entra no MVP justamente como plano B arquitetural** (ver §3.8 e §11).
 
 ### 8.5 Risco de segurança em agentes multi-tenant
 
@@ -820,9 +820,10 @@ Caminho preferido para BYO documentado no blueprint: **Meta Embedded Signup** (C
 
 ### 11.5. Decisões em aberto (registradas para resolução futura)
 
-1. **Billing de mensagens em BYO** — Azume cobra do tenant com markup ou tenant paga direto o provider? Trade-off comercial pendente. Discutir com Victor antes do lançamento da Suite 2 externa.
-2. **Roteamento entre Apps no mesmo Channel** — matcher por regex, intent classifier, fallback. Quais estratégias entram no MVP, quais no pós.
-3. **Modelo de sessão do WebChat** — anônimo, autenticado, token emitido pelo tenant. Decisão de UX a tomar no design das Suites externas.
+1. **Billing de mensagens em BYO** — Azume cobra do tenant com markup sobre tarifa Twilio/Meta (bill único Azume, mas floats provider e carrega risco de fraude/inadimplência) ou tenant paga direto o provider (receita menor por BYO, sem float, cliente gerencia mais um fornecedor)? Trade-off comercial pendente. Discutir com Victor antes do lançamento da Suite 2 externa.
+2. **Shared WABA vs. per-tenant WABA no Twilio** — Azume mantém uma WABA compartilhada (onboarding rápido, throughput pooled, mas Azume jointly accountable por templates/quality e couples ao billing modelo (a) acima) ou cada tenant tem WABA própria (onboarding mais lento, accountability mais limpa, casa com fluxo natural do Meta Embedded Signup)? Decidir junto com #1.
+3. **Roteamento entre Apps no mesmo Channel** — três estratégias possíveis: matcher (regex/prefixo), intent classifier (LLM leve), fallback default. **Resolução provisória no blueprint:** MVP (Fase 3c) entrega matchers + default; intent classifier sai em uma fase 3c+1 quando demanda por roteamento por linguagem natural justificar o custo/latência adicional.
+4. **Modelo de sessão do WebChat** — anônimo (browser storage), autenticado (passa pelo IdP do tenant) ou tenant-issued JWT (frontend do cliente assina JWT curto). **Resolução provisória no blueprint:** opção (c) tenant-issued JWT como default, anônimo como fallback para tenants que não queiram integrar. Confirmar no design das Suites externas.
 
 ---
 

@@ -30,19 +30,60 @@ Quem disputa diretamente o orçamento de software dos nossos clientes integrador
 
 ### 1.1. Concorrentes diretos (CRM/proposta solar BR)
 
-| Player | Posicionamento | Postura |
+**Ranking por pressão competitiva real** segundo a diretoria (mai/2026), calibrado por ciclos de vendas perdidos e percepção da equipe comercial. **Os três players abaixo são os que efetivamente disputam contas com a Azume.**
+
+#### 1.1.1. Luvik — **maior pressão** competitiva hoje
+
+- **URL:** https://luvik.com.br · **CNPJ:** 37.123.063/0001-45 (LUVIK SISTEMAS LTDA)
+- **Posicionamento:** **suíte comercial + marketing** para integradores, não apenas CRM. "Conjunto de ferramentas comerciais e de marketing para fazer sua empresa de energia solar decolar."
+- **Funcionalidades observadas (mai/2026):** gerador de propostas web e PDF (Lei 14.300), dimensionamento (grupos A/B, autoconsumo remoto, GDII/III), CRM de leads, **site institucional**, **página de links (Luvik Tree)**, **repositório de criativos para redes sociais (Luvik Publi)**, plataforma de tarifas de concessionárias (Fio B).
+- **IA / WhatsApp:** **não mencionam** como diferencial.
+- **Preço:** não público.
+- **Claim relevante:** "maior repositório de criativos para redes sociais de energia solar do Brasil" (Luvik Publi).
+
+**Implicação:** o Luvik não compete só com o Azume CRM — compete com o **stack inteiro do integrador** (CRM + marketing + criativos + site + tarifas). Isso provavelmente explica por que é o mais incômodo. Nossa resposta tradicional (mais features no CRM) endereça só uma parte do escopo deles. **Decisão a tomar:** ampliar oferta da Azume para cobrir as outras dimensões ou especializar verticalmente e abandonar essas frentes para eles.
+
+#### 1.1.2. SolarMarket — **segunda maior pressão**
+
+- **URL:** https://www.solarmarket.com.br
+- **Posicionamento:** "**CRM nº 1** para empresas de energia solar crescerem rápido". Foco em integradoras de pequeno/médio porte em fase de estruturação ou expansão.
+- **Funcionalidades observadas (mai/2026):** dimensionamento (on-grid, híbrido, zero grid), proposta automatizada, precificação com fórmulas complexas, automações por gatilho/condição, **15+ integrações com distribuidores em tempo real** (WEG, Fortlev, GT Solar etc.), métricas, checklists inteligentes, assinatura eletrônica.
+- **IA / WhatsApp:** **WhatsApp automatizado via MyFlows** (integração de terceiro). **Sem IA proprietária** — posicionamento explicitamente "suporte humanizado em até 5 minutos, sem bots ou IA".
+- **Preço:** não público; dois planos (BASE e PRO).
+- **Claim relevante:** "utilizado por **mais de 1.500 integradoras**".
+
+**Implicação:** marca forte ("CRM nº 1") + cotação em tempo real com distribuidores é o diferencial. **Postura anti-IA explícita** no posicionamento — sinal de que parte do mercado responde melhor a "humano rápido" do que a bot. Nossa tese de IA+WhatsApp precisa **mensurar empiricamente** se o público concorda; isso entra na validação de demanda dos meses 2-4 (ver `04-ai-apps.md` §7.5).
+
+#### 1.1.3. Groner CRM — **terceira maior pressão**
+
+- **URL:** https://lp.gronercrm.com.br
+- **Posicionamento:** "O CRM para energia solar **mais completo do mercado**". Atende empresas de qualquer porte.
+- **Funcionalidades observadas (mai/2026):** fluxos personalizáveis (vendas/instalação/manutenção), gerador de propostas, integrações (Ecori, Acroni, RD Station, ClickSign, Omie, Zapster, Aldo), automação de mensagens, campos personalizados para contratos, dashboards.
+- **IA / WhatsApp: ambos.** **Groner GPT** (IA atuando como SDR 24/7) + **GronerZap** (WhatsApp centralizado com histórico compartilhado).
+- **Preço:** não público.
+- **Claim relevante:** "mais de **5.000 vendedores** atingindo metas agora".
+
+**Implicação — esta é a observação mais importante desta seção:** **o concorrente que JÁ tem IA + WhatsApp é o que MENOS nos incomoda dos três.** Três leituras possíveis, não excludentes:
+
+1. **Execução de feature vence existência de feature.** Groner GPT pode entregar qualidade fraca; GronerZap pode ser apenas inbox unificado sob outro nome.
+2. **Distribuição vence feature.** Luvik e SolarMarket têm marca/canal mais fortes mesmo sem IA generativa.
+3. **Público ainda não amadureceu para agente autônomo.** Vendedor solar pode preferir copilot que sugere a agente que age. A validação de demanda precisa medir isso.
+
+Em qualquer das três, a conclusão estratégica é a mesma: **WhatsApp + IA é necessário, mas não é suficiente.** A Suite Azume CRM Smart precisa vencer também em **qualidade percebida e em distribuição** — e é aí que a parceria E4.0/ABSOLAR vira o ativo central, não acessório.
+
+#### 1.1.4. Outros players citados no setor (relevância real a confirmar)
+
+Listados aqui sem detalhamento porque **não fazem parte do top-3 de pressão competitiva** segundo a diretoria. Manter no radar para revisão futura.
+
+| Player | Posicionamento (a verificar) | Postura |
 |---|---|---|
-| **Solfácil** | Originalmente financeira solar; oferece ferramentas de proposta/CRM para integradores parceiros [PREENCHER: nível de competição direta com Azume CRM em contas reais] | Competimos |
-| **Bright** | Software de gestão e proposta solar BR | Competimos |
-| **Genyx** | Gestão para integradoras solar | Competimos |
-| **ProGD** | Gerador de projetos e propostas para GD | Competimos |
-| **Click Solar** | Ferramentas de proposta e gestão | Competimos |
-| **Tess (HelloTess)** | Internacional, foco em design de sistemas solar | Pressão indireta (não BR ainda) |
-| **Aurora Solar** | EUA, dominante em design solar | Pressão indireta |
+| Solfácil | Originalmente financeira solar; oferece ferramentas de proposta/CRM para integradores parceiros | Pressão indireta (verificar) |
+| Bright, Genyx, ProGD, Click Solar | Nomes citados no setor; nível real de overlap com nossa base **a confirmar com Cláudia/Thúlio** | A verificar |
+| Tess (HelloTess), Aurora Solar | Internacionais, foco em design de sistemas (não CRM) | Pressão indireta |
 
-[PREENCHER: market share aproximado e overlap real com nossa base — Thúlio/Cláudia provavelmente têm anedotas de quem aparece em ciclos de vendas perdidos]
+[PREENCHER: confirmar com Cláudia/Thúlio quais desses aparecem de fato em ciclos de vendas perdidos. Se nenhum deles aparece, retirar do documento na próxima revisão.]
 
-**Implicação estratégica:** hoje vencemos em volume e em parceria com a E4.0/ABSOLAR. A defesa de médio prazo é a **Suite Azume CRM Smart** (WhatsApp + IA via AI Apps, ver `04-ai-apps.md`), não features visuais.
+**Implicação estratégica consolidada:** hoje vencemos em volume e em parceria com a E4.0/ABSOLAR. **A defesa de médio prazo não é "IA + WhatsApp" sozinho — é IA + WhatsApp + qualidade de execução + canal de distribuição.** A Suite Azume CRM Smart (`04-ai-apps.md`) endereça os dois primeiros pontos; a parceria com a ABSOLAR/Bárbara endereça o quarto; o terceiro depende de execução disciplinada do framework, não de marketing.
 
 ---
 
@@ -161,6 +202,7 @@ Revisar este documento:
 - A cada 6 meses como rotina.
 - Imediatamente se qualquer player da camada 3.1 (WhatsApp+IA BR) lançar vertical solar.
 - Imediatamente se OpenAI/Anthropic/Google lançar plataforma de agentes verticalizada por setor.
+- Imediatamente se qualquer um dos três top concorrentes BR solar (Luvik, SolarMarket, Groner) lançar feature relevante (especialmente Luvik adicionando IA/WhatsApp ou SolarMarket abandonando o posicionamento anti-IA).
 - Quando entrarmos em nicho novo via Suite Nexus Comercial — adicionar coluna de concorrentes do nicho.
 
 Próxima revisão programada: **2026-11-19**.
