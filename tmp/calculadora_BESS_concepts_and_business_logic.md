@@ -31,12 +31,12 @@ C4 is the **legacy benchmark** — many industrial sites already own a genset fo
 | Tab | Role |
 |---|---|
 | `Premissas` | All inputs (yellow) and globally-derived values (green) |
-| `C1 - BESS Puro` | Scenario 1 dimensioning + monthly cash + simple payback |
-| `C2 - BESS+Solar BESS` | Scenario 2 (same structure as C1 + solar block) |
-| `C3 - BESS+Solar FP` | Scenario 3 (same structure as C2, bigger PV array) |
-| `C4 - Gerador Diesel` | Scenario 4 (diesel sizing + fuel cost + payback) |
-| `Comparativo` | One-page side-by-side of all four scenarios |
-| `Fluxo de Caixa` | 12-year cash flow per scenario → NPV, IRR, discounted payback |
+| `C1 - BESS Puro` | Scenario 1 dimensioning + monthly/annual economics + CAPEX + simple & escalated payback + 12-year cumulative |
+| `C2 - BESS+Solar BESS` | Scenario 2 (same structure as C1 + solar cascade block) |
+| `C3 - BESS+Solar FP` | Scenario 3 (same structure as C2, bigger PV array; cascade also tracks unmet off-peak) |
+| `C4 - Gerador Diesel` | Scenario 4 (diesel sizing + fuel cost + payback + 12-year cumulative) |
+| `Comparativo` | One-page side-by-side of all four scenarios (pure cross-tab aggregation) |
+| `Fluxo de Caixa` | 13-row cash flow per scenario (year 0 through year 12) → NPV, IRR. The escalated-payback formulas live on each scenario tab but read the cumulative columns here |
 
 Cell colour code (per `Premissas!B2`): **yellow = input · green = calculated · salmon = diesel-specific**.
 
@@ -44,64 +44,91 @@ Cell colour code (per `Premissas!B2`): **yellow = input · green = calculated ·
 
 ## 2. Inputs
 
-All inputs live in `Premissas`. Defaults shown are the values currently in the workbook.
+All cells listed here live in `Premissas`. Defaults shown are the values currently in the workbook. Each row carries:
+
+- **Kind** — `input` (yellow cell in the workbook, user-edited) or `calculated` (green cell, derived from other cells).
+- **Formula** — empty for inputs; symbolic expression plus the raw Excel form for calculated cells. `IFERROR(…, 0)` wrappers are stripped for readability (the workbook applies them on every formula; see §7 caveat #20).
 
 ### Tariffs
 
-| Input | Cell | Unit | Default | Role |
-|---|---|---|---|---|
-| Tarifa fora ponta | `C4` | R$/kWh | 0.60 | Cost to recharge BESS from grid; basis for solar abatement |
-| Tarifa ponta | `C5` | R$/kWh | 3.89 | What every kWh of avoided peak consumption is worth |
+| Input | Cell | Unit | Default | Kind | Formula | Role |
+|---|---|---|---|---|---|---|
+| Tarifa fora ponta | `C4` | R$/kWh | 0.60 | input | — | Cost to recharge BESS from grid; basis for solar abatement |
+| Tarifa ponta | `C5` | R$/kWh | 3.89 | input | — | What every kWh of avoided peak consumption is worth |
 
 ### Consumption profile
 
-| Input | Cell | Unit | Default | Role |
-|---|---|---|---|---|
-| Consumo na ponta | `C8` | kWh/mês | 4,500 | Energy that BESS/genset must deliver each month |
-| Consumo fora ponta | `C9` | kWh/mês | 30,000 | Baseline off-peak bill; ceiling for solar abatement in C2/C3 |
-| Dias úteis com ponta por mês | `C12` | dias | 21 | Days the peak window is active |
-| Horas de ponta por dia | `C13` | h/dia | 3 | Length of the peak window — drives inverter and genset kW |
+| Input | Cell | Unit | Default | Kind | Formula | Role |
+|---|---|---|---|---|---|---|
+| Consumo na ponta | `C8` | kWh/mês | 4,500 | input | — | Energy that BESS/genset must deliver each month |
+| Consumo fora ponta | `C9` | kWh/mês | 30,000 | input | — | Baseline off-peak bill; ceiling for solar abatement in C2/C3 |
+| Consumo p/ carregar BESS | `C10` | kWh/mês | 4,932 | calculated | `consumo_ponta / η_round_trip (=C8/C20)` | Grid kWh needed each month to deliver `C8` after round-trip losses |
+| Consumo total mensal | `C11` | kWh/mês | 34,932 | calculated | `consumo_fora_ponta + consumo_p/_carregar_BESS (=C9+C10)` | Reference total kWh the site pulls from grid (displayed on Premissas; not consumed downstream) |
+| Dias úteis com ponta por mês | `C12` | dias | 21 | input | — | Days the peak window is active |
+| Horas de ponta por dia | `C13` | h/dia | 3 | input | — | Length of the peak window — drives inverter and genset kW |
 
 ### BESS technical parameters
 
-| Input | Cell | Unit | Default | Role |
-|---|---|---|---|---|
-| Profundidade de descarga (DoD) | `C16` | % | 90% | Usable fraction of nominal kWh (LFP-typical) |
-| η carga AC→DC | `C17` | % | 96% | Inverter efficiency on the way in |
-| η bateria LFP | `C18` | % | 99% | Internal cycle losses |
-| η descarga DC→AC | `C19` | % | 96% | Inverter efficiency on the way out |
-| Degradação anual da bateria | `C21` | %/ano | 2% | Linear annual reduction of usable savings |
-| Vida útil para análise | `C22` | anos | 12 | Horizon for cash flow / NPV / IRR |
+| Input | Cell | Unit | Default | Kind | Formula | Role |
+|---|---|---|---|---|---|---|
+| Profundidade de descarga (DoD) | `C16` | % | 90% | input | — | Usable fraction of nominal kWh (LFP-typical) |
+| η carga AC→DC | `C17` | % | 96% | input | — | Inverter efficiency on the way in |
+| η bateria LFP | `C18` | % | 99% | input | — | Internal cycle losses |
+| η descarga DC→AC | `C19` | % | 96% | input | — | Inverter efficiency on the way out |
+| η round-trip | `C20` | % | 91.2% | calculated | `η_carga · η_bateria · η_descarga (=C17·C18·C19)` | Lumped AC→AC efficiency; charges all losses against the recharge bill |
+| Degradação anual da bateria | `C21` | %/ano | 2% | input | — | Linear annual reduction of usable savings |
+| Vida útil para análise | `C22` | anos | 12 | input | — | Horizon for cash flow / NPV / IRR |
 
-### Solar PV (used by C2 & C3)
+### Solar PV — inputs (used by C2 & C3)
 
-| Input | Cell | Unit | Default | Role |
-|---|---|---|---|---|
-| Geração estimada por kWp | `C25` | kWh/kWp/mês | 120 | Brazilian reference: 100–130 |
-| Custo solar instalado | `C26` | R$/kWp | 2,000 | C&I 2025 reference: R$ 1,800–2,500/kWp |
-| kWp instalado C2 | `C30` | kWp | 42 | Rounded-up override of the suggested C29 |
-| kWp instalado C3 | `C35` | kWp | 292 | Rounded-up override of the suggested C34 |
+| Input | Cell | Unit | Default | Kind | Formula | Role |
+|---|---|---|---|---|---|---|
+| Geração estimada por kWp | `C25` | kWh/kWp/mês | 120 | input | — | Brazilian reference: 100–130 |
+| Custo solar instalado | `C26` | R$/kWp | 2,000 | input | — | C&I 2025 reference: R$ 1,800–2,500/kWp |
+
+### Solar PV — sizing C2 (covers BESS recharge only)
+
+| Input | Cell | Unit | Default | Kind | Formula | Role |
+|---|---|---|---|---|---|---|
+| kWp sugerido C2 | `C29` | kWp | 41.1 | calculated | `consumo_p/_carregar_BESS / geração_por_kWp (=C10/C25)` | PV size that just covers the monthly BESS recharge |
+| kWp instalado C2 | `C30` | kWp | 42 | input | — | Manual rounded-up override of `C29`; drives CAPEX and monthly generation |
+| Geração mensal C2 | `C31` | kWh/mês | 5,040 | calculated | `kWp_instalado_C2 · geração_por_kWp (=C30·C25)` | Monthly PV output feeding the C2 cascade |
+
+### Solar PV — sizing C3 (covers BESS recharge + full off-peak)
+
+| Input | Cell | Unit | Default | Kind | Formula | Role |
+|---|---|---|---|---|---|---|
+| kWp sugerido C3 | `C34` | kWp | 291.1 | calculated | `(consumo_p/_carregar_BESS + consumo_fora_ponta) / geração_por_kWp (=(C10+C9)/C25)` | PV size that covers BESS recharge **and** full off-peak consumption |
+| kWp instalado C3 | `C35` | kWp | 292 | input | — | Manual rounded-up override of `C34`; drives CAPEX and monthly generation |
+| Geração mensal C3 | `C36` | kWh/mês | 35,040 | calculated | `kWp_instalado_C3 · geração_por_kWp (=C35·C25)` | Monthly PV output feeding the C3 cascade |
 
 ### Financial parameters
 
-| Input | Cell | Unit | Default | Role |
-|---|---|---|---|---|
-| CAPEX BESS instalado por kWh | `C39` | R$/kWh | 1,800 | Multiplies BESS capacity → BESS CAPEX |
-| O&M anual (% do CAPEX total) | `C40` | %/ano | 0.5% | Flat annual maintenance cost |
-| Taxa de desconto (TMA) | `C41` | %/ano | 12% | Discount rate for NPV |
-| Reajuste tarifário anual | `C42` | %/ano | 7% | Tariff escalation applied to annual savings |
+| Input | Cell | Unit | Default | Kind | Formula | Role |
+|---|---|---|---|---|---|---|
+| CAPEX BESS instalado por kWh | `C39` | R$/kWh | 1,800 | input | — | Multiplies BESS capacity → BESS CAPEX |
+| O&M anual (% do CAPEX total) | `C40` | %/ano | 0.5% | input | — | Flat annual maintenance cost |
+| Taxa de desconto (TMA) | `C41` | %/ano | 12% | input | — | Discount rate for NPV |
+| Reajuste tarifário anual | `C42` | %/ano | 7% | input | — | Tariff escalation applied to annual savings |
 
 ### Diesel parameters (C4 only)
 
-| Input | Cell | Unit | Default | Role |
-|---|---|---|---|---|
-| CAPEX gerador | `C45` | R$ | 220,000 | Equipment + install + electrical panel + ART |
-| Fator de potência cos φ | `C46` | % | 80% | To convert kW → kVA for sizing |
-| Margem de segurança | `C47` | % | 20% | Headroom for motor starts |
-| Consumo específico | `C48` | L/kWh | 0.28 | Modern gensets: 0.25–0.30 |
-| Preço do diesel | `C49` | R$/L | 7.30 | Local market price |
-| Manutenção anual | `C50` | R$/ano | 10,000 | Oil/filters/inspections (typical 3–7% of CAPEX) |
-| Reajuste do diesel | `C51` | %/ano | 7% | Independent from tariff escalation |
+| Input | Cell | Unit | Default | Kind | Formula | Role |
+|---|---|---|---|---|---|---|
+| CAPEX gerador | `C45` | R$ | 220,000 | input | — | Equipment + install + electrical panel + ART |
+| Fator de potência cos φ | `C46` | % | 80% | input | — | To convert kW → kVA for sizing |
+| Margem de segurança | `C47` | % | 20% | input | — | Headroom for motor starts |
+| Consumo específico | `C48` | L/kWh | 0.28 | input | — | Modern gensets: 0.25–0.30 |
+| Preço do diesel | `C49` | R$/L | 7.30 | input | — | Local market price |
+| Manutenção anual | `C50` | R$/ano | 10,000 | input | — | Oil/filters/inspections (typical 3–7% of CAPEX) |
+| Reajuste do diesel | `C51` | %/ano | 7% | input | — | Independent from tariff escalation |
+
+### Diesel sizing (C4 only)
+
+| Input | Cell | Unit | Default | Kind | Formula | Role |
+|---|---|---|---|---|---|---|
+| Potência gerador | `C53` | kW | 71.4 | calculated | `consumo_ponta / dias_úteis / horas_ponta (=C8/C12/C13)` | Active power the genset must deliver during the peak window |
+| Potência aparente | `C54` | kVA | 107.1 | calculated | `(kW_gerador / cos_φ) · (1 + margem_segurança) (=C53/C46·(1+C47))` | Nameplate sizing including power-factor conversion and safety headroom |
 
 ---
 
@@ -241,7 +268,9 @@ If solar exceeds the BESS need, `recarga_residual = 0` and the off-peak savings 
 
 ### C3 — BESS + Solar para BESS e Fora Ponta
 
-**Same cascade as C2** but the solar array is ~7x larger. With 35,040 kWh/mês of generation vs only 4,932 kWh/mês needed to recharge the BESS, ~30,108 kWh/mês is available to offset the entire 30,000 kWh/mês off-peak consumption.
+**Same cascade as C2**, with one extra display-only step and a ~7x larger solar array. With 35,040 kWh/mês of generation vs only 4,932 kWh/mês needed to recharge the BESS, ~30,108 kWh/mês is available to offset the entire 30,000 kWh/mês off-peak consumption.
+
+The extra cell `C3!C15` ("Consumo FP remanescente pago" = `MAX(0, consumo_fora_ponta − abatimento_FP)`, equals 0 with current defaults) is a display-only row that shows the residual off-peak energy the customer would still pay for if solar can't fully cover it. It is *not* read by any cash formula — `abatimento_FP` (`C3!C14`) and `recarga_residual` (`C3!C16`) are the cells that feed the monthly economics. A backend can compute it for parity with the workbook UI but doesn't need it for the cash flow.
 
 **Monthly cash:**
 ```
@@ -421,7 +450,7 @@ These are simplifications and edge cases an implementer needs to make explicit i
 
 5. **Demand charges (TUSD demanda contratada) not modelled.** Grupo A customers pay a separate kW-demand fee on top of energy. Peak-shaving with a BESS can also reduce the contracted demand, producing **additional savings not captured here**. This is a material gap for commercial proposals.
 
-6. **No tariff modality distinction.** Grupo A has Verde (off-peak demand only) and Azul (peak + off-peak demand). The model treats both as if peak/off-peak energy tariffs are the only differentiator.
+6. **No tariff modality distinction.** Grupo A has Verde (single demand tariff, no peak/off-peak split on demand) and Azul (separate demand tariffs for peak and off-peak). The model treats both as if peak/off-peak **energy** tariffs are the only differentiator, ignoring the demand-charge differences between modalities.
 
 ### BESS sizing & degradation
 
