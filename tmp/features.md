@@ -54,9 +54,9 @@ Implementar copilot Nexus IA no Azume CRM. A ideia é fornecer um assitente EFET
 - Liberar o Nexus IA para toda a base do Azume CRM
 
 **Repositórios envolvidos:**
-- azume-backend
-- azume-frontend-crm
-- nexus-core
+- nexus-core (onde é definido o agente de IA, a base de conhecimento e consumido os APIs)
+- azume-backend (middleware entre o Azume CRM e o Nexus IA)
+- azume-frontend-crm (frontend do Azume CRM)
 
 **Atividades:**
 - Atualizar a base de conhecimento do Nexus IA para incluir o novo gerador de propostas híbrido e BESS
@@ -87,3 +87,34 @@ Incluir capacidade de leitura de fatura do grupo B com modadilade tarifária bra
 
 **Atividades:**
 - Incluir capacidade de leitura de fatura do grupo B com modadilade tarifária branca no Nexus IA, para o novo gerador de propostas híbrido e BESS.
+
+## Gerar mais 9 modelos de propostas para o novo gerador de propostas híbrido e BESS + sistema para o usuário escolher o modelo de proposta que deseja gerar (deve ser extramamente visual para o usuário)
+
+**Objetivo:**
+Criar valor para o usuário do Azume CRM, com mais 9 modelos de propostas para o novo gerador de propostas híbrido e BESS + sistema para o usuário escolher o modelo de proposta que deseja gerar (deve ser extremamente visual para o usuário).
+
+**Esforço (1-5):** 3
+
+**Dependências:**
+- Nenhuma
+
+**Repositórios envolvidos:**
+- azume-backend
+- azume-frontend-crm
+
+**Atividades:**
+- Gerar modelo de proposta BESS/Híbrido #2
+- Desenvolver sistema para o usuário escolher o modelo de proposta que deseja gerar (deve ser extremamente visual para o usuário) - incluso na etapa 7 "Finalizar" do wizard de geração de proposta de BESS/Híbrido.
+- Gerar modelo de proposta BESS/Híbrido #3
+- Gerar modelo de proposta BESS/Híbrido #4
+- Gerar modelo de proposta BESS/Híbrido #5
+- Gerar modelo de proposta BESS/Híbrido #6
+- Gerar modelo de proposta BESS/Híbrido #7
+- Gerar modelo de proposta BESS/Híbrido #8
+- Gerar modelo de proposta BESS/Híbrido #9
+- Gerar modelo de proposta BESS/Híbrido #10
+
+**Requisitos:**
+- Queremos entregar um modelo por vez, de forma que a gente coloque cada novo modelo em produção sem depender de todos os modelos estarem prontos.
+- Deve ser extremamente visual para o usuário, com uma interface amigável e intuitiva. Usuário deve ser capaz de visualizar o modelo completo de uma forma fácil.
+- Deve ter "awareness" das soluções que o usuário incluiu em cada cenário, tal como no modelos que já existem.
