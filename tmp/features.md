@@ -118,3 +118,35 @@ Criar valor para o usuário do Azume CRM, com mais 9 modelos de propostas para o
 - Queremos entregar um modelo por vez, de forma que a gente coloque cada novo modelo em produção sem depender de todos os modelos estarem prontos.
 - Deve ser extremamente visual para o usuário, com uma interface amigável e intuitiva. Usuário deve ser capaz de visualizar o modelo completo de uma forma fácil.
 - Deve ter "awareness" das soluções que o usuário incluiu em cada cenário, tal como no modelos que já existem.
+
+# Expandir o novo sistema de apresentação de propostas (o sistema novo das propostas híbridas e BESS) para propostas on-grid
+
+**Objetivo:**
+Para permitir que o usuário consiga ter uma identidade visual única para qualquer tipo de proposta, independente do tipo de sistema (on-grid, híbrido ou BESS), iremos expandir o novo sistema de apresentação de propostas (o sistema novo das propostas híbridas e BESS) para propostas on-grid, incluindo versões on-grid para todos os modelos de propostas que existem no bess e híbrido.
+
+**Esforço (1-5):** 3
+
+**Dependências:**
+- Nenhuma
+
+**Repositórios envolvidos:**
+- azume-backend
+- azume-frontend-crm
+
+**Atividades:**
+- Gerar a versão on-grid da proposta BESS/Híbrido #1
+- Gerar a versão on-grid da proposta BESS/Híbrido #2
+- Gerar a versão on-grid da proposta BESS/Híbrido #3
+- Gerar a versão on-grid da proposta BESS/Híbrido #4
+- Gerar a versão on-grid da proposta BESS/Híbrido #5
+- Gerar a versão on-grid da proposta BESS/Híbrido #6
+- Gerar a versão on-grid da proposta BESS/Híbrido #7
+- Gerar a versão on-grid da proposta BESS/Híbrido #8
+- Gerar a versão on-grid da proposta BESS/Híbrido #9
+- Gerar a versão on-grid da proposta BESS/Híbrido #10
+- Implementar sistema em que o usuário pode optar por gerar a versão on-grid da proposta BESS/Híbrido #1, #2, #3, #4, #5, #6, #7, #8, #9 ou #10.
+
+**Requisitos:**
+- Queremos entregar um modelo por vez, de forma que a gente coloque cada novo modelo em produção sem depender de todos os modelos estarem prontos.
+- Deve ser extremamente visual para o usuário, com uma interface amigável e intuitiva. Usuário deve ser capaz de visualizar o modelo completo de uma forma fácil.
+- Deve ter "awareness" das soluções que o usuário incluiu em cada cenário, tal como no modelos que já existem.
