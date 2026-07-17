@@ -1,27 +1,5 @@
 # Lista de Features
 
-## Finalizar follow-ups simples do gerador de propostas híbrido e BESS
-
-**Objetivo:**
-Implementar features pendentes de follow-ups do gerador de propostas híbrido e BESS.
-
-**Esforço (1-5):** 2
-
-**Dependências:**
-- Nenhuma
-
-**Repositórios envolvidos:**
-- azume-backend
-- azume-frontend-crm
-
-**Atividades:**
-- Remover bloqueio de superdimensionamento de 200% para PCS, banco de baterias e potência fotovoltaica, mantenha somente a UI mostrando que o sistema está superdimensionado (gauges em vermelho).
-- Integrar upload (importação) de vendas, projetos, obras, administrativo, pós-vendas e pré-vendas com o gerador de propostas híbrido e BESS.
-- Integrar download (exportação) de propostas, vendas, projetos, obras, administrativo, pós-vendas e pré-vendas com o gerador de propostas híbrido e BESS.
-- Integrar relatórios (métricas) de página inicial, pré-vendas, pós-vendas, vendas, projetos, obras, administrativo, com o gerador de propostas híbrido e BESS.
-- Integrar geração de contratos (novas tags) com o gerador de propostas híbrido e BESS.
-- Tornar OPCIONAIS todos os campos de cadastro de baterias, inversores híbridos e containers BESS que: (a) não são utilizados em nenhum cálculo - ou seja, não são consumidos em nenhum cálculo OU (b) possuem fallback para valores configurados no "settings" da conta do usuário (ver no gerador de propostas híbrido e BESS).
-
 ## Implementar validação detalhada do gerador de propostas híbrido e BESS
 
 **Objetivo:**
